@@ -11,6 +11,28 @@
 
     <!-- Theme used for syntax highlighting of code -->
     <link rel="stylesheet" href="lib/css/zenburn.css">
+    <style>
+      .reveal li {
+        margin-bottom: 2%;
+      }
+      .reveal .footer {
+        position: absolute;
+        bottom: 0%;
+        left: 2%;
+        text-align: left;
+        font-size: 0.5em;
+      }
+      .reveal .footer p {
+      }
+      .reveal h2 {
+        color: #003B49; /* Uni Sussex color */
+      }
+      .reveal .slide-number {
+        bottom: 2%;
+        right: 50%;
+        font-size: 0.5em;
+      }
+    </style>
 
     <!-- Printing and PDF exports -->
     <script>
@@ -23,39 +45,168 @@
   </head>
   <body>
     <div class="reveal">
+  <div class="footer">
+    <p>Topics in Computer Science</p>
+  </div>
 <div class="slides">
 
-<section data-markdown><textarea data-template>
+<section data-markdown data-background-image="University_of_Sussex_Logo.svg.png" data-background-size="20%" data-background-position="50% 80%">
+<textarea data-template>
 # Algorithmic fairness
 
 by Oliver Thomas and Thomas Kehrenberg
 </textarea></section>
 
 <section data-markdown><textarea data-template>
-## Motivation
+## Machine Learning
 
-* Why do we care about algorithmic fairness?
-* Here is a formula: $\int e^x dx$.
-* Markdown test: *italic*, **bold**, <ins>inserted</ins>
+> ...using statistical techniques to give computer systems the ability to "learn"
+  (e.g., progressively improve performance on a specific task)
+  from data, without being explicitly programmed.
 </textarea></section>
 
 <section data-markdown><textarea data-template>
-## Motivation
+## Classification
+
+- given some input $x$, predict a class label $y \in \\{0, 1, ..., C-1\\}$
+- $x$ is usually a **vector**
+  - often with high number of dimensions, e.g. more than 1 million for a picture
+- simplest case: **binary classification**, $y \in \\{0, 1\\}$
+  - for example: is there a hot dog in this picture ($y=1$) or not ($y=0$)?
+</textarea></section>
+
+<section data-markdown><textarea data-template>
+## Classification
+
+- we are looking to train a function $f$ that maps $x$ to $y$
+- the output is the prediction: $\hat{y} = f(x)$
+- we want $\hat{y}$ to be as close as possible to the label $y$
+- $f$ can be implemented as
+  - a neural network
+  - an SVM
+  - a logistic regression model
+</textarea></section>
+
+<section data-markdown><textarea data-template>
+## Training data
+
+- training data: a set of pairs $(x, y)$
+  - input data $x$ with corresponding label $y$
+- we are looking for model that works well on the training data
+- if we make predictions on data that is *very different* from the training data,
+  the model will perform badly
+- problem if the training data does not describe reality well
+</textarea></section>
+
+<section data-markdown><textarea data-template>
+## Where is machine learning used?
+
+- hiring decisions
+- bail decisions
+- credit approval
+- insurance premiums
+
+<aside class="notes">
+  Companies are already using or planning to use machine learning for these tasks.
+</aside>
+</textarea></section>
+
+<section>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+But there are problems:
+</section>
+
+<section>
+    <img class="stretch" src="pp_mb.png" title="Pro-Publica - Machine Bias"/>
+</section>
+
+<section>
+    <img class="stretch" src="amazon.png" title="Amazon CV Screening"/>
+</section>
+
+<section data-markdown><textarea data-template>
+## Algorithmic bias
+
+- machine learning systems are making decisions that affect humans
+- these decisions should be *fair*
+- by default machine learning algorithms tend to be biased in some way
+  - why?
+</textarea></section>
+
+<section data-markdown><textarea data-template>
+## Algorithmic bias
+
+The problem can be divided into <ins>two categories</ins>. Both types of bias can appear together.
+
+- bias stemming from biased training data
+- bias stemming from the algorithms themselves
+</textarea></section>
+
+<section data-markdown><textarea data-template>
+# Biased training data
+</textarea></section>
+
+<section data-markdown><textarea data-template>
+## Bias in, bias out
 
 - Databases: GIGO
 - ML: BIBO
 </textarea></section>
 
 <section data-markdown><textarea data-template>
+
+</textarea></section>
+
+<section data-markdown><textarea data-template>
+
+</textarea></section>
+
+<section data-markdown><textarea data-template>
+
+</textarea></section>
+
+<section data-markdown><textarea data-template>
+
+</textarea></section>
+
+<section data-markdown><textarea data-template>
+
+</textarea></section>
+
+<section data-markdown><textarea data-template>
+
+</textarea></section>
+
+<section data-markdown><textarea data-template>
+
+</textarea></section>
+
+<section data-markdown><textarea data-template>
+
+</textarea></section>
+
+<section data-markdown><textarea data-template>
+
+</textarea></section>
+
+<section data-markdown><textarea data-template>
+
+</textarea></section>
+
+<section data-markdown><textarea data-template>
+
+</textarea></section>
+
+<section data-markdown><textarea data-template>
+</textarea></section>
+
+<section data-markdown><textarea data-template>
+</textarea></section>
+
+<section data-markdown><textarea data-template>
 What do we mean by "Bias In, Bias Out?"
-</textarea></section>
-
-<section data-markdown><textarea data-template>
-![alt text](pp_mb.png "Pro-Publica - Machine Bias")
-</textarea></section>
-
-<section data-markdown><textarea data-template>
-![alt text](amazon.png "Amazon CV Screening")
 </textarea></section>
 
 <section>
@@ -163,7 +314,7 @@ Post Training
         // Display a presentation progress bar
         progress: false,
         // Display the page number of the current slide
-        slideNumber: false,
+        slideNumber: true,
         // Push each slide change to the browser history
         history: true,
         // Enable keyboard shortcuts for navigation
@@ -171,7 +322,7 @@ Post Training
         // Enable the slide overview mode
         overview: true,
         // Vertical centering of slides
-        center: true,
+        center: false,
         // Enables touch navigation on devices with touch input
         touch: true,
         // Loop the presentation
@@ -217,10 +368,11 @@ Post Training
         // Transition speed
         transitionSpeed: 'default', // default/fast/slow
         // Transition style for full page slide backgrounds
-        backgroundTransition: 'fade', // none/fade/slide/convex/concave/zoom
+        backgroundTransition: 'none', // none/fade/slide/convex/concave/zoom
         // Number of slides away from the current that are visible
         viewDistance: 3,
         // Parallax background image
+        // parallaxBackgroundImage: 'University_of_Sussex_Logo.svg.png', // e.g. "'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg'"
         parallaxBackgroundImage: '', // e.g. "'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg'"
         // Parallax background size
         parallaxBackgroundSize: '', // CSS syntax, e.g. "2100px 900px"
@@ -229,6 +381,8 @@ Post Training
         // - Set to 0 to disable movement along an axis
         parallaxBackgroundHorizontal: null,
         parallaxBackgroundVertical: null,
+        parallaxBackgroundRepeat: 'no-repeat',
+        parallaxBackgroundPosition: '',
         // The display mode that will be used to show slides
         display: 'block'
       });
