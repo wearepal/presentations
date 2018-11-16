@@ -13,16 +13,17 @@
     <link rel="stylesheet" href="lib/css/zenburn.css">
     <style>
       .reveal li {
-        margin-bottom: 2%;
+        margin-bottom: 2%; /* increase distance between list elements */
       }
       .reveal .footer {
         position: absolute;
-        bottom: 0%;
+        bottom: 2%;
         left: 2%;
         text-align: left;
-        font-size: 0.5em;
+        font-size: 3vmin; /* vmin: minimum size of view. doesn't work in IE */
       }
       .reveal .footer p {
+        margin: 0;
       }
       .reveal h2 {
         color: #003B49; /* Uni Sussex color */
@@ -30,7 +31,12 @@
       .reveal .slide-number {
         bottom: 2%;
         right: 50%;
-        font-size: 0.5em;
+        font-size: 3vmin; /* vmin: minimum size of view. doesn't work in IE */
+        color: #000;
+        background-color: #fff;
+      }
+      .reveal .slide-number-pdf {
+        font-size: 30px!important; /* needs to be !important because other stylesheet is loaded later */
       }
     </style>
 
@@ -57,7 +63,8 @@
 by Oliver Thomas and Thomas Kehrenberg
 </textarea></section>
 
-<section data-markdown><textarea data-template>
+<section data-markdown data-background-image="University_of_Sussex_Logo.svg.png" data-background-size="7%" data-background-position="100% 0%">
+<textarea data-template>
 ## Machine Learning
 
 > ...using statistical techniques to give computer systems the ability to "learn"
