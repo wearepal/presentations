@@ -1,0 +1,66 @@
+.reveal li {
+  margin-bottom: 2%; /* increase distance between list elements */
+}
+.reveal .footer {
+  position: absolute;
+  bottom: 2%;
+  left: 2%;
+  text-align: left;
+  font-size: 3vmin; /* vmin: minimum size of view. doesn't work in IE */
+}
+.reveal .footer p {
+  margin: 0;
+}
+.reveal h1,
+.reveal h2,
+.reveal h3,
+.reveal h4,
+.reveal h5,
+.reveal h6 {
+  color: #003262; /* dark blue */
+  /*color: #003B49; /* Uni Sussex color */
+}
+.reveal h1 {
+  font-size: 3.3em;
+}
+.reveal .slide-number {
+  bottom: 2%;
+  right: 50%;
+  font-size: 3vmin; /* vmin: minimum size of view. doesn't work in IE */
+  color: #000;
+  background-color: #fff;
+}
+.reveal .slide-number-pdf {
+  font-size: 30px!important; /* needs to be !important because other stylesheet is loaded later */
+}
+
+.reveal .highlight {
+  color:#9A2617;
+}
+
+.reveal .left {
+  left:-8.33%; 
+  text-align: center;
+  float: left;
+  width:48%;
+  z-index:-10;
+}
+
+.reveal .right {
+  left:31.25%;
+  top: 75px;
+  float: right;
+  text-align: center;
+  z-index:-10;
+  width:48%;
+}
+
+.reveal .math {
+  color:#9A2617; /* Dark Ruby */
+}
+
+.reveal .emphbox {
+  background-color:#ddd;
+  width:50%;
+  margin:25px 25%;
+}
