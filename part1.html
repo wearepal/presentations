@@ -290,14 +290,6 @@ The problem can be divided into <ins>two categories</ins>. Both types of bias ca
   </textarea></section>
 
   <section data-markdown><textarea data-template>
-  Different fairness criteria have been defined, such as
-  - Demographic Parity
-  - Equalised Odds
-  - Equality of Opportunity
-  - Calibration by Group
-  </textarea></section>
-
-  <section data-markdown><textarea data-template>
   ## Equalised Odds
 
   $$
@@ -307,6 +299,31 @@ The problem can be divided into <ins>two categories</ins>. Both types of bias ca
   Y \in \{0,1\} \\
   S \in \{0,1\}
   $$ 
+  </textarea></section>
+
+</section>
+
+
+<section>
+  <section data-markdown><textarea data-template>
+    Different fairness criteria have been defined, such as
+    - Demographic Parity
+    - Equalised Odds
+    - Equality of Opportunity
+    - Calibration by Group
+  </textarea></section>
+
+  <section data-markdown><textarea data-template>
+    ## Statistical Parity
+    #### (**independence** based notion of fairness
+
+    $$
+    P(\hat{Y}=1 | S=0) = P(\hat{Y}=1 | S=1)
+    $$
+    $$
+    Y \in \{0,1\} \\
+    S \in \{0,1\}
+    $$ 
   </textarea></section>
 
   <section data-markdown><textarea data-template>
@@ -337,19 +354,6 @@ The problem can be divided into <ins>two categories</ins>. Both types of bias ca
   </textarea></section>
 
   <section data-markdown><textarea data-template>
-    ## Equalised Opportunity 
-    #### (**separation** based notion of fairness)
-
-    $$
-    P(\hat{Y}=1 | S=0, Y=1) = P(\hat{Y}=1 | S=1, Y=1)
-    $$
-    $$
-    Y \in \{0,1\} \\
-    S \in \{0,1\}
-    $$ 
-  </textarea></section>
-
-  <section data-markdown><textarea data-template>
     ## Calibration by Group 
     #### (**sufficiency** based notion of fairness)
 
@@ -363,12 +367,11 @@ The problem can be divided into <ins>two categories</ins>. Both types of bias ca
   </textarea></section>
 </section>
 
-
 <section data-markdown><textarea data-template>
     Let's have all the fairness!
   
-    If we are fair with regards to all notions of fair, then we're fair........ right?
-  </textarea></section>
+    If we are fair with regards to all notions of fair, then we're fair... right?
+</textarea></section>
 
 <section data-markdown><textarea data-template>
     Independence based fairness (i.e. Statistical Parity)
@@ -383,8 +386,10 @@ The problem can be divided into <ins>two categories</ins>. Both types of bias ca
     \hat{Y} \perp S | Y
     $$
 
-    Suppose we have data where $Y \not \perp S$
-  </textarea></section>
+    For both to hold, then either $S \perp Y$, our data is fair, or $\hat{Y} \perp Y$, we have a random predictor.
+
+    Similarly, Sufficiency cannot hold with either notion of fairness.
+</textarea></section>
 
 <section data-markdown><textarea data-template>
 ## How to enforce fairness?
