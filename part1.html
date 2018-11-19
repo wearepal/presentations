@@ -290,12 +290,6 @@ The problem can be divided into <ins>two categories</ins>. Both types of bias ca
   </textarea></section>
 
   <section data-markdown><textarea data-template>
-  (dicsuss equality of opportunity)
-
-  (also mention Equalised Odds)
-  </textarea></section>
-
-  <section data-markdown><textarea data-template>
   ## Equalised Odds
 
   $$
@@ -307,46 +301,94 @@ The problem can be divided into <ins>two categories</ins>. Both types of bias ca
   $$ 
   </textarea></section>
 
+</section>
+
+
+<section>
   <section data-markdown><textarea data-template>
-  
+    Different fairness criteria have been defined, such as
+    - Demographic Parity
+    - Equalised Odds
+    - Equality of Opportunity
+    - Calibration by Group
   </textarea></section>
 
   <section data-markdown><textarea data-template>
-  
+    ## Statistical Parity
+    #### (**independence** based notion of fairness
+
+    $$
+    P(\hat{Y}=1 | S=0) = P(\hat{Y}=1 | S=1)
+    $$
+    $$
+    Y \in \{0,1\} \\
+    S \in \{0,1\}
+    $$ 
   </textarea></section>
 
   <section data-markdown><textarea data-template>
-  
+    ## Equalised Odds 
+    #### (**separation** based notion of fairness
+
+    $$
+    P(\hat{Y}=1 | S=0, Y=y) = P(\hat{Y}=1 | S=1, Y=y)
+    $$
+    $$
+    Y \in \{0,1\} \\
+    S \in \{0,1\}
+    $$ 
   </textarea></section>
 
   <section data-markdown><textarea data-template>
-  
+    ## Equalised Opportunity 
+
+    #### (**separation** based notion of fairness)
+
+    $$
+    P(\hat{Y}=1 | S=0, Y=1) = P(\hat{Y}=1 | S=1, Y=1)
+    $$
+    $$
+    Y \in \{0,1\} \\
+    S \in \{0,1\}
+    $$ 
+  </textarea></section>
+
+  <section data-markdown><textarea data-template>
+    ## Calibration by Group 
+    #### (**sufficiency** based notion of fairness)
+
+    $$
+    P(Y=1 | \hat{Y}=\hat{y}, S=s) = \hat{y}
+    $$
+    $$
+    \hat{Y} \in \[0...1\] \\
+    S \in \{0,1\}
+    $$ 
   </textarea></section>
 </section>
 
 <section data-markdown><textarea data-template>
-# Enforcing fairness criteria
+    Let's have all the fairness!
+  
+    If we are fair with regards to all notions of fair, then we're fair... right?
 </textarea></section>
 
 <section data-markdown><textarea data-template>
+    Independence based fairness (i.e. Statistical Parity)
 
-</textarea></section>
+    $$
+    \hat{Y} \perp S
+    $$
 
-<section data-markdown><textarea data-template>
-</textarea></section>
+    Separation based fairness (i.e. Equalized Odds/Opportunity)
 
-<section data-markdown><textarea data-template>
-</textarea></section>
+    $$
+    \hat{Y} \perp S | Y
+    $$
 
-<section data-markdown><textarea data-template>
-</textarea></section>
+    For both to hold, then either $S \perp Y$, our data is fair, or $\hat{Y} \perp Y$, we have a random predictor.
 
-<section data-markdown><textarea data-template>
-
-</textarea></section>
-
-<section data-markdown><textarea data-template>
-
+    Similarly, Sufficiency cannot hold with either notion of fairness.
 </textarea></section>
 
 <section data-markdown><textarea data-template>
@@ -374,6 +416,34 @@ Post Training
 <section data-markdown><textarea data-template>
 
 </textarea></section>
+
+<section data-markdown><textarea data-template>
+  Popular approach is to add produce a "fair" representation. Consider that we have 2 roles, a data vendor, who is charge of collecting the data and preparing it. Our other role is a data user, someone who will be making predictions based on our data. 
+
+  The data vendor is concerned that the data user may be using their data to make unfair decisions. So the data vendor decides to learn a new, fair representation.
+</textarea></section>
+
+<section data-markdown><textarea data-template>
+The state-of-the-art method a fair representation this is to use an *adversarial* network, using a "Gradient-Reversal Layer" from Ganin et al.
+
+![](./images/adversarial.svg)
+</textarea></section>
+
+<section>
+  <h3>Problems with doing this?</h3>
+  <section><h4>Any Ideas?</h4></section>
+<section>
+  <h4>What does this representation mean?</h4>
+
+  <p>The learned representation is uninterpretable by default. Recently Quadrianto et al constrained the representation to be in the same same as the input so that we could look at what changed</p>
+  </section>
+<section>
+  <h4>What if the vendor data user decides to be fair as well?</h4>
+
+  <p>Referred to as "fair pipelines". Work has only just begun exploring these. Current research shows that these don't work (at the moment!)</p>
+</section>
+</section>
+
 
 </div>
     </div>
