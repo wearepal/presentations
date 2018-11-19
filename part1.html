@@ -290,13 +290,26 @@ The problem can be divided into <ins>two categories</ins>. Both types of bias ca
   </textarea></section>
 
   <section data-markdown><textarea data-template>
+<<<<<<< HEAD:part1.html
   (dicsuss equality of opportunity)
 
   (also mention Equalised Odds)
+=======
+  Different fairness criteria have been defined, such as
+  - Demographic Parity
+  - Equalised Odds
+  - Equality of Opportunity
+  - Calibration by Group
+>>>>>>> added adversarial content:slides.html
   </textarea></section>
 
   <section data-markdown><textarea data-template>
+<<<<<<< HEAD:part1.html
   ## Equalised Odds
+=======
+  ## Statistical Parity 
+  #### (**independence** based notion of fairness)
+>>>>>>> added adversarial content:slides.html
 
   $$
   P(\hat{Y}=1 | S=0, Y=y) = P(\hat{Y}=1 | S=1, Y=y)
@@ -308,6 +321,7 @@ The problem can be divided into <ins>two categories</ins>. Both types of bias ca
   </textarea></section>
 
   <section data-markdown><textarea data-template>
+<<<<<<< HEAD:part1.html
   
   </textarea></section>
 
@@ -321,10 +335,63 @@ The problem can be divided into <ins>two categories</ins>. Both types of bias ca
 
   <section data-markdown><textarea data-template>
   
+=======
+    ## Equalised Odds 
+    #### (**separation** based notion of fairness
+
+    $$
+    P(\hat{Y}=1 | S=0, Y=y) = P(\hat{Y}=1 | S=1, Y=y)
+    $$
+    $$
+    Y \in \{0,1\} \\
+    S \in \{0,1\}
+    $$ 
+  </textarea></section>
+
+  <section data-markdown><textarea data-template>
+    ## Equalised Opportunity 
+
+    #### (**separation** based notion of fairness)
+
+    $$
+    P(\hat{Y}=1 | S=0, Y=1) = P(\hat{Y}=1 | S=1, Y=1)
+    $$
+    $$
+    Y \in \{0,1\} \\
+    S \in \{0,1\}
+    $$ 
+  </textarea></section>
+
+  <section data-markdown><textarea data-template>
+    ## Equalised Opportunity 
+    #### (**separation** based notion of fairness)
+
+    $$
+    P(\hat{Y}=1 | S=0, Y=1) = P(\hat{Y}=1 | S=1, Y=1)
+    $$
+    $$
+    Y \in \{0,1\} \\
+    S \in \{0,1\}
+    $$ 
+>>>>>>> added adversarial content:slides.html
+  </textarea></section>
+
+  <section data-markdown><textarea data-template>
+    ## Calibration by Group 
+    #### (**sufficiency** based notion of fairness)
+
+    $$
+    P(Y=1 | \hat{Y}=\hat{y}, S=s) = \hat{y}
+    $$
+    $$
+    \hat{Y} \in \[0...1\] \\
+    S \in \{0,1\}
+    $$ 
   </textarea></section>
 </section>
 
 <section data-markdown><textarea data-template>
+<<<<<<< HEAD:part1.html
 # Enforcing fairness criteria
 </textarea></section>
 
@@ -348,6 +415,28 @@ The problem can be divided into <ins>two categories</ins>. Both types of bias ca
 <section data-markdown><textarea data-template>
 
 </textarea></section>
+=======
+  Let's have all the fairness!
+
+  If we are fair with regards to all notions of fair, then we're fair........ right?
+</textarea></section>
+
+<section data-markdown><textarea data-template>
+    Independence based fairness (i.e. Statistical Parity)
+
+    $$
+    \hat{Y} \perp S
+    $$
+
+    Separation based fairness (i.e. Equalized Odds/Opportunity)
+
+    $$
+    \hat{Y} \perp S | Y
+    $$
+
+    Suppose we have data where $Y \not \perp S$
+  </textarea></section>
+>>>>>>> added adversarial content:slides.html
 
 <section data-markdown><textarea data-template>
 ## How to enforce fairness?
@@ -374,6 +463,34 @@ Post Training
 <section data-markdown><textarea data-template>
 
 </textarea></section>
+
+<section data-markdown><textarea data-template>
+  Popular approach is to add produce a "fair" representation. Consider that we have 2 roles, a data vendor, who is charge of collecting the data and preparing it. Our other role is a data user, someone who will be making predictions based on our data. 
+
+  The data vendor is concerned that the data user may be using their data to make unfair decisions. So the data vendor decides to learn a new, fair representation.
+</textarea></section>
+
+<section data-markdown><textarea data-template>
+The state-of-the-art method a fair representation this is to use an *adversarial* network, using a "Gradient-Reversal Layer" from Ganin et al.
+
+![](./images/adversarial.svg)
+</textarea></section>
+
+<section>
+  <h3>Problems with doing this?</h3>
+  <section><h4>Any Ideas?</h4></section>
+<section>
+  <h4>What does this representation mean?</h4>
+
+  <p>The learned representation is uninterpretable by default. Recently Quadrianto et al constrained the representation to be in the same same as the input so that we could look at what changed</p>
+  </section>
+<section>
+  <h4>What if the vendor data user decides to be fair as well?</h4>
+
+  <p>Referred to as "fair pipelines". Work has only just begun exploring these. Current research shows that these don't work (at the moment!)</p>
+</section>
+</section>
+
 
 </div>
     </div>
