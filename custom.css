@@ -1,6 +1,11 @@
 .reveal li {
   margin-bottom: 2%; /* increase distance between list elements */
 }
+
+.reveal ul ul {
+  margin-top: 2%; /* increase distance between nested lists */
+}
+
 .reveal .footer {
   position: absolute;
   bottom: 2%;
@@ -8,9 +13,11 @@
   text-align: left;
   font-size: 3vmin; /* vmin: minimum size of view. doesn't work in IE */
 }
+
 .reveal .footer p {
   margin: 0;
 }
+
 .reveal h1,
 .reveal h2,
 .reveal h3,
@@ -20,9 +27,11 @@
   color: #003262; /* dark blue */
   /*color: #003B49; /* Uni Sussex color */
 }
+
 .reveal h1 {
   font-size: 3.3em;
 }
+
 .reveal .slide-number {
   bottom: 2%;
   right: 50%;
@@ -30,6 +39,7 @@
   color: #000;
   background-color: #fff;
 }
+
 .reveal .slide-number-pdf {
   font-size: 30px!important; /* needs to be !important because other stylesheet is loaded later */
 }

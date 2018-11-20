@@ -48,19 +48,19 @@ by Oliver Thomas and Thomas Kehrenberg
 <section data-markdown><textarea data-template>
 ## Classification
 
-- given some input $x$, predict a class label $y \in \\{0, 1, ..., C-1\\}$
-- $x$ is usually a **vector**
+- given some input $X$, predict a class label $Y \in \\{0, 1, ..., C-1\\}$
+- $X$ is usually a **vector**
   - often with high number of dimensions, e.g. more than 1 million for a picture
-- simplest case: **binary classification**, $y \in \\{0, 1\\}$
-  - for example: is there a hot dog in this picture ($y=1$) or not ($y=0$)?
+- simplest case: **binary classification**, $Y \in \\{0, 1\\}$
+  - for example: is there a hot dog in this picture ($Y=1$) or not ($Y=0$)?
 </textarea></section>
 
 <section data-markdown><textarea data-template>
 ## Classification
 
-- we are looking to train a function $f$ that maps $x$ to $y$
-- the output is the prediction: $\hat{y} = f(x)$
-- we want $\hat{y}$ to be as close as possible to the label $y$
+- we are looking to train a function $f$ that maps $X$ to $Y$
+- the output is the prediction: $\hat{Y} = f(X)$
+- we want $\hat{Y}$ to be as close as possible to the label $Y$
 - $f$ can be implemented as
   - a neural network
   - an SVM
@@ -124,164 +124,183 @@ The problem can be divided into <ins>two categories</ins>. Both types of bias ca
 - bias stemming from the algorithms themselves
 </textarea></section>
 
-<section>
-  <section data-markdown><textarea data-template>
-  # Biased training data
-  </textarea></section>
-  
-  <section data-markdown><textarea data-template>
-  ## Bias in, bias out
-  
-  - Databases: GIGO
-  - ML: BIBO
-    - the ML algorithm just learns what is in the training data
-  </textarea></section>
-  
-  <section data-markdown><textarea data-template>
-  ## Examples for bias
-  
-  **Task**: generate description for images
-  
-  ![](./images/women_also_snowboard/title.png)
-  </textarea></section>
-  
-  <section data-markdown><textarea data-template>
-  ![](./images/women_also_snowboard/example1.png)
-  </textarea></section>
-  
-  <section data-markdown><textarea data-template>
-  ## Learning wrong features
-  
-  The algorithm predicts the gender from the activity and not from looking at the person.
-  
-  ![](./images/women_also_snowboard/example2.png)
-  </textarea></section>
-  
-  <section data-markdown><textarea data-template>
-  (how was it solved in this case?)
-  </textarea></section>
-  
-  <section data-markdown><textarea data-template>
-  (in the previous example the problem was that the data was incomplete,
-  but it could also be that the data is just wrong)
-  </textarea></section>
-  
-  <section data-markdown><textarea data-template>
-  (if the data is biased in some kind we can nevertheless try to enforce a fair outcome)
+<section data-markdown><textarea data-template>
+# Biased training data
+</textarea></section>
 
-  (how do we define a fair outcome?)
-  </textarea></section>
-  
-  <section data-markdown><textarea data-template>
-  ## Statistical parity
-  
-  $$
-  P(\hat{Y}=1 | S=0) = P(\hat{Y}=1 | S=1)
-  $$
-  $$
-  Y \in \{0,1\} \\
-  S \in \{0,1\}
-  $$ 
-  </textarea></section>
+<section data-markdown><textarea data-template>
+## Bias in, bias out
 
-  <section data-markdown><textarea data-template>
-  (what does the definition mean...?)
+- Databases: GIGO
+- ML: BIBO
+  - the ML algorithm just learns what is in the training data
+</textarea></section>
 
-  (discuss trade-off with accuracy)
+<section data-markdown><textarea data-template>
+## Examples for bias
 
-  (later somewhere: causal fairness definitions)
-  </textarea></section>
+**Task**: generate description for images
 
-  <section data-markdown><textarea data-template>
-  
-  </textarea></section>
-</section>
+![](./images/women_also_snowboard/title.png)
+</textarea></section>
 
-<section>
-  <section data-markdown><textarea data-template>
-  # Bias introduced by the ML algorithm
-  </textarea></section>
+<section data-markdown><textarea data-template>
+![](./images/women_also_snowboard/example1.png)
+</textarea></section>
 
-  <section data-markdown><textarea data-template>
-  ## Why would an ML algorithm introduce bias?
+<section data-markdown><textarea data-template>
+## Learning wrong features
 
-  Consider the following dataset:
+The algorithm predicts the gender from the activity and not from looking at the person.
 
-  - two features: SAT score and gender of individuals
+![](./images/women_also_snowboard/example2.png)
+</textarea></section>
 
-  - task: predict if they earn more than <span>$</span>50K per year ($y=1$) or not ($y=0$)
+<section data-markdown><textarea data-template>
+## Desired result
 
-  - composition of the dataset: 50% female, 50% male. 20% of female have $y=1$, 50% of male have $y=1$.
-  </textarea></section>
+- what we would want is that the algorithm only looks at the person when predicting the gender
+- if the gender is not recognizable from the picture, the algorithm should be "unsure"
+</textarea></section>
 
-  <section data-markdown><textarea data-template>
-  ## Bias from algorithm
+<section data-markdown><textarea data-template>
+## Biased data
 
-  The dataset is heavily skewed but let's ignore that for now and just try to make accurate predictions for this dataset.
-  </textarea></section>
+- in the previous example, certain training examples were underrepresented
+  - sampling bias
+- other case: data is simply wrong
+  - e.g. data was gathered by humans who just lied
+</textarea></section>
 
-  <section data-markdown><textarea data-template>
-  ## Bias from algorithm
+<section data-markdown><textarea data-template>
+## Enforcing a fair outcome
 
-  Reminder: 20% of female have $y=1$, 50% of male have $y=1$.
+- no matter in what way the data is biased: we want to **enforce a fair outcome**
+  - idea: just tell the algorithm that it should treat all groups in the same way
+- question: **how do we define a fair outcome?**
+  - really hard question
+  - start with the simplest definition
+</textarea></section>
 
-  A simple way to make relatively accurate predictions:
-  - for male individuals base the prediction on SAT
-  - for female individuals ignore SAT score and always predict $y=0$
+<section data-markdown><textarea data-template>
+## Example
 
-  Result: up to 90% accuracy
-  </textarea></section>
+- task: predict whether someone should be hired ($Y=1$) or not ($Y=0$)
+- two races: <span style="color: blue">blue race</span> and <span style="color: green">green race</span>
+  - blue: $S=0$, green: $S=1$
+- in the training set: **20% of blue** applicants were hired, **50% of green** applicants were hired
+</textarea></section>
 
-  <section data-markdown><textarea data-template>
-  ## Bias from algorithm
+<section data-markdown><textarea data-template>
+## Statistical parity
 
-  - the dataset was already skewed but the algorithm's prediction are even more "unfair"
-  - this is because it's easier to just base the decision on gender than to figure out the effect of the SAT
-  - this is an extreme case but similar things actually can happen
-  </textarea></section>
+$$
+P(\hat{Y}=1 | S=0) = P(\hat{Y}=1 | S=1)
+$$
 
-  <section data-markdown><textarea data-template>
-  ## Bias from algorithm
-  
-  **What we don't want:** the algorithm missclassifying a subgroup
+- $\hat{Y} \in \\{0,1\\}, S \in \\{0,1\\}$
+- $S$: sensitive attribute (for example gender, race)
+- $\hat{Y}$: prediction
 
-  **What we want:** the algorithm should make equally good predictions for all subgroups
+**meaning**: the probability to get a positive prediction is the same for each group
+</textarea></section>
 
-  Criterion that enforces this: *Equality of Opportunity*
-  </textarea></section>
+<section data-markdown><textarea data-template>
+## Statistical parity
 
-  <section data-markdown><textarea data-template>
-  ## Equality of Opportunity
+- concrete: when evaluating the algorithm on the test set, both groups ($S=0$ and $S=1$)
+  should have the same number of positive predictions ($\hat{Y}=1$)
+- in the hiring example from before: same percentage from both races will be hired (e.g. 30%)
+</textarea></section>
 
-  $$
-  P(\hat{Y}=1 | S=0, Y=1) = P(\hat{Y}=1 | S=1, Y=1)
-  $$
-  $$
-  Y \in \{0,1\} \\
-  S \in \{0,1\}
-  $$ 
-  </textarea></section>
+<section data-markdown><textarea data-template>
+(discuss trade-off with accuracy)
 
-  <section data-markdown><textarea data-template>
-  (dicsuss equality of opportunity)
+</textarea></section>
 
-  (also mention Equalised Odds)
-  </textarea></section>
+<section data-markdown><textarea data-template>
+# Bias introduced by the ML algorithm
+</textarea></section>
 
-  <section data-markdown><textarea data-template>
-  ## Equalised Odds
+<section data-markdown><textarea data-template>
+## Why would an ML algorithm introduce bias?
 
-  $$
-  P(\hat{Y}=1 | S=0, Y=y) = P(\hat{Y}=1 | S=1, Y=y)
-  $$
-  $$
-  Y \in \{0,1\} \\
-  S \in \{0,1\}
-  $$ 
-  </textarea></section>
+Consider again the hiring example:
 
-</section>
+- two features: SAT score and race (blue and green) of individuals
 
+- task: predict if they should be hired ($y=1$) or not ($y=0$)
+
+- composition of the dataset: 50% blue, 50% green. 20% of blue have $y=1$, 50% of green have $y=1$.
+</textarea></section>
+
+<section data-markdown><textarea data-template>
+## Bias from algorithm
+
+The dataset is heavily skewed but let's ignore that for now and just try to make accurate predictions for this dataset.
+</textarea></section>
+
+<section data-markdown><textarea data-template>
+## Bias from algorithm
+
+(Reminder: 20% of blue have $y=1$, 50% of green have $y=1$.)
+
+A simple way to make relatively accurate predictions:
+- for green individuals base the prediction on SAT
+- for blue individuals ignore SAT score and always predict $y=0$
+
+Result: up to 90% accuracy
+</textarea></section>
+
+<section data-markdown><textarea data-template>
+## Bias from algorithm
+
+- the dataset was already skewed but the algorithm's prediction are even more "unfair"
+- this is because it's easier to just base the decision on race than to figure out the effect of the SAT
+- this is an extreme case but similar things actually can happen
+</textarea></section>
+
+<section data-markdown><textarea data-template>
+## Bias from algorithm
+
+**What we don't want:** the algorithm "being lazy" in a subgroup
+
+**What we want:** the algorithm should make equally good predictions for all subgroups
+
+Criterion that enforces this: *Equality of Opportunity*
+</textarea></section>
+
+<section data-markdown><textarea data-template>
+## Equality of Opportunity
+
+$$
+P(\hat{Y}=1 | S=0, Y=1) = P(\hat{Y}=1 | S=1, Y=1)
+$$
+$$
+Y \in \{0,1\} \\
+S \in \{0,1\}
+$$
+</textarea></section>
+
+<section data-markdown><textarea data-template>
+(discuss equality of opportunity)
+
+(also mention Equalised Odds)
+</textarea></section>
+
+<section data-markdown><textarea data-template>
+## Equalised Odds
+
+$$
+P(\hat{Y}=1 | S=0, Y=y) = P(\hat{Y}=1 | S=1, Y=y)
+$$
+$$
+Y \in \{0,1\} \\
+S \in \{0,1\}
+$$
+</textarea></section>
+
+<!-- Border between Thomas stuff and Oliver stuff -->
 
 <section>
   <section data-markdown><textarea data-template>
@@ -451,7 +470,7 @@ The state-of-the-art method a fair representation this is to use an *adversarial
           { src: 'plugin/math/math.js', async: true }
         ],
         // The "normal" size of the presentation, aspect ratio will be preserved when the presentation is scaled to fit different resolutions
-        width: 960,
+        width: 1120, // default 960
         height: 700,
         // Factor of the display size that should remain empty around the content
         margin: 0.04,
