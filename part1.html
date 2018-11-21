@@ -124,9 +124,11 @@ The problem can be divided into <ins>two categories</ins>. Both types of bias ca
 - bias stemming from the algorithms themselves
 </textarea></section>
 
-<section data-markdown><textarea data-template>
-# Biased training data
-</textarea></section>
+<section>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<h1>Biased training data</h1>
+</section>
 
 <section data-markdown><textarea data-template>
 ## Bias in, bias out
@@ -214,24 +216,44 @@ $$
 </textarea></section>
 
 <section data-markdown><textarea data-template>
-(discuss trade-off with accuracy)
+## Side effects of statistical parity
 
+- enforcing statistical parity necessarily produces **lower accuracy**
+- consider this: we want to enforce 30% acceptance for the blue race but the training data only has 20% accepted
+  - some individuals of the blue race have to be "missclassified" ($\hat{Y} = 1$ instead of $\hat{Y} = 0$)
+    to make the numbers work
+- not surprising because we are computing accuracy against the *biased data*
 </textarea></section>
 
 <section data-markdown><textarea data-template>
-# Bias introduced by the ML algorithm
+## Trade-off: Fairness &ndash; Accuracy
+
+- usually we don't want to have too bad accuracy with respect to the (bias) data
+- goal: find algorithm that produces fair result at highest possible accuracy
+- otherwise it's easy: a *random classifier* is very fair (but useless)
+  - random classifier: just predict $\hat{Y} = 1$ 50% of the time regardless of input
 </textarea></section>
+
+<section data-markdown><textarea data-template>
+## Summary of Statistical Parity
+
+- very simple criterion
+- introduces Fairness &ndash; Accracy trade-off
+- more sophisticated criteria are possible (based on causal graphs)
+</textarea></section>
+
+<section>
+<p>&nbsp;</p>
+<h1>Bias introduced by the ML algorithm</h1>
+</section>
 
 <section data-markdown><textarea data-template>
 ## Why would an ML algorithm introduce bias?
 
 Consider again the hiring example:
-
 - two features: SAT score and race (blue and green) of individuals
-
-- task: predict if they should be hired ($y=1$) or not ($y=0$)
-
-- composition of the dataset: 50% blue, 50% green. 20% of blue have $y=1$, 50% of green have $y=1$.
+- task: predict if they should be hired ($Y=1$) or not ($Y=0$)
+- composition of the dataset: 50% blue, 50% green. 20% of blue have $Y=1$, 50% of green have $Y=1$.
 </textarea></section>
 
 <section data-markdown><textarea data-template>
@@ -243,13 +265,13 @@ The dataset is heavily skewed but let's ignore that for now and just try to make
 <section data-markdown><textarea data-template>
 ## Bias from algorithm
 
-(Reminder: 20% of blue have $y=1$, 50% of green have $y=1$.)
+(Reminder: 20% of blue have $Y=1$, 50% of green have $Y=1$.)
 
 A simple way to make relatively accurate predictions:
 - for green individuals base the prediction on SAT
-- for blue individuals ignore SAT score and always predict $y=0$
+- for blue individuals ignore SAT score and always predict $Y=0$
 
-Result: up to 90% accuracy
+Result: up to 90% accuracy (80% in blue subgroup and 100% in green subgroup)
 </textarea></section>
 
 <section data-markdown><textarea data-template>
@@ -257,13 +279,13 @@ Result: up to 90% accuracy
 
 - the dataset was already skewed but the algorithm's prediction are even more "unfair"
 - this is because it's easier to just base the decision on race than to figure out the effect of the SAT
-- this is an extreme case but similar things actually can happen
+- this is an extreme case but similar things can actually happen
 </textarea></section>
 
 <section data-markdown><textarea data-template>
 ## Bias from algorithm
 
-**What we don't want:** the algorithm "being lazy" in a subgroup
+**What we do not want:** the algorithm "being lazy" in a subgroup
 
 **What we want:** the algorithm should make equally good predictions for all subgroups
 
@@ -276,28 +298,42 @@ Criterion that enforces this: *Equality of Opportunity*
 $$
 P(\hat{Y}=1 | S=0, Y=1) = P(\hat{Y}=1 | S=1, Y=1)
 $$
-$$
-Y \in \{0,1\} \\
-S \in \{0,1\}
-$$
-</textarea></section>
 
-<section data-markdown><textarea data-template>
-(discuss equality of opportunity)
+- with $Y, \hat{Y} \in \\{0,1\\}$ and $S \in \\{0,1\\}$
 
-(also mention Equalised Odds)
+**meaning**: the probability of predicting 1, given that the label is 1, should be the same for all groups
+
+**in practice**: the TPR (true positve rate) should be the same in all groups
 </textarea></section>
 
 <section data-markdown><textarea data-template>
 ## Equalised Odds
 
 $$
-P(\hat{Y}=1 | S=0, Y=y) = P(\hat{Y}=1 | S=1, Y=y)
+P(\hat{Y}=y | S=0, Y=y) = P(\hat{Y}=y | S=1, Y=y)
 $$
-$$
-Y \in \{0,1\} \\
-S \in \{0,1\}
-$$
+
+for all possible values for $y$
+
+- stricter version of *Equality of Opportunity*
+- TPR and TNR (true negative rate) must be the same in all groups
+  - TPR = TP / (TP + FN), TNR = TN / (TN + FP)
+</textarea></section>
+
+<section data-markdown><textarea data-template>
+## Properties
+
+- **EoO** (Equality of Opportunity) and **EO** (Equalised Odds) both assume that the training data is correct
+- a perfect classifier (that always predicts the correct label) fulfills **EoO** and **EO**d
+- however: a random classifier does as well
+  - a random classifier achieves 50% TPR (and TNR) in all groups
+</textarea></section>
+
+<section data-markdown><textarea data-template>
+## Accuracy&ndash;Fairness trade-off
+
+- achieving EoO or EO at low accuracy is easy (see random classifier)
+- here, even more than for Statistical Parity, it is important to find an algorithm with good fairness and good accuracy
 </textarea></section>
 
 <!-- Border between Thomas stuff and Oliver stuff -->
