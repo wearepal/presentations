@@ -11,10 +11,11 @@ Outline
 
 ## Seminar 1
 - Intro to Google's 'What If' tool
+- Papers
 
 ## Part 2
 - Delayed Impact of Fair Machine Learning
 - Fair Causal models
 
 ## Seminar 2
-- Discussion
+- Discussion about papers
