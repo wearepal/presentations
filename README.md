@@ -10,6 +10,7 @@ Outline
 
 ## Seminar 1
 - Intro to Google's 'What If' tool
+- Papers
 
 ## Part 2
 - How to enforce fairness
@@ -17,4 +18,4 @@ Outline
 - Fair Causal models
 
 ## Seminar 2
-- Discussion
+- Discussion about papers

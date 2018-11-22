@@ -220,7 +220,7 @@ $$
 
 - enforcing statistical parity necessarily produces **lower accuracy**
 - consider this: we want to enforce 30% acceptance for the blue race but the training data only has 20% accepted
-  - some individuals of the blue race have to be "missclassified" ($\hat{Y} = 1$ instead of $\hat{Y} = 0$)
+  - some individuals of the blue race have to be "misclassified" ($\hat{Y} = 1$ instead of $\hat{Y} = 0$)
     to make the numbers work
 - not surprising because we are computing accuracy against the *biased data*
 </textarea></section>
@@ -238,7 +238,7 @@ $$
 ## Summary of Statistical Parity
 
 - very simple criterion
-- introduces Fairness &ndash; Accracy trade-off
+- introduces Fairness &ndash; Accuracy trade-off
 - more sophisticated criteria are possible (based on causal graphs)
 </textarea></section>
 
@@ -303,7 +303,7 @@ $$
 
 **meaning**: the probability of predicting 1, given that the label is 1, should be the same for all groups
 
-**in practice**: the TPR (true positve rate) should be the same in all groups
+**in practice**: the TPR (true positive rate) should be the same in all groups
 </textarea></section>
 
 <section data-markdown><textarea data-template>
@@ -431,7 +431,7 @@ for all possible values for $y$
   <h2>So which fairness criteria should we use?</h2>
   <p>Consider a university, and we are in charge of administration!</p>
   <p>We can only accept 50% of all applicants.</p>
-  <p>1,000 applicants are female and 1,000 of applicants are male.</p>
+  <p>1,000 applicants are female and 10,000 of applicants are male.</p>
   <p>We have been tasked with being fair with regard to <b>gender</b>.</p>
 </section>
 
@@ -442,7 +442,7 @@ for all possible values for $y$
 </section>
 
 <section>
-  <p>As we're a good university we have a lot of applications from people who dopn't meet the acceptance criteria.</p>
+  <p>As we're a good university we have a lot of applications from people who don't meet the acceptance criteria.</p>
   <p>60% of female applicants meet the acceptance criteria.</p>
   <p>40% of male applicants meet the acceptance criteria.</p>
   <p>Remember, we can only accept 50% of all applicants</p>
@@ -455,36 +455,36 @@ for all possible values for $y$
 	<table>
     <thead><tr>
           <th></th>
-          <th>Meet the criteria</th>
-          <th>Don't</th>
+          <th>Accepted</th>
+          <th>Not</th>
       </tr></thead>
       <tbody><tr>
           <td>Actually Graduate</td>
-          <td>480</td>
-          <td>40</td>
+          <td></td>
+          <td></td>
       </tr>
       <tr>
           <td>Don't Graduate</td>
-          <td>120</td>
-          <td>360</td>
+          <td></td>
+          <td></td>
       </tr></tbody>
   </table>
   <h4>Male Applicants</h4>
 	<table>
     <thead><tr>
           <th></th>
-          <th>Meet the criteria</th>
-          <th>Don't</th>
+          <th>Accepted</th>
+          <th>Not</th>
       </tr></thead>
       <tbody><tr>
           <td>Actually Graduate</td>
-          <td>320</td>
-          <td>60</td>
+          <td></td>
+          <td></td>
       </tr>
       <tr>
           <td>Don't Graduate</td>
-          <td>80</td>
-          <td>540</td>
+          <td></td>
+          <td></td>
       </tr></tbody>
   </table>
 </section>
@@ -493,6 +493,44 @@ for all possible values for $y$
   <p>How would we solve this problem being fair using Statistical Parity as our measure?</p>
   <section>???</section>
   <section>Select 50% of applicants of both female and male applicants</section>
+  <section>
+      <h4>Female Applicants</h4>
+      <table>
+        <thead><tr>
+              <th></th>
+              <th>Accepted</th>
+              <th>Not</th>
+          </tr></thead>
+          <tbody><tr>
+              <td>Actually Graduate</td>
+              <td>4000</td>
+              <td>1200</td>
+          </tr>
+          <tr>
+              <td>Don't Graduate</td>
+              <td>1000</td>
+              <td>3800</td>
+          </tr></tbody>
+      </table>
+      <h4>Male Applicants</h4>
+      <table>
+        <thead><tr>
+              <th></th>
+              <th>Accepted</th>
+              <th>Not</th>
+          </tr></thead>
+          <tbody><tr>
+              <td>Actually Graduate</td>
+              <td>3300</td>
+              <td>500</td>
+          </tr>
+          <tr>
+              <td>Don't Graduate</td>
+              <td>1700</td>
+              <td>4500</td>
+          </tr></tbody>
+      </table>
+    </section>
   <section>10% of qualified female applicants are being rejected whilst an additional 10% of unqualified males are being accepted.</section>
 </section>
 
@@ -500,6 +538,44 @@ for all possible values for $y$
   <p>How would we solve this problem being fair using Equal Opportunity as our measure?</p>
   <section>???</section>
   <section>Select 55.5% of female applicants and 44.5% of male applicants, giving a TPR of 85.4% for both groups.</section>
+  <section>
+      <h4>Female Applicants</h4>
+      <table>
+        <thead><tr>
+              <th></th>
+              <th>Accepted</th>
+              <th>Not</th>
+          </tr></thead>
+          <tbody><tr>
+              <td>Actually Graduate</td>
+              <td>4440</td>
+              <td>760</td>
+          </tr>
+          <tr>
+              <td>Don't Graduate</td>
+              <td>1110</td>
+              <td>3690</td>
+          </tr></tbody>
+      </table>
+      <h4>Male Applicants</h4>
+      <table>
+        <thead><tr>
+              <th></th>
+              <th>Accepted</th>
+              <th>Not</th>
+          </tr></thead>
+          <tbody><tr>
+              <td>Actually Graduate</td>
+              <td>3245</td>
+              <td>555</td>
+          </tr>
+          <tr>
+              <td>Don't Graduate</td>
+              <td>1205</td>
+              <td>4995</td>
+          </tr></tbody>
+      </table>
+    </section>
   <section>Similar situation to Statistical Parity</section>
 </section>
 
@@ -507,11 +583,49 @@ for all possible values for $y$
   <p>How would we solve this problem being fair using Calibration by Group as our measure?</p>
   <section>???</section>
   <section>Select only the applicants who meet the acceptance criteria.</section>
+  <section>
+      <h4>Female Applicants</h4>
+      <table>
+        <thead><tr>
+              <th></th>
+              <th>Accepted</th>
+              <th>Not</th>
+          </tr></thead>
+          <tbody><tr>
+              <td>Actually Graduate</td>
+              <td>4800</td>
+              <td>400</td>
+          </tr>
+          <tr>
+              <td>Don't Graduate</td>
+              <td>1200</td>
+              <td>3600</td>
+          </tr></tbody>
+      </table>
+      <h4>Male Applicants</h4>
+      <table>
+        <thead><tr>
+              <th></th>
+              <th>Accepted</th>
+              <th>Not</th>
+          </tr></thead>
+          <tbody><tr>
+              <td>Actually Graduate</td>
+              <td>3200</td>
+              <td>600</td>
+          </tr>
+          <tr>
+              <td>Don't Graduate</td>
+              <td>800</td>
+              <td>5400</td>
+          </tr></tbody>
+      </table>
+    </section>
   <section>Could lead to systemic reinforcement of bias.</section>
 </section>
 
 <section>
-  <h2>Which fairness criteria whould we use?</h2>
+  <h2>Which fairness criteria should we use?</h2>
   <p>There's no right answer, all the above are "fair". It's important to consult domain experts to find which is the best fit for each problem. There is no one-size fits all.</p>
 </section>
 
