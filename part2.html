@@ -1,0 +1,601 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <title>Algorithmic fairness &mdash; Part 1</title>
+
+    <link rel="stylesheet" href="css/reveal.css">
+    <link rel="stylesheet" href="css/theme/simple.css" id="theme">
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Theme used for syntax highlighting of code -->
+    <link rel="stylesheet" href="lib/css/zenburn.css">
+
+    <!-- Printing and PDF exports -->
+    <script>
+      var link = document.createElement( 'link' );
+      link.rel = 'stylesheet';
+      link.type = 'text/css';
+      link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+      document.getElementsByTagName( 'head' )[0].appendChild( link );
+    </script>
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="footer">
+        <p>Topics in Computer Science</p>
+      </div>
+<div class="slides">
+
+<section>
+<h1>Algorithmic fairness</h1>
+
+<p>by Oliver Thomas and Thomas Kehrenberg</p>
+
+<img src="images/sussex_logo.png" style="width: 15%; border: none;"/>
+</section>
+
+<section>
+  <h2>Part 2</h2>
+  <ul>
+    <li>How to enforce fairness?</li>
+    <li>Delayed Impact of Fair Learning</li>
+  </ul>
+</section>
+
+<section data-markdown><textarea data-template>
+  ## How to enforce fairness?
+  
+  Fairness constraints can be added pre, during or post training.
+  
+  ### Pre-training examples
+  - Zemel Fair Representations
+  - Beutel / Edwards & Storkey Adversarial Representation
+  - Quadrianto Fair Interpretable Representations
+  - Feldman
+  </textarea></section>
+  
+  <section data-markdown><textarea data-template>
+  ### During Training
+  - Zafar's methods
+  - Zhang
+  - Kehrenberg Fair GP
+  
+  <br/>
+
+  ### Post Training
+  - Hardt Recalibration
+  </textarea></section>
+  
+  <section data-markdown><textarea data-template>
+    <h2>Pre-Training</h2>
+    Popular approach is to add produce a "fair" representation. Consider that we have 2 roles, a data vendor, who is charge of collecting the data and preparing it. Our other role is a data user, someone who will be making predictions based on our data. 
+  
+    The data vendor is concerned that the data user may be using their data to make unfair decisions. So the data vendor decides to learn a new, fair representation.
+  </textarea></section>
+  
+  <section data-markdown><textarea data-template>
+  The state-of-the-art method a fair representation this is to use an *adversarial* network, using a "Gradient-Reversal Layer" from Ganin et al.
+  
+  ![](./images/adversarial.svg)
+  </textarea></section>
+  
+  <section>
+    <h3>Problems with doing this?</h3>
+    <section><h4>Any Ideas?</h4></section>
+    <section>
+      <h4>What does this representation mean?</h4>
+    
+      <p>The learned representation is uninterpretable by default. Recently Quadrianto et al constrained the representation to be in the same same as the input so that we could look at what changed</p>
+      </section>
+    <section>
+      <h4>What if the vendor data user decides to be fair as well?</h4>
+    
+      <p>Referred to as "fair pipelines". Work has only just begun exploring these. Current research shows that these don't work (at the moment!)</p>
+    </section>
+  </section>
+
+
+  <section>
+    <h2>During Training</h2>
+    Instead of building a fair representation, we just make the fairness constraints part of the objective during training of the model.
+
+    An early example of this is by Zafar et al.
+  </section>
+
+  <section>
+    <p>Given we have a loss function, $\mathcal{L}(\theta)$.</p>
+    
+    <p>In an unconstrained classifier, we would expect to see</p>
+
+    $$
+      \min{\mathcal{L}(\theta)}
+    $$
+  </section>
+
+  <section>
+    <section>
+      <p>To reduce Disparate Impact, Zafar adds a constraint to the loss function.</p>
+
+      $$
+        \begin{aligned}
+          \text{min  } & \mathcal{L}(\theta) \\
+          \text{subject to  } & \frac{1}{N}\sum_{i=1}^{N} (s_i - \bar{s})d_{\theta}(x_i) \leq c \\
+          \text{subject to  } & \frac{1}{N}\sum_{i=1}^{N} (s_i - \bar{s})d_{\theta}(x_i) \geq -c
+        \end{aligned}
+      $$
+    </section>
+    <section>
+      <p>Where $\{{s_i \} }_{i=1}^{N}$ denotes a user's sensitive attributes</p>
+      <p>$\{ {d_{\theta}(x_i) \} }_{i=1}^{N}$ the signed distance to the decision boundary</p>
+      <p>$c$ is the trade-off between accuracy and fairness.</p>
+      <p>If $c$ is sufficiently small, this is the equivalent of</p>
+      $$
+        P(d_{\theta}(x) \geq 0 | s = 0) = P(d_{\theta}(x) \geq 0 | s = 1)
+      $$
+    </section>
+    <section>
+        In other words, the decisions for both sensitive groups must be equally distributed across the decision boundary up to some threshold $c$.
+    </section>
+  </section>
+
+
+  <section>
+    <h3>Delayed Impact of Fair Learning</h3>
+    <p>In the real world there are implications.</p>
+    <p>An individual doesn't just cease to exist after we've made our loan or bail decision.</p>
+    <p>The decision we make has <b>consequences</b>.</p>
+  </section>
+
+  <section data-markdown><textarea data-template>
+    Consider a bank's lending decision.
+
+    The outcome is not simply reject or accept the applicant for a loan. In fact, there are multiple effects of this decision.
+
+    If the applicant receives a loan, then goes on to successfully pay it back, then not only will the bank make a profit, but then the applicant's credit score will increase.
+
+    This will make future loan decisions more favorable to the applicant.
+  </textarea></section>
+
+  <section data-markdown><textarea data-template>
+      We could think of this in terms of loss functions. 
+
+      The banks objective was to maximize profit. After deciding to give the loan, the loan was repaid (with interest). The bank made money. 
+
+      To maximize the objective (minimize the negative of the loss) the bank wants to give out as many loans that are likely to be repaid as possible.
+  </textarea></section>
+
+  <section data-markdown><textarea data-template>
+    In this scenario we have a slightly different concern. We don't want loans to be given to one subgroup (such as blue race), more often than members of another subgroup (green race).
+
+    Our concern is that if the number of people who receive loans from one group outweigh the other, then as a whole, the credit rating will become a euphemism for race.
+  </textarea></section>
+
+  <section>
+    <section>
+      <h3>The Outcome Curve</h4>
+      <img src="images/outcome_curve.png" width="75%">
+    </section>
+    <section>
+        <h3>Possible areas</h4>
+        <table>
+          <tr>
+            <th>Area</th>
+            <th>Description</th>
+          </tr>
+          <tr>
+            <td>Active Harm</td>
+            <td>Expected change in credit score of an individual is negative</td>
+          </tr>
+          <tr>
+            <td>Stagnation</td>
+            <td>Expected change in credit score of an individual is 0</td>
+          </tr>
+          <tr>
+            <td>Improvement</td>
+            <td>Expected change in credit score of an individual is positive</td>
+          </tr>
+        </table>
+      </section>
+      <section>
+          <h3>Possible areas</h4>
+          <table>
+            <tr>
+              <th>Area</th>
+              <th>Description</th>
+            </tr>
+            <tr>
+              <td>Relative Harm</td>
+              <td>Expected change in credit score of an individual is less than if the selection policy had been to maximize profit</td>
+            </tr>
+            <tr>
+              <td>Relative Improvement</td>
+              <td>Expected change in credit score of an individual is better than if the selection policy had been to maximize profit</td>
+            </tr>
+          </table>
+        </section>
+      <section>
+        <p>For those interested in more of an explanation of the equations, see Appendix</p>
+      </section>
+  </section>
+
+  <section>
+
+  </section>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <section>
+    <h2>Appendix</h2>
+  </section>
+
+  <section data-markdown>
+      <textarea data-template>
+        # Delayed Impact of Fair Machine Learning
+
+        Lydia T. Liu, Sarah Dean, Esther Rolf, Max Simchowitz, Moritz Hardt
+      </textarea>
+    </section>
+    <section>
+      "intuition may be a poor guide in judging the long-term impact of fairness constraints"
+    </section>
+
+    <section data-markdown>
+      <textarea data-template>
+        This presentation is structured like so:
+
+        - Introduction
+        - Problem Setting
+        - Fairness Criteria
+        - Outcome Curve
+        - Findings
+        - Outcome-Based Approach?
+        - Experimental Results
+        - Criticisms / Areas to explore
+      </textarea>
+    </section>
+
+    <section>
+      <h2>Introduction</h2>
+      <p>This paper is about acknowledging a feedback loop.</p>
+      <p>Credit decisions are ultimately more than just whether or not you get a loan. It also affects an applicant's credit history is they're accepted for a loan that they can't repay.</p>
+    </section>
+
+    <section data-markdown>
+      <textarea data-template>
+        ## Problem Setting
+
+        The population comprises 2 groups, $A$ and $B$.
+        $A$ is disadvantaged in comparison to group $B$.
+
+        $\pi_j$ is the distribution of the scores in group $j$.
+
+        $\pi_j(x)$ is the probability that score $x$ is in group $j$.
+      </textarea>
+    </section>
+
+
+    <section data-markdown>
+      <textarea data-template>
+        An institution (i.e. a bank) selects a policy $(\tau_A, \tau_B)$
+
+        $\tau_j(x)$ is the probability the bank selects an individual with group $j$ with score $x$.
+
+        $p(x) =$ Probability that an individual with score $x$ satisfactorily repays the loan.
+      </textarea>
+    </section>
+
+    <section>
+      
+        Assume a function $u(x)$ that returns the expected utility for score $x$.
+        <br/>
+        <br/>
+        $$
+          u(x) = u_+ p(x) + u_- ( 1 - p(x) )
+        $$
+        <br/>
+        Where $u_+$ is the profit of a repaid loan
+        <br/>
+        and $u_-$ is the loss on an unpaid loan
+      
+    </section>
+
+
+    <section>
+        Expected utility for policy $\tau$
+        <br/>
+        <br/>
+        $$
+          U(\tau) = \sum_{j \in \{A,B\}} g_j \sum_{x \in \mathcal{X}} \tau_j(x) \pi_j(x)u(x)
+        $$
+        <br/>
+        where $g_j$ is the fraction of the total population
+      
+    </section>
+
+    <section>
+      $$
+        \Delta (x) = c_+ p(x) + c_- (1 - p(x))
+      $$
+      <br/>
+      Where $c_+$ isa constant gain in credit score if loan repaid
+      <br/>
+      and $c_-$ is a constant loss in the case of an unpaid loan
+    </section>
+
+    <section>
+      Average change of the mean score $\mu_j$ for group $j$
+      <br/>
+      <br/>
+      $$
+        \Delta\mu_j(\tau) = \sum_{x \in \mathcal{X}} \pi_j(x) \tau_j(x) \Delta (x)
+      $$
+      <br/>
+      Where $\Delta(x)$ as defined on the slide before is the expected change in score of an individual with score $x$
+    </section>
+
+    <section>
+      <h2>Fairness Criteria</h2>
+    </section>
+
+    <section>
+        <section>Different fairness criteria have been defined, such as Demographic Parity, Equalised Odds and Equality of Opportunity</section>
+        
+
+        <section>
+          Demographic Parity
+
+
+          $$
+          P(\hat{Y}=1 | S=0) = P(\hat{Y}=1 | S=1)
+          $$
+          $$
+          Y \in \{0,1\} \\
+          S \in \{0,1\}
+          $$ 
+        </section>
+
+        <section>
+          Equalised Odds
+
+
+          $$
+          P(\hat{Y}=1 | S=0, Y=y) = P(\hat{Y}=1 | S=1, Y=y)
+          $$
+          $$
+          Y \in \{0,1\} \\
+          S \in \{0,1\}
+          $$ 
+        </section>
+
+        <section>
+          Equalised Opportunity
+
+
+          $$
+          P(\hat{Y}=1 | S=0, Y=1) = P(\hat{Y}=1 | S=1, Y=1)
+          $$
+          $$
+          Y \in \{0,1\} \\
+          S \in \{0,1\}
+          $$ 
+        </section>
+    </section>
+    <section>
+      <p>This paper considers 3</p>
+      <ul>
+        <li>Maximizing Utility</li>
+        <li>Demographic Parity</li>
+        <li>Equality of Opportunity</li>
+      </ul>
+    </section>
+
+    <section>
+      <h3>Maximizing Utility</h3>
+      This is the null constraint. The bank solely focusses on utility (earning money)
+    </section>
+
+    <section>
+      <h3>Demographic Parity</h3>
+      Equal selection rates for groups $A$ and $B$
+    </section>
+
+    <section>
+      <h3>Equality of Opportunity</h3>
+      Equal True Positive Rates across the 2 groups
+      <br/>
+      $$TPR_A(\tau_A) = TPR_B(\tau_B)$$
+      <br/>
+      Where
+      <br/>
+      <br/>
+      $$
+        TPR_j(\tau) = \frac{\sum_{x \in \mathcal{X}} \pi_j (x) p(x) \tau)x)}{\sum_{x \in \mathcal{X}} \pi_j(x) p(x)}
+      $$
+    </section>
+
+
+
+    <section>
+      <h4>The Outcome Curve</h4>
+      <img src="images/outcome_curve.png">
+    </section>
+
+    <section>
+      Possible areas
+      <table>
+        <tr>
+          <th>Area</th>
+          <th>Description</th>
+        </tr>
+        <tr>
+          <td>Active Harm</td>
+          <td>$\Delta \mu_j (\tau_j) < 0$</td>
+        </tr>
+        <tr>
+          <td>Stagnation</td>
+          <td>$\Delta \mu_j (\tau_j) = 0$</td>
+        </tr>
+        <tr>
+          <td>Improvement</td>
+          <td>$\Delta \mu_j (\tau_j) > 0$</td>
+        </tr>
+        <tr>
+          <td>Relative Harm</td>
+          <td>$\Delta \mu_j (\tau_j) < \Delta \mu_j (\tau^{\text{MAXUTIL}})$</td>
+        </tr>
+        <tr>
+          <td>Relative Improvement</td>
+          <td>$\Delta_j (\tau_j) > \Delta \mu_j (\tau^{\text{MAXUTIL}})$</td>
+        </tr>
+      </table>
+    </section>
+
+    <section>
+      Selection Rates
+      $$
+        \beta_j = \sum_{x \in \mathcal{X}} \pi_j(x) \tau_j(x)
+      $$
+    </section>
+
+    <section>
+      To explicitly connect selection rates to decision policies we define a rate function
+
+      $$
+        r_\pi (\tau_j)
+      $$
+
+      Which returns the proportion of group $j$ selected by the policy
+    </section>
+
+    <section>
+      The outcome curve is the graph of the mapping 
+
+      $$
+        \beta \rightarrow \Delta \mu_A (r_{\pi_A}^{-1}(\beta))
+      $$
+
+      $r^{-1}$ is the inverse of the rate function. Same as the rate function, but the input and output are reversed.
+    </section>
+
+    <section>
+      <table>
+        <tr>
+          <th>Selection Rate</th>
+          <th>Description</th>
+        </tr>
+        <tr>
+          <td>$\beta^{\text{MAXUTIL}}$</td>
+          <td>The selection rate under max util</td>
+        </tr>
+        <tr>
+          <td>$\beta^*$</td>
+          <td> selection rate such that $\Delta \mu_A$ is maximized</td>
+        </tr>
+        <tr>
+          <td>$\bar{\beta}$</td>
+          <td>the outcome complement of the MaxUtil selection rate, $\Delta \mu_A r_{\pi_A}^{-1}(\bar{\beta}) = \Delta \mu_A (r_{\pi_A}^{-1} (\beta^{\text{MAXUTIL}}))$ with $\bar{\beta} > \beta^{\text{MAXUTIL}}$</td>
+        </tr>
+        <tr>
+          <td>$\beta_0$</td>
+          <td>the harm threshold, such that $\Delta \mu_A r_{\pi_A}^{-1} (\beta_0) = 0$ </td>
+        </tr>
+      </table>
+    </section>
+
+    <section>
+      <h2>Findings/Results</h2>
+      Under the assumption $\frac{u_-}{u_+} < \frac{c_-}{c_+}$ which means that the risk to the bank is greater than the risk to the individual
+    </section>
+
+    <section>
+      Then Max. Util. can't cause active harm because $(x) > 0$ for all loans, therefore $\Delta\mu (x) \geq 0$
+      <br/>
+      <br/>
+      $$
+        0 \leq \Delta \mu (\tau^{\text{MAXUTIL}}) \leq \Delta \mu^*
+      $$
+    </section>
+
+    <section>
+      Fairness criteria <em>can</em> cause relative improvement.
+      <br/>
+      Under the assumption $\beta_{A}^{\text{MAXUTIL}} < \bar{\beta}$ and $\beta_{A}^{\text{MAXUTIL}} < \beta_{B}^{MAXUTIL}$
+      there exists population proportions $g_0 < g_1 < 1$ such that for all $g_A \in [g_0,g_1]$, $\beta_{A}^{\text{MAXUTIL}} < \beta_{A}^{\text{DEMPARITY}} < \bar{\beta}$
+    </section>
+
+    <section>
+      Demographic Parity <em>can</em> cause relative improvement.
+
+      Under the assumption $\beta_{A}^{\text{MAXUTIL}} < \beta < \beta' < \bar{\beta}$ such that $\beta_{A}^{\text{MAXUTIL}} > \beta_{A \rightarrow B}, \beta^*_{A \rightarrow B}$
+
+      Where $A \rightarrow B$ is the mapping of the selection rate in A to the selection rate in B such that the TPR in A is the same in A as it is in B.
+
+    </section>
+
+    <section>
+      Eq Opp <em>can</em> cause relative improvement
+      there exists population proportions $g_2 < g_3 < 1$ s.t. for all $g_A \in [g_2, g_3], \beta_{A}^{\text{MAXUTIL}} < \beta_{A}^{\text{EQOPP}} < \bar{\beta}$
+    </section>
+
+    <section>
+      Demographic parity <em>can</em> cause harm by being over eager.
+      Assume $\beta_{B}^{\text{MAXUTIL}} > \beta_{A}^{\text{MAXUTIL}}$
+
+      There exists a population proportion $g_0$ such that for all $g_A \in [0, g_0], \beta_{A}^{\text{DEMPARITY}} > \beta$
+
+      If $\beta = \beta_0$, then active harm
+      else if $\beta = \bar{\beta}$, the active harm
+    </section>
+
+    <section>
+      Similarly for Eq. Opp. Assume $\beta_{A}^{\text{MAXUTIL}} < \beta$ and $\beta_{B}^{\text{MAXUTIL}} > \beta_{a \rightarrow B}$
+
+      There exists a population proportion s.t. $\beta < \beta{A}^{\text{EQOPP}}$
+
+      if $\beta = $ consditions in the last slide, same conclusions apply.
+    </section>
+
+    <section>
+      <h2>Outcome Based Alternative</h2>
+      Imagine the bank's goal wasn't max. utility, but was to aid the disadvantaged group $A$ as much as possible.
+
+      $$
+        \max_{\tau_A} \Delta \mu_A (\tau_A) \text{ s.t. } U_{A}^{\text{MAXUTIL}} - U(\tau) < \sigma
+      $$
+
+      This is left as an open question.
+    </section>
+
+    <section>
+      <h2>Experimental Results</h2>
+      In one experiment ($\frac{u_-}{u_+}=-10$) fairness doesn't cause active harm. In another ($\frac{u_-}{u_+}=-4$), DemPar causes active harm, but Eq.Opp does not.
+
+      In all experiments $c_- = -150$ and $c_+ = 75$
+    </section>
+    <section>
+      The experiments were done with the FICO dataset, which consists of 301,536 TransUnion TransRisk scores from 2003. Scores range from 300-850 and are meant to predict credit risk. Data is labelled by race. This is restricted to only include `white' and `black' races. These are then set so that the population proportions are $18%$ and $82%$ ``to match national demographic data''.
+      Labelled as default if failed to pay a debt for at least 90 days on at least one account in the ensuing 18-24 month period.
+    </section>
+
+</div>
+    </div>
+
+    <script src="lib/js/head.min.js"></script>
+    <script src="js/reveal.js"></script>
+    <script src="settings.js"></script>
+  </body>
+</html>
