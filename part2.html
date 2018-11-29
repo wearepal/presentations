@@ -142,6 +142,14 @@
   </section>
 
   <section>
+    <h2>Post-training</h2>
+    <p>Calders and Verwer (2010) train two separate models: one for all datapoints with $s=0$ and another one for $s=1$</p>
+    <p>The thresholds of the model are then tweaked until they produce the same <i>positive rate</i>
+    ($P(\hat{y}=1|s=0)=P(\hat{y}=1|s=1)$)</p>
+    <p>Disadvantage: $s$ has to be known for making predictions in order to choose the correct model.</p>
+  </section>
+
+  <section>
     <h3>Delayed Impact of Fair Learning</h3>
     <p>In the real world there are implications.</p>
     <p>An individual doesn't just cease to exist after we've made our loan or bail decision.</p>
@@ -229,15 +237,83 @@
     <p>"Correlation doesn't imply causation"</p>
     <p class="fragment">But what is causation?</p>
     <p class="fragment">If we can understand what <b>causes</b> unfair behavior, then we can take steps to mitigate it.</p>
+    <p class="fragment">Basic idea: if a sensitive attribute has no causal influence on prediction, don't use it.</p>
     <p class="fragment">But how do we model causation?</p>
   </section>
 
   <section>
-    <p>But what does?</p>
+    <h2>Causal Graphs</h2>
+    <p><b>Solution:</b> build causal graphs of your problem</p>
+    <p><b>Problem:</b> causality cannot be inferred from observational data</p>
+    <p>Observational data can only show correlations</p>
+    <p>For causal information we have to do <i>experiments</i>. (But that is often not ethical.)</p>
   </section>
 
+  <section>
+    <h2>Example with Causal Graphs</h2>
+    <p><b>Example:</b> Law school success</p>
+    <p>Task: given GPA score and LSAT (law school entry exam), predict grades after one year in law school:
+      FYA (first year average)</p>
+    <p>Additionally two sensitive attributes: <i>race</i> and <i>gender</i></p>
+  </section>
 
+  <section>
+    <h2>Example with Causal Graphs</h2>
+    <p>Two possible graphs</p>
+    <img src="./images/lsat_causal.png"/>
+  </section>
 
+  <section>
+    <h2>Counterfactual Fairness</h2>
+    <p>$U$: set of all unobserved background variables</p>
+    <p>$P(\hat{y}_{s=i}(U) = 1|x, s=i)=P(\hat{y}_{s=j}(U) = 1|x, s=i)$</p>
+    <p>$i, j \in \{0, 1\}$</p>
+    <p>$\hat{y}_{s=k}$: prediction in the counterfactual world where $s=k$</p>
+    <p><b>practical consequence:</b> $\hat{y}$ is counterfactually fair if it does not causally depend
+    (as defined by the causal model) on $s$ or any descendants of $s$.</p>
+  </section>
+
+  <section>
+    <h2>Related idea: fairness based on similarity</h2>
+    <ul>
+    <li>First define a distance metric on your datapoints (i.e. how similar are the datapoints)
+      <ul>
+        <li>Can be just Euclidean distance but is usually something else (because of different scales)</li>
+        </ul>
+      </li>
+      </ul>
+  </section>
+
+  <section>
+    <h2>Pre-processing based on similarity</h2>
+    <ul>
+      <li>An individual is then considered to be unfairly treated if it is treated differently than its "neighbours".</li>
+      <li>For any data point we can check how many of the $k$ nearest neighbours have the same class label as that data point</li>
+      <li>If the percentage is under a certain threshold then there was discrimination against the individual corresponding to that data point.</li>
+      <li>Then: flip the class labels of those data points where the class label is considered unfair</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Considering similarity during training</h2>
+    <p>Alternative idea:</p>
+    <ul>
+      <li>a classifier is fair if and only if the predictive distributions for any two data points are at least as similar
+        as the two points themselves
+        <ul>
+         <li>(according to a given similarity measure for distributions and a given similarity measure for data points)</li>
+        </ul>
+      </li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Considering similarity during training</h2>
+    <ul>
+      <li>Needed similarity measure for distributions</li>
+      <li>Then add fairness condition as additional loss term to optimization loss</li>
+    </ul>
+  </section>
 
 
 
