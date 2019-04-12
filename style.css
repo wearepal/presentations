@@ -9,9 +9,11 @@
 .reveal .footer {
   position: absolute;
   bottom: 1%;
-  left: 41%;
-  text-align: left;
+  /* left: 41%; */
+  /* text-align: left; */
+  text-align: center;
   font-size: 3vmin; /* vmin: minimum size of view. doesn't work in IE */
+  width: 100%;
 }
 
 .reveal .footer p {
