@@ -26,18 +26,20 @@
     <div class="reveal">
       <div class="footer">
         <!-- <p>University of Sussex</p> -->
-        <img src="images/sussex_logo.svg" style="width: 10%; border: none;"/>
+        <img src="images/sussex_logo.svg" style="max-width: 10%; border: none;"/>
       </div>
 <div class="slides">
 
 <section>
-<h1>Algorithmic fairness</h1>
+<h1>Fair Predictions</h1>
 
-<p><b>by Oliver Thomas and Thomas Kehrenberg</b></p>
+<p>by <b>Thomas Kehrenberg</b> and <b>Oliver Thomas</b> </p>
+
+<img src="images/Cifas_logo.jpg" alt="Cifas Logo" style="width: 15%; border: none;">
+<img src="images/ducit_logo.jpg" alt="Ducit Logo" style="width: 15%; border: none;">
+<p>Talk given at Cifas in association with Ducit</p>
 
 <br/>
-
-<p>Talk given at Cifas</p>
 
 <p>Mon, 15<sup>th</sup> April 2019</p>
 
@@ -55,6 +57,7 @@
   ## Sensitive attributes
 
   - what is a sensitive attribute?
+  - also known as protected characteristics.
   </textarea></section>
 </section>
 
@@ -62,13 +65,64 @@
 ## Fairness definitions: confusion matrix
 </textarea></section>
 
-<section data-markdown><textarea data-template>
-## Fairness definitions: group fairness
-</textarea></section>
+<section>
+    <section data-markdown><textarea data-template>
+    ## Fairness definitions: 
+    ### Group Fairness
+    </textarea></section>
+    
+    <section data-markdown><textarea data-template>
+    ## Fairness definitions: 
+    ### Group Fairness
+    #### Demographic Parity
 
-<section data-markdown><textarea data-template>
-## Fairness definitions: individual fairness
-</textarea></section>
+    Make (positive) predictions at the same rate across different subgroups.
+
+    `$$
+      P(\hat{Y} = 1 | S=0) = P(\hat{Y} = 1 | S=1)
+    $$`
+    </textarea></section>
+    
+    <section data-markdown><textarea data-template>
+    ## Fairness definitions: 
+    ### Group Fairness
+    #### Equal Odds
+
+    Make (positive) predictions at the same rate across different subgroups, conditioned on the known outcome.
+
+    `$$
+      P(\hat{Y} = 1 | S=0, Y=y) = P(\hat{Y} = 1 | S=1, Y=y) \quad \forall y \in {0,1}
+    $$`
+
+    N.b. This is equalising the true positive rate (TPR) and the false positive rate (FPR) across the sensitive groups.
+    </textarea></section>
+
+    <section data-markdown><textarea data-template>
+    ## Fairness definitions: 
+    ### Group Fairness
+    #### Equal Opportunity
+
+    Make (positive) predictions at the same rate across different subgroups, conditioned on if the known outcome is positive.
+
+    `$$
+      P(\hat{Y} = 1 | S=0, Y=1) = P(\hat{Y} = 1 | S=1, Y=1)
+    $$`
+
+    N.b. This is equalising the TPR across the sensitive groups.
+    </textarea></section>
+</section>
+
+<section>
+    <section data-markdown><textarea data-template>
+    ## Fairness definitions: 
+    ### Individual Fairness
+
+    <q>Similar individuals should be treated similarly and have similar outcomes.</q> 
+
+    If close in feature space, the translation to prediction space shouldn't break the Lipschitz condition. 
+    <!-- Thomas, can you confirm the above? -->
+    </textarea></section>
+</section>
 
 <section data-markdown><textarea data-template>
 ## Fairness-accuracy trade-off

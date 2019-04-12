@@ -15,6 +15,7 @@
   font-size: 3vmin; /* vmin: minimum size of view. doesn't work in IE */
   width: 100%;
   color: #003B49; /* Uni Sussex color */
+  height: 10%;
 }
 
 .reveal .footer p {
