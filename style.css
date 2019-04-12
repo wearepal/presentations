@@ -36,10 +36,11 @@
 }
 
 .reveal .slide-number {
-  /* bottom: 2%; */
+  bottom: 2%;
   right: 8%;
   font-size: 3vmin; /* vmin: minimum size of view. doesn't work in IE */
-  color: #000;
+  /* color: #000; */
+  color: #003B49; /* Uni Sussex color */
   background-color: #fff;
 }
 
