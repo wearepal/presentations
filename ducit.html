@@ -73,38 +73,40 @@
     </textarea></section>
     
     <section data-markdown><textarea data-template>
-    ## Fairness definitions: 
-    ### Group Fairness &ndash; Demographic Parity
+    ## Definitions &ndash; Group Fairness
+    ### Demographic Parity
 
     Make (positive) predictions at the same rate across different subgroups.
 
-    `$$
+    $$
       P(\hat{Y} = 1 | S=0) = P(\hat{Y} = 1 | S=1)
-    $$`
+    $$
     </textarea></section>
     
     <section data-markdown><textarea data-template>
-    ## Fairness definitions: 
-    ### Group Fairness &ndash; Equal Odds
+    ## Definitions &ndash; Group Fairness 
+    ### Equal Odds
 
     Make (positive) predictions at the same rate across different subgroups, conditioned on the known outcome.
 
-    `$$
-      P(\hat{Y} = 1 | S=0, Y=y) = P(\hat{Y} = 1 | S=1, Y=y) \quad \forall y \in {0,1}
-    $$`
+    $$
+    P(\hat{Y}=y | S=0, Y=y) = P(\hat{Y}=y | S=1, Y=y)
+    $$
+
+    with $Y \in \\{0,1\\}$
 
     N.b. This is equalising the true positive rate (TPR) and the false positive rate (FPR) across the sensitive groups.
     </textarea></section>
 
     <section data-markdown><textarea data-template>
-    ## Fairness definitions: 
-    ### Group Fairness &ndash; Equal Opportunity
+    ## Definitions &ndash; Group Fairness
+    ### Equal Opportunity
 
     Make (positive) predictions at the same rate across different subgroups, conditioned on if the known outcome is positive.
 
-    `$$
+    $$
       P(\hat{Y} = 1 | S=0, Y=1) = P(\hat{Y} = 1 | S=1, Y=1)
-    $$`
+    $$
 
     N.b. This is equalising the TPR across the sensitive groups.
     </textarea></section>
@@ -115,10 +117,10 @@
     ## Fairness definitions: 
     ### Individual Fairness
 
-    <q>Similar individuals should be treated similarly and have similar outcomes.</q> 
+    > Similar individuals should be treated similarly.
 
-    If close in feature space, the translation to prediction space shouldn't break the Lipschitz condition. 
-    <!-- Thomas, can you confirm the above? -->
+    Given some distance measure between individuals (e.g. the Euclidean distance in the feature space),
+    the distance between individuals and the distance of their associated outcome should be proportional.
     </textarea></section>
 </section>
 
