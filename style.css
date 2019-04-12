@@ -8,8 +8,8 @@
 
 .reveal .footer {
   position: absolute;
-  bottom: 2%;
-  left: 2%;
+  bottom: 1%;
+  left: 41%;
   text-align: left;
   font-size: 3vmin; /* vmin: minimum size of view. doesn't work in IE */
 }
@@ -33,8 +33,8 @@
 }
 
 .reveal .slide-number {
-  bottom: 2%;
-  right: 50%;
+  /* bottom: 2%; */
+  right: 8%;
   font-size: 3vmin; /* vmin: minimum size of view. doesn't work in IE */
   color: #000;
   background-color: #fff;
@@ -48,6 +48,7 @@
   color:#9A2617;
 }
 
+/*
 .reveal .left {
   left:-8.33%; 
   text-align: center;
@@ -64,6 +65,7 @@
   z-index:-10;
   width:48%;
 }
+*/
 
 .reveal .math {
   color:#9A2617; /* Dark Ruby */
