@@ -59,6 +59,8 @@
     $S=$ Sensitive label \{$0,...,k$\}
 
     $X=$ Features of a datapoint (Covariates) `$x=\{x_1, ... , x_m \}$`
+
+    $W=$ Weight vector, the parameters we learn.
   </textarea></section>
   <section data-markdown><textarea data-template>
     ## Common Notation
@@ -96,12 +98,15 @@
 
 <section data-markdown><textarea data-template>
 ## Confusion matrix
+
+
 </textarea></section>
 
 <section>
     <section data-markdown><textarea data-template>
     ## Fairness definitions: 
     ### Group Fairness
+    ### Individual Fairness
     </textarea></section>
     
     <section data-markdown><textarea data-template>
@@ -191,6 +196,11 @@
 
 <section data-markdown><textarea data-template>
 ## Fairness-accuracy trade-off
+
+If the class label is <em>unfair</em>, or the features themselves are unfair, then it cannot be possible to be both fair and accurate.
+
+Hoever, if bias solely occurs due to sampling bias, then fairness should improve generalisation.
+<!-- Not sure about the above statement, will have a think -->
 </textarea></section>
 
 <section data-markdown><textarea data-template>
@@ -221,9 +231,11 @@
   </textarea></section>
 </section>
 
-<section data-markdown><textarea data-template>
-## Pre-process
-</textarea></section>
+<section>
+  <section data-markdown><textarea data-template>
+  ## Pre-process
+  </textarea></section>
+</section>
 
 </div>
     </div>
