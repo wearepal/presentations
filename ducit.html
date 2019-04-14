@@ -291,8 +291,30 @@ However, if bias solely occurs due to sampling bias, then fairness should improv
 
   ### Possible solutions
 
-  - transform the data to a new *fair* space, where everyone is neither red nor blue, but somewhere in between.
   - generate some new, fairer examples
+  - transform the data to a new *fair* space, where everyone is neither red nor blue, but somewhere in between.
+  </textarea></section>
+</section>
+
+<section>
+  <section data-markdown><textarea data-template>
+  ## Pre-process
+
+  ### Generate Fairer Samples
+  
+  <img src="images/data_generation.svg" alt="Data Generation Pipeline" style="width: 50%; border: none;"> 
+  </textarea></section>
+
+  <section data-markdown><textarea data-template>
+  ## Pre-process
+
+  ### Generate Fairer Samples
+  
+  By going back to $\tilde{X}$, and $\tilde{Y}$, we can imagine the likely $X$ and $Y$ realised from a different sensitive attibute.
+
+  Uses Auto-Encoding Variational Bayes to obtain $\tilde{X}$. 
+
+  Paper: *Thomas et al.*, `Under review at IJCAI'19`
   </textarea></section>
 </section>
 
@@ -319,7 +341,14 @@ However, if bias solely occurs due to sampling bias, then fairness should improv
 
   ### Transform the dataset
   
-  Downside is $Z$ is *uninterpretable*. 
+  Paper: *Quadrianto et al.*, `arXiv:1810.06755`
+  IEEE Conference on Computer Vision and Pattern Recognition (CVPR) 2019
+
+  State of the art approach. 
+
+  Constrains $Z$ to be in the same space as $X$, so **meaning** retained.
+
+  Enforces independent *distributions* so that `$S \in \{0,1,...,n\}$`
   </textarea></section>
 
   <section data-markdown><textarea data-template>
@@ -328,44 +357,30 @@ However, if bias solely occurs due to sampling bias, then fairness should improv
   ### Transform the dataset
 
   <table style="width:100%">
-  <tr>
-    <td>$X$</td>
-    <td><img src="images/faces/096855.jpg" alt="Mapping" style="width: 50%; border: none;"></td> 
-    <td><img src="images/faces/028288.jpg" alt="Mapping" style="width: 50%; border: none;"></td>
-    <td><img src="images/faces/034362.jpg" alt="Mapping" style="width: 50%; border: none;"></td>
-  </tr>
-  <tr>
-    <td>$\tilde{X}$</td>
-    <td><img src="images/faces/xtilde-096855.jpg" alt="Mapping" style="width: 50%; border: none;"></td> 
-    <td><img src="images/faces/xtilde-028288.jpg" alt="Mapping" style="width: 50%; border: none;"></td>
-    <td><img src="images/faces/xtilde-034362.jpg" alt="Mapping" style="width: 50%; border: none;"></td>
-  </tr>
-</table>
-  
-  Paper: *Quadrianto et al.*, `arXiv:1810.06755`
-  IEEE Conference on Computer Vision and Pattern Recognition (CVPR) 2019
+    <tr>
+      <td>$X$</td>
+      <td><img src="images/faces/096855.jpg" alt="Mapping" style="width: 50%; border: none;"></td> 
+      <td><img src="images/faces/028288.jpg" alt="Mapping" style="width: 50%; border: none;"></td>
+      <td><img src="images/faces/034362.jpg" alt="Mapping" style="width: 50%; border: none;"></td>
+    </tr>
+    <tr>
+      <td>$\tilde{X}$</td>
+      <td><img src="images/faces/xtilde-096855.jpg" alt="Mapping" style="width: 50%; border: none;"></td> 
+      <td><img src="images/faces/xtilde-028288.jpg" alt="Mapping" style="width: 50%; border: none;"></td>
+      <td><img src="images/faces/xtilde-034362.jpg" alt="Mapping" style="width: 50%; border: none;"></td>
+    </tr>
+  </table>
   </textarea></section>
 </section>
 
 <section>
   <section data-markdown><textarea data-template>
-  ## Pre-process
+  ## Take-aways
 
-  ### Generate Fairer Samples
-  
-  <img src="images/data_generation.svg" alt="Data Generation Pipeline" style="width: 50%; border: none;"> 
+  <p class="fragment">Data and algorithms are **not** inherently fair</p>
+  <p class="fragment">Fairness is **domain specific**</p>
+  <p class="fragment">Strategies to be fairer exist</p>
   </textarea></section>
-
-  <section data-markdown><textarea data-template>
-  ## Pre-process
-
-  ### Generate Fairer Samples
-  
-  By going back to $\tilde{X}$, and $\tilde{Y}$, we can imagine the likely $X$ and $Y$ realised from a different sensitive attibute.
-
-  Paper: *Thomas et al.*, `Under review at IJCAI'19`
-  </textarea></section>
-  
 </section>
 
 </div>
