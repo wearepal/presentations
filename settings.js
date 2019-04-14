@@ -60,6 +60,9 @@ if (window.location.search.match( /print-pdf/gi )) {
   Reveal.addEventListener('ready', function(event) {
     // add footer to every slide
     for (let slide of document.querySelectorAll('.slide-background')) {
+      if (slide.classList.contains('stack')) {
+        continue;
+      }
       let clone = footer.cloneNode(true);
       while (clone.firstChild) {
           slide.appendChild(clone.firstChild);
