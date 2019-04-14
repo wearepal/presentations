@@ -54,13 +54,10 @@
   <section data-markdown><textarea data-template>
     ## Common Notation
 
-    $Y=$ Class label \{$0,...,n$\}
-
-    $S=$ Sensitive label \{$0,...,k$\}
-
-    $X=$ Features of a datapoint (Covariates) `$x=\{x_1, ... , x_m \}$`
-
-    $W=$ Weight vector, the parameters we learn.
+    - $Y \in \\{0,...,n\\}$: Class label
+    - $S \in \\{0,...,k\\}$: Sensitive label
+    - $X = (X_1, ... , X_m)$: Features of a datapoint (Covariates)
+    - $\theta$: Model parameters we learn.
   </textarea></section>
   <section data-markdown><textarea data-template>
     ## Common Notation
@@ -75,31 +72,40 @@
 
 <section>
   <section data-markdown><textarea data-template>
-  ## Information about the setup
-
-  ### UCI Adult dataset
+  ## Example Dataset: UCI Adult
 
   U.S. census data from 1994
 
-  $Y=$ Does an individual earn > $\$50,000$?
+  $Y=$ Does the individual earn > $\$50,000$?
   
-  $S=$ Is an individual white?
+  $S=$ Is the individual white?
   
-  $X=$ Features of an individual: realtionship status, age, education level, hours worked per week etc.
+  $X=$ Features of the individual: relationship status, age, education level, hours worked per week etc.
   </textarea></section>
 
+  <!--
   <section data-markdown><textarea data-template>
   ## Sensitive attributes
 
   - what is a sensitive attribute?
   - also known as protected characteristics.
   </textarea></section>
+  -->
 </section>
 
 <section data-markdown><textarea data-template>
 ## Confusion matrix
 
+|                 | $y=1$               | $y=0$               |
+|-----------------|:-------------------:|:-------------------:|
+| **$\hat{y}=1$** | true positive (TP)  | false positive (FP) |
+| **$\hat{y}=0$** | false negative (FN) | true negative (TN)  |
 
+<br/>
+
+**acceptance rate**: $AR = P(\hat{y}=1) = \frac{TP + FP}{TP + FP + FN + TN}$
+
+**true positive rate**: $TPR = P(\hat{y}=1|y=1) = \frac{TP}{TP + FN}$
 </textarea></section>
 
 <section>
@@ -118,6 +124,8 @@
     $$
       P(\hat{Y} = 1 | S=0) = P(\hat{Y} = 1 | S=1)
     $$
+
+    &rarr; Equalise acceptance rate accross groups.
     </textarea></section>
     
     <section data-markdown><textarea data-template>
@@ -132,7 +140,7 @@
 
     with $Y \in \\{0,1\\}$
 
-    N.b. This is equalising the true positive rate (TPR) and the false positive rate (FPR) across the sensitive groups.
+    &rarr; Equalise the TPR and the TNR (or FPR) across groups.
     </textarea></section>
 
     <section data-markdown><textarea data-template>
@@ -145,7 +153,7 @@
       P(\hat{Y} = 1 | S=0, Y=1) = P(\hat{Y} = 1 | S=1, Y=1)
     $$
 
-    N.b. This is equalising the TPR across the sensitive groups.
+    &rarr; Equalise the TPR across groups.
     </textarea></section>
 </section>
 
@@ -199,7 +207,7 @@
 
 If the class label is <em>unfair</em>, or the features themselves are unfair, then it cannot be possible to be both fair and accurate.
 
-Hoever, if bias solely occurs due to sampling bias, then fairness should improve generalisation.
+However, if bias solely occurs due to sampling bias, then fairness should improve generalisation.
 <!-- Not sure about the above statement, will have a think -->
 </textarea></section>
 
