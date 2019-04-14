@@ -220,7 +220,7 @@ However, if bias solely occurs due to sampling bias, then fairness should improv
 ## In-process methods
 
 - Enforce fairness *during training*
-- Example: Logistic Regression
+- **Example**: Logistic Regression
   * model: $\; f(x) = Wx + b$, $\; \theta = \\{W, b\\}$
   * probability score: $\; P(y=1|x, \theta)=\sigma(f(x))$
   * with dependency on $s$: $\; P(y=1|x, \theta, s)$
@@ -255,23 +255,22 @@ However, if bias solely occurs due to sampling bias, then fairness should improv
 
 <section>
   <section data-markdown><textarea data-template>
-  ## In-process: Regularization
+  ## In-process: Constraint
 
-  - Different approach: add regularization to model parameters so that model will be fair
-  - measure of bias in output $f$: $Cov(s, f) \approx \frac{1}{N} \sum\limits_{i=1}^{N} (s_i - \bar{s}) \cdot f_i$
-     * assumption: $E[f] =0$ which is fulfilled in the Logistic Regression example
-
-  (this is only for Demographic Parity, but can also work with EO)
-
-  (we want $f$ to be predictive of $y$ but also keep $Cov$ small)
+  - Different approach: add constraint to model parameters so that model will be fair
+  - Measure of bias in output $\; f$: $\; Cov(s, f) \approx \frac{1}{N} \sum\limits_{i=1}^{N} (s_i - \bar{s}) \cdot f_i$
+     * Assumption: $E[f] =0$ which is fulfilled in the Logistic Regression example
+  - $Cov(s, f)=0$ &rarr; $s$ and $f$ independent &rarr; Demographic Parity
   </textarea></section>
 
   <section data-markdown><textarea data-template>
-  ## In-process: Regularization
+  ## In-process: Constraint
 
-  - classification loss: $\; \mathcal{L}_c(y, \sigma(f(x))\;$ (e.g. cross entropy)
-
-  (add the other loss onto this)
+  - Goal: $\; f$ is predictive of $y$ while keeping $Cov(s, f)$ small
+  - Classification loss: $\; \mathcal{L}_c(y, \sigma(f(x))\;$ (e.g. cross entropy)
+  - Total loss: $\;\mathcal{L} = \mathcal{L}_c + \gamma \cdot \| Cov(s, f) \|$
+     * $\gamma$ is a trade-off parameter
+  - A variation on this can also enforce Equal Odds/Opportunity
   </textarea></section>
 </section>
 
