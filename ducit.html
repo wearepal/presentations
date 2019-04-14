@@ -220,7 +220,7 @@ However, if bias solely occurs due to sampling bias, then fairness should improv
 ## In-process methods
 
 - Enforce fairness *during training*
-- **Example**: Logistic Regression
+- Example: Logistic Regression
   * model: $\; f(x) = Wx + b$, $\; \theta = \\{W, b\\}$
   * probability score: $\; P(y=1|x, \theta)=\sigma(f(x))$
   * with dependency on $s$: $\; P(y=1|x, \theta, s)$
@@ -255,22 +255,23 @@ However, if bias solely occurs due to sampling bias, then fairness should improv
 
 <section>
   <section data-markdown><textarea data-template>
-  ## In-process: Constraint
+  ## In-process: Regularization
 
-  - Different approach: add constraint to model parameters so that model will be fair
-  - Measure of bias in output $\; f$: $\; Cov(s, f) \approx \frac{1}{N} \sum\limits_{i=1}^{N} (s_i - \bar{s}) \cdot f_i$
-     * Assumption: $E[f] =0$ which is fulfilled in the Logistic Regression example
-  - $Cov(s, f)=0$ &rarr; $s$ and $f$ independent &rarr; Demographic Parity
+  - Different approach: add regularization to model parameters so that model will be fair
+  - measure of bias in output $f$: $Cov(s, f) \approx \frac{1}{N} \sum\limits_{i=1}^{N} (s_i - \bar{s}) \cdot f_i$
+     * assumption: $E[f] =0$ which is fulfilled in the Logistic Regression example
+
+  (this is only for Demographic Parity, but can also work with EO)
+
+  (we want $f$ to be predictive of $y$ but also keep $Cov$ small)
   </textarea></section>
 
   <section data-markdown><textarea data-template>
-  ## In-process: Constraint
+  ## In-process: Regularization
 
-  - Goal: $\; f$ is predictive of $y$ while keeping $Cov(s, f)$ small
-  - Classification loss: $\; \mathcal{L}_c(y, \sigma(f(x))\;$ (e.g. cross entropy)
-  - Total loss: $\;\mathcal{L} = \mathcal{L}_c + \gamma \cdot \| Cov(s, f) \|$
-     * $\gamma$ is a trade-off parameter
-  - A variation on this can also enforce Equal Odds/Opportunity
+  - classification loss: $\; \mathcal{L}_c(y, \sigma(f(x))\;$ (e.g. cross entropy)
+
+  (add the other loss onto this)
   </textarea></section>
 </section>
 
@@ -290,8 +291,8 @@ However, if bias solely occurs due to sampling bias, then fairness should improv
 
   ### Possible solutions
 
-  - transform the data to a new *fair* space
-  - balance the dataset
+  - transform the data to a new *fair* space, where everyone is neither red nor blue, but somewhere in between.
+  - generate some new, fairer examples
   </textarea></section>
 </section>
 
@@ -318,12 +319,52 @@ However, if bias solely occurs due to sampling bias, then fairness should improv
 
   ### Transform the dataset
   
+  Downside is $Z$ is *uninterpretable*. 
+  </textarea></section>
+
+  <section data-markdown><textarea data-template>
+  ## Pre-process
+
+  ### Transform the dataset
+
+  <table style="width:100%">
+  <tr>
+    <td>$X$</td>
+    <td><img src="images/faces/096855.jpg" alt="Mapping" style="width: 50%; border: none;"></td> 
+    <td><img src="images/faces/028288.jpg" alt="Mapping" style="width: 50%; border: none;"></td>
+    <td><img src="images/faces/034362.jpg" alt="Mapping" style="width: 50%; border: none;"></td>
+  </tr>
+  <tr>
+    <td>$\tilde{X}$</td>
+    <td><img src="images/faces/xtilde-096855.jpg" alt="Mapping" style="width: 50%; border: none;"></td> 
+    <td><img src="images/faces/xtilde-028288.jpg" alt="Mapping" style="width: 50%; border: none;"></td>
+    <td><img src="images/faces/xtilde-034362.jpg" alt="Mapping" style="width: 50%; border: none;"></td>
+  </tr>
+</table>
+  
   Paper: *Quadrianto et al.*, `arXiv:1810.06755`
   IEEE Conference on Computer Vision and Pattern Recognition (CVPR) 2019
   </textarea></section>
 </section>
 
 <section>
+  <section data-markdown><textarea data-template>
+  ## Pre-process
+
+  ### Generate Fairer Samples
+  
+  <img src="images/data_generation.svg" alt="Data Generation Pipeline" style="width: 50%; border: none;"> 
+  </textarea></section>
+
+  <section data-markdown><textarea data-template>
+  ## Pre-process
+
+  ### Generate Fairer Samples
+  
+  By going back to $\tilde{X}$, and $\tilde{Y}$, we can imagine the likely $X$ and $Y$ realised from a different sensitive attibute.
+
+  Paper: *Thomas et al.*, `Under review at IJCAI'19`
+  </textarea></section>
   
 </section>
 
