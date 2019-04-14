@@ -214,9 +214,10 @@ However, if bias solely occurs due to sampling bias, then fairness should improv
 <section data-markdown><textarea data-template>
 ## In-process methods
 
-- Enforce fairness while training
-- simple example model: $f(x) = Wx + b$, $\theta = \\{W, b\\}$
-- probability score: $p(y=1|x, \theta)\sigma(f(x))$
+- Enforce fairness *during training*
+- Example: logistic regression
+  * model: $\; f(x) = Wx + b$, $\; \theta = \\{W, b\\}$
+  * probability score: $\; p(\hat{y}=1|x, \theta)=\sigma(f(x))$
 </textarea></section>
 
 <section>
