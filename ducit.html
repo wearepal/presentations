@@ -278,7 +278,54 @@ However, if bias solely occurs due to sampling bias, then fairness should improv
 <section>
   <section data-markdown><textarea data-template>
   ## Pre-process
+
+  ### Change of problem set-up
+
+  We are no longer a decision making company and are now a data vendor.
+
+  Our concern is that our clients will be unwittingly making *unfair* decisions based on the data that we provide.
   </textarea></section>
+
+  <section data-markdown><textarea data-template>
+  ## Pre-process
+
+  ### Possible solutions
+
+  - transform the data to a new *fair* space
+  - balance the dataset
+  </textarea></section>
+</section>
+
+<section>
+  <section data-markdown><textarea data-template>
+  ## Pre-process
+
+  ### Transform the dataset
+  learn some function $g: X \rightarrow Z$ s.t. $Z \perp S$
+
+  Then a classifier $f: Z \rightarrow Y$ will be fair.
+  </textarea></section>
+
+  <section data-markdown><textarea data-template>
+  ## Pre-process
+
+  ### Transform the dataset
+  
+  <img src="images/latent.svg" alt="Mapping" style="width: 50%; border: none;"> 
+  </textarea></section>
+
+  <section data-markdown><textarea data-template>
+  ## Pre-process
+
+  ### Transform the dataset
+  
+  Paper: *Quadrianto et al.*, `arXiv:1810.06755`
+  IEEE Conference on Computer Vision and Pattern Recognition (CVPR) 2019
+  </textarea></section>
+</section>
+
+<section>
+  
 </section>
 
 </div>
