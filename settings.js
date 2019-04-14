@@ -53,3 +53,23 @@ backgroundTransition: 'none', // none/fade/slide/convex/concave/zoom
 // Number of slides away from the current that are visible in overview
 viewDistance: 3,
 });
+
+// make footer visible in normal mode and in print mode
+var footer = document.querySelector('#static-content');
+if (window.location.search.match( /print-pdf/gi )) {
+  Reveal.addEventListener('ready', function(event) {
+    // add footer to every slide
+    for (let slide of document.querySelectorAll('.slide-background')) {
+      let clone = footer.cloneNode(true);
+      while (clone.firstChild) {
+          slide.appendChild(clone.firstChild);
+      }
+    }
+  });
+} else {
+  // add footer to the shared background
+  let clone = footer.cloneNode(true);
+  while (clone.firstChild) {
+    document.querySelector('div.reveal').append(clone.firstChild);
+  }
+}
