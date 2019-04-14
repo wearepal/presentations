@@ -310,9 +310,11 @@ However, if bias solely occurs due to sampling bias, then fairness should improv
 
   ### Generate Fairer Samples
   
-  By going back to $\tilde{X}$, and $\tilde{Y}$, we can imagine the likely $X$ and $Y$ realised from a different sensitive attibute.
+  By going back to $\tilde{X}$, and $\tilde{Y}$, we can imagine the likely $X$ and $Y$ realised from a different sensitive attibute value.
 
-  Uses Auto-Encoding Variational Bayes to obtain $\tilde{X}$. 
+  Model: Auto-Encoding Variational Bayes to obtain $\tilde{X}$ and $\tilde{Y}$. 
+
+  Use these `imagined` examples alongside actual training data.
 
   Paper: *Thomas et al.*, `Under review at IJCAI'19`
   </textarea></section>
@@ -344,7 +346,7 @@ However, if bias solely occurs due to sampling bias, then fairness should improv
   Paper: *Quadrianto et al.*, `arXiv:1810.06755`
   IEEE Conference on Computer Vision and Pattern Recognition (CVPR) 2019
 
-  State of the art approach. 
+  ** Current state-of-the-art approach**
 
   Constrains $Z$ to be in the same space as $X$, so **meaning** retained.
 
