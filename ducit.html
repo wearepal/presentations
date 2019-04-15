@@ -39,9 +39,11 @@
 
 <p>by <b>Thomas Kehrenberg</b> and <b>Oliver Thomas</b> </p>
 
-<img src="images/Cifas_logo.jpg" alt="Cifas Logo" style="width: 15%; border: none;">
+<p>Predictive Analytics Lab, University of Sussex</p>
+
+<!-- <img src="images/Cifas_logo.jpg" alt="Cifas Logo" style="width: 15%; border: none;">
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<img src="images/ducit_logo.jpg" alt="Ducit Logo" style="width: 15%; border: none;">
+<img src="images/ducit_logo.jpg" alt="Ducit Logo" style="width: 15%; border: none;"> -->
 <p>Talk given at Cifas in association with Ducit</p>
 
 <br/>
@@ -49,6 +51,19 @@
 <p>Mon, 15<sup>th</sup> April 2019</p>
 
 <!-- <img src="images/sussex_logo.svg" style="width: 15%; border: none;"/> -->
+</section>
+
+<section>
+  <section data-markdown><textarea data-template>
+    ## Summary
+
+    - How does our data become unfair?
+    - Define "Fair"
+    - Methods to enforce fairness
+      - In the algorithm
+      - Adjusting the data itself
+    - Conclusion
+  </textarea></section>
 </section>
 
 <section>
@@ -96,6 +111,40 @@
   </textarea></section>
   -->
 </section>
+
+<section>
+  <section data-markdown><textarea data-template>
+  ## How bias gets into the dataset
+  ### Sampling Bias
+  </textarea></section>
+
+  <section data-markdown><textarea data-template>
+  ## Sampling Bias
+  <img src="images/sampling_1.svg" alt="Data Generation Pipeline" style="width: 55%; border: none; box-shadow: none;">
+  </textarea></section>
+
+  <section data-markdown><textarea data-template>
+  ## Sampling Bias
+  <img src="images/sampling_2.svg" alt="Data Generation Pipeline" style="width: 55%; border: none; box-shadow: none;">
+  </textarea></section>
+
+  <section data-markdown><textarea data-template>
+  ## Sampling Bias
+  <img src="images/sampling_3.svg" alt="Data Generation Pipeline" style="width: 55%; border: none; box-shadow: none;">
+  </textarea></section>
+
+  <!-- <section data-markdown><textarea data-template>
+  ## Sampling Bias
+  This can occur because of instead of drawing i.i.d. (independent and identically distributed), we are instead drawing d.d.d. (depedent and differently distributed)
+  </textarea></section> -->
+</section>
+
+<section data-markdown><textarea data-template>
+## How bias gets into the dataset
+### Unfairness
+<br/>
+<img src="images/data_generation.svg" alt="Data Generation Pipeline" style="width: 50%; border: none;">
+</textarea></section>
 
 <section data-markdown><textarea data-template>
 ## Confusion matrix
@@ -173,47 +222,21 @@
     </textarea></section>
 </section>
 
-<section>
-  <section data-markdown><textarea data-template>
-  ## How bias gets into the dataset
-  ### Sampling Bias
-  </textarea></section>
-
-  <section data-markdown><textarea data-template>
-  ## Sampling Bias
-  <img src="images/sampling_1.svg" alt="Data Generation Pipeline" style="width: 55%; border: none; box-shadow: none;">
-  </textarea></section>
-
-  <section data-markdown><textarea data-template>
-  ## Sampling Bias
-  <img src="images/sampling_2.svg" alt="Data Generation Pipeline" style="width: 55%; border: none; box-shadow: none;">
-  </textarea></section>
-
-  <section data-markdown><textarea data-template>
-  ## Sampling Bias
-  <img src="images/sampling_3.svg" alt="Data Generation Pipeline" style="width: 55%; border: none; box-shadow: none;">
-  </textarea></section>
-
-  <section data-markdown><textarea data-template>
-  ## Sampling Bias
-  This can occur because of instead of drawing i.i.d. (independent and identically distributed), we are instead drawing d.d.d. (depedent and differently distributed)
-  </textarea></section>
-</section>
-
-<section data-markdown><textarea data-template>
-## How bias gets into the dataset
-### Unfairness
-<br/>
-<img src="images/data_generation.svg" alt="Data Generation Pipeline" style="width: 50%; border: none;">
-</textarea></section>
-
 <section data-markdown><textarea data-template>
 ## Fairness-accuracy trade-off
 
-If the class label is *unfair*, or the features themselves are unfair, then it cannot be possible to be both fair and accurate.
+If the class label is *biased*, or the features themselves are biased, then it cannot be possible to be both fair and accurate.
 
 However, if bias solely occurs due to sampling bias, then fairness should improve generalisation.
 <!-- Not sure about the above statement, will have a think -->
+</textarea></section>
+
+<section data-markdown><textarea data-template>
+  ## How to remove bias?
+
+  - During prediction
+  - Adjustingf the data
+
 </textarea></section>
 
 <section data-markdown><textarea data-template>
@@ -291,7 +314,7 @@ However, if bias solely occurs due to sampling bias, then fairness should improv
   ### Possible solutions
 
   - generate some new, fairer examples
-  - transform the data to a new *fair* space, where everyone is neither red nor blue, but somewhere in between.
+  - transform the data to a new *fair* space, where everyone is neither male nor female, but somewhere in between.
   </textarea></section>
 </section>
 
@@ -359,16 +382,12 @@ However, if bias solely occurs due to sampling bias, then fairness should improv
 
   <table style="width:100%">
     <tr>
-      <td>$X$</td>
-      <td><img src="images/faces/096855.jpg" alt="Mapping" style="width: 50%; border: none;"></td> 
-      <td><img src="images/faces/028288.jpg" alt="Mapping" style="width: 50%; border: none;"></td>
-      <td><img src="images/faces/034362.jpg" alt="Mapping" style="width: 50%; border: none;"></td>
+      <th>X</th> 
+      <th>Fair X</th>
     </tr>
     <tr>
-      <td>$\tilde{X}$</td>
-      <td><img src="images/faces/xtilde-096855.jpg" alt="Mapping" style="width: 50%; border: none;"></td> 
-      <td><img src="images/faces/xtilde-028288.jpg" alt="Mapping" style="width: 50%; border: none;"></td>
-      <td><img src="images/faces/xtilde-034362.jpg" alt="Mapping" style="width: 50%; border: none;"></td>
+      <td><img src="images/x_rel_giv_y1.png" alt="X" style="width: 70%; border: none;"></td> 
+      <td><img src="images/x_tilde_rel_giv_y1.png" alt="X tilde" style="width: 70%; border: none;"></td>
     </tr>
   </table>
   </textarea></section>
@@ -379,7 +398,7 @@ However, if bias solely occurs due to sampling bias, then fairness should improv
   ## Take-aways
 
   <p class="fragment">Data and algorithms are **not** inherently fair</p>
-  <p class="fragment">Fairness is **domain specific**</p>
+  <p class="fragment">Fairness is **application specific**</p>
   <p class="fragment">Strategies to be fairer exist</p>
   </textarea></section>
 </section>
