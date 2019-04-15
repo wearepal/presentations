@@ -39,7 +39,7 @@
 
 <p>by <b>Thomas Kehrenberg</b> and <b>Oliver Thomas</b> </p>
 
-<p>Predictive Analytics Lab, University of Sussex</p>
+<h3>Predictive Analytics Lab, University of Sussex</h3>
 
 <!-- <img src="images/Cifas_logo.jpg" alt="Cifas Logo" style="width: 15%; border: none;">
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -64,52 +64,6 @@
       - Adjusting the data itself
     - Conclusion
   </textarea></section>
-</section>
-
-<section>
-  <section data-markdown><textarea data-template>
-    ## Common Notation
-  </textarea></section>
-  <section data-markdown><textarea data-template>
-    ## Common Notation
-
-    - $Y \in \\{0,...,n\\}$: Class label
-    - $S \in \\{0,...,k\\}$: Sensitive label
-    - $X = (X_1, ... , X_m)$: Features of a datapoint (Covariates)
-    - $\theta$: Model parameters that we learn.
-  </textarea></section>
-  <section data-markdown><textarea data-template>
-    ## Common Notation
-
-    $\hat{Y}=$ Model's prediction of $Y$
-    
-    $\hat{S}=$ Model's prediction of $S$
-    
-    $\hat{X}=$ Model's prediction of $X$
-  </textarea></section>
-</section>
-
-<section>
-  <section data-markdown><textarea data-template>
-  ## Example Dataset: UCI Adult
-
-  U.S. census data from 1994
-
-  $Y=$ Does the individual earn > $\$50,000$?
-  
-  $S=$ Is the individual white?
-  
-  $X=$ Features of the individual: relationship status, age, education level, hours worked per week etc.
-  </textarea></section>
-
-  <!--
-  <section data-markdown><textarea data-template>
-  ## Sensitive attributes
-
-  - what is a sensitive attribute?
-  - also known as protected characteristics.
-  </textarea></section>
-  -->
 </section>
 
 <section>
@@ -234,10 +188,57 @@ However, if bias solely occurs due to sampling bias, then fairness should improv
 <section data-markdown><textarea data-template>
   ## How to remove bias?
 
-  - During prediction
-  - Adjustingf the data
+  - During training an algortithm
+  - Adjusting the data
 
 </textarea></section>
+
+<section>
+  <!-- <section data-markdown><textarea data-template>
+    ## Common Notation
+  </textarea></section> -->
+  <section data-markdown><textarea data-template>
+    ## Notation
+
+    - $Y \in \\{0,...,n\\}$: Class label
+    - $S \in \\{0,...,k\\}$: Sensitive label
+    - $X = (X_1, ... , X_m)$: Features of a datapoint (Covariates)
+    - $\theta$: Model parameters that we learn.
+  </textarea></section>
+  <section data-markdown><textarea data-template>
+    ## Notation
+
+    $\hat{Y}=$ Model's prediction of $Y$
+    
+    $\hat{S}=$ Model's prediction of $S$
+    
+    $\hat{X}=$ Model's prediction of $X$
+  </textarea></section>
+</section>
+
+<section>
+  <section data-markdown><textarea data-template>
+  ## Example Dataset: UCI Adult
+
+  U.S. census data from 1994
+
+  $Y=$ Does the individual earn > $\$50,000$?
+  
+  $S=$ Is the individual white?
+  
+  $X=$ Features of the individual: relationship status, age, education level, hours worked per week etc.
+  </textarea></section>
+
+  <!--
+  <section data-markdown><textarea data-template>
+  ## Sensitive attributes
+
+  - what is a sensitive attribute?
+  - also known as protected characteristics.
+  </textarea></section>
+  -->
+</section>
+
 
 <section data-markdown><textarea data-template>
 ## In-process methods
