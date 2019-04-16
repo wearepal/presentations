@@ -7,7 +7,7 @@
     <title>Algorithmic fairness &mdash; Part 1</title>
 
     <link rel="stylesheet" href="css/reveal.css">
-    <link rel="stylesheet" href="css/theme/simple.css" id="theme">
+    <link rel="stylesheet" href="css/theme/sussex.css" id="theme">
     <link rel="stylesheet" href="style.css">
 
     <!-- Theme used for syntax highlighting of code -->
@@ -83,14 +83,18 @@
   </textarea></section>
   
   <section>
-    <h3>Problems with doing this?</h3>
-    <section><h4>Any Ideas?</h4></section>
     <section>
+      <h2>Problems with doing this?</h2>
+      <h4>Any Ideas?</h4>
+    </section>
+    <section>
+      <h2>Problems with doing this?</h2>
       <h4>What does this representation mean?</h4>
     
       <p>The learned representation is uninterpretable by default. Recently Quadrianto et al constrained the representation to be in the same same as the input so that we could look at what changed</p>
       </section>
     <section>
+      <h2>Problems with doing this?</h2>
       <h4>What if the vendor data user decides to be fair as well?</h4>
     
       <p>Referred to as "fair pipelines". Work has only just begun exploring these. Current research shows that these don't work (at the moment!)</p>
@@ -150,7 +154,7 @@
   </section>
 
   <section>
-    <h3>Delayed Impact of Fair Learning</h3>
+    <h2>Delayed Impact of Fair Learning</h2>
     <p>In the real world there are implications.</p>
     <p>An individual doesn't just cease to exist after we've made our loan or bail decision.</p>
     <p>The decision we make has <b>consequences</b>.</p>
@@ -182,11 +186,11 @@
 
   <section>
     <section>
-      <h3>The Outcome Curve</h4>
-      <img src="images/outcome_curve.png" width="75%">
+      <h2>The Outcome Curve</h2>
+      <img src="images/outcome_curve.png" width="65%">
     </section>
     <section>
-        <h3>Possible areas</h4>
+        <h2>Possible areas</h2>
         <table>
           <tr>
             <th>Area</th>
@@ -207,7 +211,7 @@
         </table>
       </section>
       <section>
-          <h3>Possible areas</h4>
+          <h2>Possible areas</h2>
           <table>
             <tr>
               <th>Area</th>
@@ -491,17 +495,17 @@
     </section>
 
     <section>
-      <h3>Maximizing Utility</h3>
+      <h2>Maximizing Utility</h2>
       This is the null constraint. The bank solely focusses on utility (earning money)
     </section>
 
     <section>
-      <h3>Demographic Parity</h3>
+      <h2>Demographic Parity</h2>
       Equal selection rates for groups $A$ and $B$
     </section>
 
     <section>
-      <h3>Equality of Opportunity</h3>
+      <h2>Equality of Opportunity</h2>
       Equal True Positive Rates across the 2 groups
       <br/>
       $$TPR_A(\tau_A) = TPR_B(\tau_B)$$
@@ -517,12 +521,12 @@
 
 
     <section>
-      <h4>The Outcome Curve</h4>
-      <img src="images/outcome_curve.png">
+      <h2>The Outcome Curve</h2>
+      <img src="images/outcome_curve.png" width="65%"/>
     </section>
 
     <section>
-      Possible areas
+      <h2>Possible areas</h2>
       <table>
         <tr>
           <th>Area</th>
@@ -552,7 +556,7 @@
     </section>
 
     <section>
-      Selection Rates
+      <h2>Selection Rates</h2>
       $$
         \beta_j = \sum_{x \in \mathcal{X}} \pi_j(x) \tau_j(x)
       $$
