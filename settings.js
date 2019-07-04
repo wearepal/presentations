@@ -12,7 +12,7 @@ math: {
 dependencies: [
   { src: 'plugin/markdown/marked.js' },
   { src: 'plugin/markdown/markdown.js' },
-  { src: 'plugin/notes/notes.js', async: true },
+  { src: 'plugin/notes/notes.js', async: true },  // speaker notes
   // { src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
   { src: 'plugin/math/math.js', async: true }
 ],
