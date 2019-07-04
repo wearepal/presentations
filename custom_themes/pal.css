@@ -5,7 +5,6 @@
  * This theme is Copyright (C) 2012 Owen Versteeg, https://github.com/StereotypicalApps. It is MIT licensed.
  * reveal.js is Copyright (C) 2011-2012 Hakim El Hattab, http://hakim.se
  */
-@import url('https://fonts.googleapis.com/css?family=Source+Serif+Pro:400,700');
 @import url(https://fonts.googleapis.com/css?family=News+Cycle:400,700);
 @import url(https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic);
 section.has-dark-background, section.has-dark-background h1, section.has-dark-background h2, section.has-dark-background h3, section.has-dark-background h4, section.has-dark-background h5, section.has-dark-background h6 {
@@ -20,7 +19,7 @@ body {
 
 .reveal {
   font-family: "Lato", sans-serif;
-  font-size: 36px;
+  font-size: 40px;
   font-weight: normal;
   color: #000; }
 
@@ -49,9 +48,9 @@ body {
 .reveal h5,
 .reveal h6 {
   margin: 0 0 20px 0;
-  color: #000;
-  /* font-family: "News Cycle", Impact, sans-serif; */
-  font-family: "Lato", sans-serif;
+  color: #003262; /* dark blue */
+  /*color: #003B49; /* Uni Sussex color */
+  font-family: "News Cycle", Impact, sans-serif;
   font-weight: normal;
   line-height: 1.2;
   letter-spacing: normal;
@@ -60,20 +59,13 @@ body {
   word-wrap: break-word; }
 
 .reveal h1 {
-  font-size: 3.27em;
-  font-family: "Source Serif Pro", Impact, sans-serif;
-}
+  font-size: 3.3em; }
 
 .reveal h2 {
-  font-size: 1.71em;
-  font-family: "Source Serif Pro", Impact, sans-serif;
-  padding: 5px 0px;
-  background-color: #264285;
-  color: white!important;
-}
+  font-size: 2.11em; }
 
 .reveal h3 {
-  font-size: 1.35em; }
+  font-size: 1.55em; }
 
 .reveal h4 {
   font-size: 1em; }
@@ -108,6 +100,10 @@ body {
   display: inline-block;
   text-align: left;
   margin: 0 0 0 1em; }
+
+.reveal li {
+  margin-bottom: 2%; /* increase distance between list elements */
+}
 
 .reveal ol {
   list-style-type: decimal; }
@@ -276,6 +272,64 @@ body {
   -webkit-transition: width 800ms cubic-bezier(0.26, 0.86, 0.44, 0.985);
   -moz-transition: width 800ms cubic-bezier(0.26, 0.86, 0.44, 0.985);
   transition: width 800ms cubic-bezier(0.26, 0.86, 0.44, 0.985); }
+
+/*********************************************
+ * FOOTER
+ *********************************************/
+.reveal .footer {
+  position: absolute;
+  bottom: 1%;
+  /* left: 41%; */
+  /* text-align: left; */
+  text-align: center;
+  font-size: 3vmin; /* vmin: minimum size of view. doesn't work in IE */
+  width: 100%;
+  color: #003B49; /* Uni Sussex color */
+  height: 10%;
+}
+
+.reveal .footer p {
+  margin: 0;
+}
+
+/*********************************************
+ * SLIDE NUMBERS
+ *********************************************/
+.reveal .slide-number {
+  bottom: 2%;
+  right: 8%;
+  font-size: 3vmin; /* vmin: minimum size of view. doesn't work in IE */
+  /* color: #000; */
+  color: #003B49; /* Uni Sussex color */
+  background-color: #fff;
+}
+
+.reveal .slide-number-pdf {
+  font-size: 30px!important; /* needs to be !important because other stylesheet is loaded later */
+}
+
+/*********************************************
+ * MATH
+ *********************************************/
+.reveal .math {
+  color:#9A2617; /* Dark Ruby */
+}
+
+/*********************************************
+ * EMPHBOX
+ *********************************************/
+.reveal .emphbox {
+  background-color:#ddd;
+  width:50%;
+  margin:25px 25%;
+}
+
+/*********************************************
+ * HIGHLIGHT
+ *********************************************/
+.reveal .highlight {
+  color:#9A2617;
+}
 
 /*********************************************
  * PRINT BACKGROUND
