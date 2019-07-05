@@ -1,0 +1,182 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <title>Summary of activities to date</title>
+
+    <link rel="stylesheet" href="css/reveal.css">
+    <link rel="stylesheet" href="custom_themes/sussex.css" id="theme">
+
+    <!-- Theme used for syntax highlighting of code -->
+    <link rel="stylesheet" href="lib/css/monokai.css">
+
+    <!-- Printing and PDF exports -->
+    <script>
+      var link = document.createElement( 'link' );
+      link.rel = 'stylesheet';
+      link.type = 'text/css';
+      link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+      document.getElementsByTagName( 'head' )[0].appendChild( link );
+    </script>
+  </head>
+  <body>
+    <div id="hidden" style="display:none;"><div id="static-content">
+      <footer>
+        <div class="multicol">
+          <div class="col">
+            <p>Thomas Kehrenberg
+          </div>
+          <div class="col">
+            <p>Activities to date
+          </div>
+          <div class="col">
+            <p>&nbsp;
+          </div>
+        </div>
+      </footer>
+    </div> </div>
+    <div class="reveal"><div class="slides">
+
+      <section>
+      <h1>Activities to date</h1>
+
+      <p><b>As part of the Progression Review</b>
+
+      <p>Thomas Maximilian Kehrenberg</p>
+
+      <img src="images/sussex_logo.svg" style="width: 15%; border: none;"/>
+      </section>
+
+      <!--
+      <section>
+        <p>A short summary of activities to date (no more than two pages, you might like to articulate this as part of a slide presentation), focusing in particular on the period since your last review.  Discuss to what extent you met your plan for the year.
+
+        <p>Topics might include: a statement about your research topic or question; what research activities you have undertaken; a list of any publications and presentations (internal or external) that you may have been involved with; any courses and training that you have engaged with.
+        <aside class="notes">
+		Oh hey, these are some notes. They'll be hidden in your presentation, but you can see them if you open the speaker notes window (hit »S« on your keyboard).
+	</aside>
+      </section>
+      -->
+
+      <section>
+        <h2>Recapitulation of Year 1</h2>
+
+        <ul>
+          <li>Learning about Gaussian Processes and algorithmic fairness
+          <li>Paper on how to enforce fairness with Gaussian Process models
+            (<a href="https://arxiv.org/abs/1810.05598v1">arxiv.org/abs/1810.05598v1</a>)
+            <ul>
+              <li>Submitted to NeurIPS, but rejected
+            </ul>
+          <li>Improving the paper
+          <li>Literature review
+          <li>Progression Review for year 1
+        </ul>
+
+        <aside class="notes">
+          In my first year, I worked on a paper on Algorithmic Fairness in Gaussian Process models.
+          Then submitted it to NIPS (now called NeurIPS) where it was rejected.
+          Already while waiting for the reviews from NIPS, I was working on improvements to the method.
+        </aside>
+      </section>
+
+      <section>
+        <h2>Workshop paper</h2>
+
+        <ul>
+          <li>Submitted shortened version of the FairGP paper (4 pages) submitted to NeurIPS workshop WESGAI
+            <ul>
+              <li>WESGAI: Workshop on Ethical, Social and Governance Issues in AI,
+                <a href="https://sites.google.com/view/aiethicsworkshop/accepted-papers">List of accepted papers</a>
+              <li>Paper was accepted
+            </ul>
+          <li>Attended NeurIPS 2018 and presented the paper in a poster presentation
+        </ul>
+      </section>
+
+      <section>
+        <h2>Improved conference paper</h2>
+
+        <ul>
+          <li>Extended the FairGP paper to also work with logistic regression and simplified the explanation
+            (<a href="https://arxiv.org/abs/1810.05598v3">arxiv.org/abs/1810.05598v3</a>)
+          <li>Submitted to ICML in January and to ECML in April, twice rejected
+          <li>Shortly after submitting to ECML, had an idea how to improve it
+            <ul>
+              <li>Add proof about how much the accuracy necessarily suffers when enforcing fairness
+              <li>Plan to re-submit to AAAI
+            </ul>
+        </ul>
+
+        <aside class="notes">
+          The ECML submission contained small tweaks compared to the ICML submission.
+          There were always some reviewers who wanted to accept it.
+        </aside>
+      </section>
+
+      <section>
+        <h2>Fair invertible neural networks</h2>
+
+        <ul>
+          <li>Got interested in invertible neural networks during NeurIPS 2018
+          <li>For NeurIPS 2019, worked on a problem related to fairness:
+            spurious correlations in the data
+            <ul>
+              <li>Approach based on invertible neural networks
+              <li>Together with two other PhD students
+            </ul>
+        </ul>
+
+        <aside class="notes">
+          The typical example of spurious correlations is Colorized MNIST:
+          in the training set, each digit class is associated with one background color
+          but in the test set, digit class and color are uncorrelated.
+        </aside>
+      </section>
+
+      <section>
+        <h2>Plan from first Progression Review</h2>
+
+        <img src="images/quarter_by_quarter_year1.png" width="65%">
+
+        <aside class="notes">
+          In order to discuss to what extent I met my plan for the year,
+          here is what I put in the Student's Report from <b>last year</b>.
+        </aside>
+      </section>
+
+      <section>
+        <h2>Comparison to the Plan</h2>
+
+        <table>
+          <tr><th>The Plan</th><th>Reality</th></tr>
+          <tr>
+            <td>Write journal paper in Q4 of 2018</td>
+            <td>(because of rejection) workshop paper and paper improvements</td>
+          </tr>
+          <tr>
+            <td>Work on counterfactuals</td>
+            <td>No work on counterfactuals</td>
+          </tr>
+          <tr>
+            <td>Work on individual fairness</td>
+            <td>Work on the problem of spurious correlations in the data</td>
+          </tr>
+        </table>
+      </section>
+
+      <!--
+      <section>
+        <h2></h2>
+      </section>
+      -->
+
+    </div></div>
+
+    <script src="lib/js/head.min.js"></script>
+    <script src="js/reveal.js"></script>
+    <script src="settings.js"></script>
+  </body>
+</html>
