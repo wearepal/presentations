@@ -276,7 +276,7 @@ body {
 /*********************************************
  * FOOTER
  *********************************************/
-.reveal .footer {
+.reveal footer {
   position: absolute;
   bottom: 1%;
   /* left: 41%; */
@@ -288,7 +288,7 @@ body {
   height: 10%;
 }
 
-.reveal .footer p {
+.reveal footer p {
   margin: 0;
 }
 
