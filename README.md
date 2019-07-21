@@ -1,6 +1,10 @@
-# Presentations
+# Algorithmic Fairness
 
-## Algorithmic Fairness
+## ML Summer School
+### [Lecture]](./mlss.html)
+### [Exercise](https://tinyurl.com/ethicml)
+
+## Topics in Computing Module
 ### [Part 1](./algo-fairness-part1.html)
 - Intro to M.L.
 - Why are we interested in fairness?
