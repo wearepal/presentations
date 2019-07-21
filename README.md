@@ -1,7 +1,7 @@
 # Algorithmic Fairness
 
 ## ML Summer School
-### [Lecture]](./mlss.html)
+### [Lecture](./mlss.html)
 ### [Exercise](https://tinyurl.com/ethicml)
 
 ## Topics in Computing Module
