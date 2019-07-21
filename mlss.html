@@ -1,0 +1,977 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <title>Algorithmic fairness &mdash; Part 1</title>
+
+    <link rel="stylesheet" href="css/reveal.css">
+    <link rel="stylesheet" href="custom_themes/sussex.css" id="theme">
+
+    <!-- Theme used for syntax highlighting of code -->
+    <link rel="stylesheet" href="lib/css/monokai.css">
+
+    <!-- Printing and PDF exports -->
+    <script>
+      var link = document.createElement( 'link' );
+      link.rel = 'stylesheet';
+      link.type = 'text/css';
+      link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+      document.getElementsByTagName( 'head' )[0].appendChild( link );
+    </script>
+  </head>
+  <body>
+    <div id="hidden" style="display:none;"><div id="static-content">
+      <footer>
+        <p>University of Sussex MLSS 2019</p>
+      </footer>
+    </div> </div>
+    <div class="reveal"><div class="slides">
+
+      <section>
+      <h1>Algorithmic fairness</h1>
+
+      <p>by Oliver Thomas and Thomas Kehrenberg</p>
+
+      <img src="images/sussex_logo.svg" style="width: 15%; border: none;"/>
+      </section>
+
+<section data-markdown><textarea>
+  ## Contents
+
+  - What is Algorithmic Fairness and why should we care?
+  - Definitions
+  - Approaches to mitigate the problem
+</textarea></section>
+
+<section data-markdown><textarea>
+  ## Take-aways
+
+  - Bias is everywhere.
+  - If you don't think about it, it will come back to haunt you.
+</textarea></section>
+
+<section>   
+  <h2>Machine Learning</h2>
+
+  <blockquote>...using statistical techniques to give computer systems the ability to "learn"
+    (e.g., progressively improve performance on a specific task)
+    from data, without being explicitly programmed.
+  </blockquote>
+</section>
+
+<section data-markdown><textarea data-template>
+## Classification
+
+- given some input $X$, predict a class label $Y \in \\{0, 1, ..., C-1\\}$
+- $X$ is usually a **vector**
+  - often with high number of dimensions, e.g. more than 1 million for a picture
+- simplest case: **binary classification**, $Y \in \\{0, 1\\}$
+  - for example: is there a hot dog in this picture ($Y=1$) or not ($Y=0$)?
+</textarea></section>
+
+<section data-markdown><textarea data-template>
+## Classification
+
+- we are looking to train a function $f$ that maps $X$ to $Y$
+- the output is the prediction: $\hat{Y} = f(X)$
+- we want $\hat{Y}$ to be as close as possible to the label $Y$
+- $f$ can be implemented as
+  - a neural network
+  - an SVM
+  - a logistic regression model
+</textarea></section>
+
+<section data-markdown><textarea data-template>
+## Training data
+
+- training data: a set of pairs $(x, y)$
+  - input data $x$ with corresponding label $y$
+- we are looking for model that works well on the training data
+- if we make predictions on data that is *very different* from the training data,
+  the model will perform badly
+- problem if the training data does not describe reality well
+</textarea></section>
+
+<section data-markdown><textarea data-template>
+## Where is machine learning used?
+
+- hiring decisions
+- bail decisions
+- credit approval
+- insurance premiums
+
+<aside class="notes">
+  Companies are already using or planning to use machine learning for these tasks.
+</aside>
+</textarea></section>
+
+<section>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+But there are problems:
+</section>
+
+<section>
+    <img class="stretch" src="images/pp_mb.png" title="Pro-Publica - Machine Bias"/>
+</section>
+
+<section>
+    <img class="stretch" src="images/amazon.png" title="Amazon CV Screening"/>
+</section>
+
+<section data-markdown><textarea data-template>
+## Algorithmic bias
+
+- machine learning systems are making decisions that affect humans
+- these decisions should be *fair*
+- by default machine learning algorithms tend to be biased in some way
+  - why?
+</textarea></section>
+
+<section data-markdown><textarea data-template>
+## Algorithmic bias
+
+The problem can be divided into <ins>two categories</ins>. Both types of bias can appear together.
+
+- bias stemming from biased training data
+- bias stemming from the algorithms themselves
+</textarea></section>
+
+<section>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<h1>Biased training data</h1>
+</section>
+
+<section data-markdown><textarea data-template>
+## Bias in, bias out
+
+- Databases: GIGO
+- ML: BIBO
+  - the ML algorithm just learns what is in the training data
+</textarea></section>
+
+<section data-markdown><textarea data-template>
+## Examples for bias
+
+**Task**: generate description for images
+
+![](./images/women_also_snowboard/title.png)
+</textarea></section>
+
+<section>
+    <img class="stretch" src="images/women_also_snowboard/example1.png" title="Women also Snowboard, 1"/>
+</section>
+
+<section data-markdown><textarea data-template>
+## Learning wrong features
+
+The algorithm predicts the gender from the activity and not from looking at the person.
+
+![](./images/women_also_snowboard/example2.png)
+</textarea></section>
+
+<section data-markdown><textarea data-template>
+## Desired result
+
+- what we would want is that the algorithm only looks at the person when predicting the gender
+- if the gender is not recognizable from the picture, the algorithm should be "unsure"
+</textarea></section>
+
+<section data-markdown><textarea data-template>
+## Biased data
+
+- in the previous example, certain training examples were underrepresented
+  - sampling bias
+- other case: data is simply wrong
+  - e.g. data was gathered by humans who just lied
+</textarea></section>
+
+<section data-markdown><textarea data-template>
+## Enforcing a fair outcome
+
+- no matter in what way the data is biased: we want to **enforce a fair outcome**
+  - idea: just tell the algorithm that it should treat all groups in the same way
+- question: **how do we define a fair outcome?**
+  - really hard question
+  - start with the simplest definition
+</textarea></section>
+
+<section data-markdown><textarea data-template>
+## Example
+
+- task: predict whether someone should be hired ($Y=1$) or not ($Y=0$)
+- two races: <span style="color: blue">blue race</span> and <span style="color: green">green race</span>
+  - blue: $S=0$, green: $S=1$
+- in the training set: **20% of blue** applicants were hired, **50% of green** applicants were hired
+</textarea></section>
+
+<section data-markdown><textarea data-template>
+## Statistical parity
+
+$$
+P(\hat{Y}=1 | S=0) = P(\hat{Y}=1 | S=1)
+$$
+
+- $\hat{Y} \in \\{0,1\\}, S \in \\{0,1\\}$
+- $S$: sensitive attribute (for example gender, race)
+- $\hat{Y}$: prediction
+
+**meaning**: the probability to get a positive prediction is the same for each group
+</textarea></section>
+
+<section data-markdown><textarea data-template>
+## Statistical parity
+
+- concrete: when evaluating the algorithm on the test set, both groups ($S=0$ and $S=1$)
+  should have the same number of positive predictions ($\hat{Y}=1$)
+- in the hiring example from before: same percentage from both races will be hired (e.g. 30%)
+</textarea></section>
+
+<section data-markdown><textarea data-template>
+## Side effects of statistical parity
+
+- enforcing statistical parity necessarily produces **lower accuracy**
+- consider this: we want to enforce 30% acceptance for the blue race but the training data only has 20% accepted
+  - some individuals of the blue race have to be "misclassified" ($\hat{Y} = 1$ instead of $\hat{Y} = 0$)
+    to make the numbers work
+- not surprising because we are computing accuracy against the *biased data*
+</textarea></section>
+
+<section data-markdown><textarea data-template>
+## Trade-off: Fairness &ndash; Accuracy
+
+- usually we don't want to have too bad accuracy with respect to the (bias) data
+- goal: find algorithm that produces fair result at highest possible accuracy
+- otherwise it's easy: a *random classifier* is very fair (but useless)
+  - random classifier: just predict $\hat{Y} = 1$ 50% of the time regardless of input
+</textarea></section>
+
+<section data-markdown><textarea data-template>
+## Summary of Statistical Parity
+
+- very simple criterion
+- introduces Fairness &ndash; Accuracy trade-off
+- more sophisticated criteria are possible
+</textarea></section>
+
+<section>
+<p>&nbsp;</p>
+<h1>Bias introduced by the ML algorithm</h1>
+</section>
+
+<section data-markdown><textarea data-template>
+## Why would an ML algorithm introduce bias?
+
+Consider again the hiring example:
+- two features: SAT score and race (blue and green) of individuals
+- task: predict if they should be hired ($Y=1$) or not ($Y=0$)
+- composition of the dataset: 50% blue, 50% green. 20% of blue have $Y=1$, 50% of green have $Y=1$.
+</textarea></section>
+
+<section data-markdown><textarea data-template>
+## Bias from algorithm
+
+The dataset is heavily skewed but let's ignore that for now and just try to make accurate predictions for this dataset.
+</textarea></section>
+
+<section data-markdown><textarea data-template>
+## Bias from algorithm
+
+(Reminder: 20% of blue have $Y=1$, 50% of green have $Y=1$.)
+
+A simple way to make relatively accurate predictions:
+- for green individuals base the prediction on SAT
+- for blue individuals ignore SAT score and always predict $Y=0$
+
+Result: up to 90% accuracy (80% in blue subgroup and 100% in green subgroup)
+</textarea></section>
+
+<section data-markdown><textarea data-template>
+## Bias from algorithm
+
+- the dataset was already skewed but the algorithm's prediction are even more "unfair"
+- this is because it's easier to just base the decision on race than to figure out the effect of the SAT
+- this is an extreme case but similar things can actually happen
+</textarea></section>
+
+<section data-markdown><textarea data-template>
+## Bias from algorithm
+
+**What we do not want:** the algorithm "being lazy" in a subgroup
+
+**What we want:** the algorithm should make equally good predictions for all subgroups
+
+Criterion that enforces this: *Equality of Opportunity*
+</textarea></section>
+
+<section data-markdown><textarea data-template>
+## Equality of Opportunity
+
+$$
+P(\hat{Y}=1 | S=0, Y=1) = P(\hat{Y}=1 | S=1, Y=1)
+$$
+
+- with $Y, \hat{Y} \in \\{0,1\\}$ and $S \in \\{0,1\\}$
+
+**meaning**: the probability of predicting 1, given that the label is 1, should be the same for all groups
+
+**in practice**: the TPR (true positive rate) should be the same in all groups
+</textarea></section>
+
+<section data-markdown><textarea data-template>
+## Equalised Odds
+
+$$
+P(\hat{Y}=y | S=0, Y=y) = P(\hat{Y}=y | S=1, Y=y)
+$$
+
+for all possible values for $y$
+
+- stricter version of *Equality of Opportunity*
+- TPR and TNR (true negative rate) must be the same in all groups
+  - TPR = TP / (TP + FN), TNR = TN / (TN + FP)
+</textarea></section>
+
+<section data-markdown><textarea data-template>
+## Properties
+
+- **EOpp** (Equality of Opportunity) and **EOdd** (Equalised Odds) both assume that the training data is correct
+- a perfect classifier (that always predicts the correct label) fulfills **EOpp** and **EOdd**
+- however: a random classifier does as well
+  - a random classifier achieves 50% TPR (and TNR) in all groups
+</textarea></section>
+
+<section data-markdown><textarea data-template>
+## Accuracy&ndash;Fairness trade-off
+
+- achieving EOpp or EOdd at low accuracy is easy (see random classifier)
+- here, even more than for Statistical Parity, it is important to find an algorithm with good fairness and good accuracy
+</textarea></section>
+
+<!-- Border between Thomas stuff and Oliver stuff -->
+
+<section>
+  <section data-markdown><textarea data-template>
+    ## All statistics-based Fairness Criteria
+
+    - Statistical Parity
+    - Equalised Odds
+    - Equality of Opportunity
+    - Calibration by Group
+  </textarea></section>
+
+  <section data-markdown><textarea data-template>
+    ## Statistical Parity
+    #### (**independence** based notion of fairness)
+
+    $$
+    P(\hat{Y}=1 | S=0) = P(\hat{Y}=1 | S=1)
+    $$
+    $$
+    Y \in \\{0,1\\} \\\\
+    S \in \\{0,1\\}
+    $$ 
+  </textarea></section>
+
+  <section data-markdown><textarea data-template>
+    ## Equalised Odds
+    #### (**separation** based notion of fairness)
+
+    $$
+    P(\hat{Y}=1 | S=0, Y=y) = P(\hat{Y}=1 | S=1, Y=y)
+    $$
+    $$
+    Y \in \\{0,1\\} \\\\
+    S \in \\{0,1\\}
+    $$ 
+  </textarea></section>
+
+  <section data-markdown><textarea data-template>
+    ## Equality of Opportunity
+
+    #### (**separation** based notion of fairness)
+
+    $$
+    P(\hat{Y}=1 | S=0, Y=1) = P(\hat{Y}=1 | S=1, Y=1)
+    $$
+    $$
+    Y \in \\{0,1\\} \\\\
+    S \in \\{0,1\\}
+    $$ 
+  </textarea></section>
+
+  <section data-markdown><textarea data-template>
+    ## Calibration by Group
+    #### (**sufficiency** based notion of fairness)
+
+    $$
+    P(Y=1 | \hat{Y}=\hat{y}, S=s) = \hat{y}
+    $$
+    $$
+    \hat{Y} \in \[0...1\] \\\\
+    S \in \\{0,1\\}
+    $$ 
+  </textarea></section>
+</section>
+
+<section data-markdown><textarea data-template>
+  
+  ## Let's have all the fairness!
+  
+  If we are fair with regards to all notions of fair, then we're fair... right?
+  </textarea>
+</section>
+
+<section>
+  <h2>Let's have all the fairness!</h2>
+  <p>Independence based fairness (i.e. Statistical Parity)</p>
+
+  $$
+  \hat{Y} \perp S
+  $$
+
+  <p>Separation based fairness (i.e. Equalised Odds/Opportunity)</p>
+
+  $$
+  \hat{Y} \perp S | Y
+  $$
+
+  <p>For both to hold, then either $S \perp Y$, our data is fair, or $\hat{Y} \perp Y$, we have a random predictor.</p>
+
+  <p>Similarly, Sufficiency cannot hold with either notion of fairness.</p>
+</section>
+
+<section>
+  <h2>So which fairness criteria should we use?</h2>
+  <p>Consider a university, and we are in charge of administration!</p>
+  <p>We can only accept 50% of all applicants.</p>
+  <p>10,000 applicants are female and 10,000 of applicants are male.</p>
+  <p>We have been tasked with being fair with regard to <b>gender</b>.</p>
+</section>
+
+<section>
+  <h2>So which fairness criteria should we use?</h2>
+  <p>We have an acceptance criteria that is highly predictive of success.</p>
+  <p>80% of those who meet the acceptance criteria will successfully graduate.</p>
+  <p>Only 10% of those who don't meet the acceptance criteria will successfully graduate.</p>
+</section>
+
+<section>
+  <h2>So which fairness criteria should we use?</h2>
+  <p>As we're a good university we have a lot of applications from people who don't meet the acceptance criteria.</p>
+  <p>60% of female applicants meet the acceptance criteria.</p>
+  <p>40% of male applicants meet the acceptance criteria.</p>
+  <p>Remember, we can only accept 50% of all applicants</p>
+  <h3>What should we do?</h3>
+</section>
+
+<section>
+  <h3>Truth Tables</h3>
+  <h4>Female Applicants</h4>
+  <table>
+    <thead><tr>
+          <th></th>
+          <th>Accepted</th>
+          <th>Not</th>
+      </tr></thead>
+      <tbody><tr>
+          <td>Actually Graduate</td>
+          <td></td>
+          <td></td>
+      </tr>
+      <tr>
+          <td>Don't Graduate</td>
+          <td></td>
+          <td></td>
+      </tr></tbody>
+  </table>
+  <h4>Male Applicants</h4>
+  <table>
+    <thead><tr>
+          <th></th>
+          <th>Accepted</th>
+          <th>Not</th>
+      </tr></thead>
+      <tbody><tr>
+          <td>Actually Graduate</td>
+          <td></td>
+          <td></td>
+      </tr>
+      <tr>
+          <td>Don't Graduate</td>
+          <td></td>
+          <td></td>
+      </tr></tbody>
+  </table>
+</section>
+
+<section>
+  <p>How would we solve this problem being fair using Statistical Parity as our measure?</p>
+  <section>???</section>
+  <section>Select 50% of applicants of both female and male applicants</section>
+  <section>
+      <h4>Female Applicants</h4>
+      <table>
+        <thead><tr>
+              <th></th>
+              <th>Accepted</th>
+              <th>Not</th>
+          </tr></thead>
+          <tbody><tr>
+              <td>Actually Graduate</td>
+              <td>4000</td>
+              <td>1200</td>
+          </tr>
+          <tr>
+              <td>Don't Graduate</td>
+              <td>1000</td>
+              <td>3800</td>
+          </tr></tbody>
+      </table>
+      <h4>Male Applicants</h4>
+      <table>
+        <thead><tr>
+              <th></th>
+              <th>Accepted</th>
+              <th>Not</th>
+          </tr></thead>
+          <tbody><tr>
+              <td>Actually Graduate</td>
+              <td>3300</td>
+              <td>500</td>
+          </tr>
+          <tr>
+              <td>Don't Graduate</td>
+              <td>1700</td>
+              <td>4500</td>
+          </tr></tbody>
+      </table>
+    </section>
+  <section>10% of qualified female applicants are being rejected whilst an additional 10% of unqualified males are being accepted.</section>
+</section>
+
+<section>
+  <p>How would we solve this problem being fair using Equal Opportunity as our measure?</p>
+  <section>???</section>
+  <section>Select 55.5% of female applicants and 44.5% of male applicants, giving a TPR of 85.4% for both groups.</section>
+  <section>
+      <h4>Female Applicants</h4>
+      <table>
+        <thead><tr>
+              <th></th>
+              <th>Accepted</th>
+              <th>Not</th>
+          </tr></thead>
+          <tbody><tr>
+              <td>Actually Graduate</td>
+              <td>4440</td>
+              <td>760</td>
+          </tr>
+          <tr>
+              <td>Don't Graduate</td>
+              <td>1110</td>
+              <td>3690</td>
+          </tr></tbody>
+      </table>
+      <h4>Male Applicants</h4>
+      <table>
+        <thead><tr>
+              <th></th>
+              <th>Accepted</th>
+              <th>Not</th>
+          </tr></thead>
+          <tbody><tr>
+              <td>Actually Graduate</td>
+              <td>3245</td>
+              <td>555</td>
+          </tr>
+          <tr>
+              <td>Don't Graduate</td>
+              <td>1205</td>
+              <td>4995</td>
+          </tr></tbody>
+      </table>
+    </section>
+  <section>Similar situation to Statistical Parity</section>
+</section>
+
+<section>
+  <p>How would we solve this problem being fair using Calibration by Group as our measure?</p>
+  <section>???</section>
+  <section>Select only the applicants who meet the acceptance criteria.</section>
+  <section>
+      <h4>Female Applicants</h4>
+      <table>
+        <thead><tr>
+              <th></th>
+              <th>Accepted</th>
+              <th>Not</th>
+          </tr></thead>
+          <tbody><tr>
+              <td>Actually Graduate</td>
+              <td>4800</td>
+              <td>400</td>
+          </tr>
+          <tr>
+              <td>Don't Graduate</td>
+              <td>1200</td>
+              <td>3600</td>
+          </tr></tbody>
+      </table>
+      <h4>Male Applicants</h4>
+      <table>
+        <thead><tr>
+              <th></th>
+              <th>Accepted</th>
+              <th>Not</th>
+          </tr></thead>
+          <tbody><tr>
+              <td>Actually Graduate</td>
+              <td>3200</td>
+              <td>600</td>
+          </tr>
+          <tr>
+              <td>Don't Graduate</td>
+              <td>800</td>
+              <td>5400</td>
+          </tr></tbody>
+      </table>
+    </section>
+  <section>Could lead to systemic reinforcement of bias.</section>
+</section>
+
+<section>
+  <h2>Which fairness criteria should we use?</h2>
+  <p>There's no right answer, all the above are "fair". It's important to consult domain experts to find which is the best fit for each problem. There is no one-size fits all.</p>
+</section>
+
+<section data-markdown><textarea data-template>
+## How to enforce fairness?
+
+Fairness constraints can be added pre, during or post training.
+
+Pre-training examples
+- Zemel Fair Representations
+- Beutel Adversarial Representation
+- Quadrianto Fair Interpretable Representations
+- Feldman
+</textarea></section>
+
+<section data-markdown><textarea data-template>
+## How to enforce fairness?
+During Training
+- Zafar's methods
+- Zhang
+- Kehrenberg Fair GP
+
+Post Training
+- Hardt Recalibrating
+- Calders and Verwer
+</textarea></section>
+
+
+<section data-markdown><textarea data-template>
+  ## How to enforce fairness?
+
+  Popular approach is to add produce a "fair" representation. Consider that we have 2 roles, a data vendor, who is charge of collecting the data and preparing it. Our other role is a data user, someone who will be making predictions based on our data. 
+
+  The data vendor is concerned that the data user may be using their data to make unfair decisions. So the data vendor decides to learn a new, fair representation.
+</textarea></section>
+
+<section data-markdown><textarea data-template>
+  ## How to enforce fairness?
+
+The state-of-the-art method a fair representation this is to use an *adversarial* network, using a "Gradient-Reversal Layer" from Ganin et al.
+
+![](./images/adversarial.svg)
+</textarea></section>
+
+<section>
+  <section>
+    <h2>Problems with doing this?</h2>
+    <h4>Any Ideas?</h4>
+  </section>
+<section>
+    <h2>Problems with doing this?</h2>
+  <h4>What does this representation mean?</h4>
+
+  <p>The learned representation is uninterpretable by default. Recently Quadrianto et al constrained the representation to be in the same same as the input so that we could look at what changed</p>
+  </section>
+  <section>
+    <h2>Problems with doing this?</h2>
+    <h4>What if the vendor data user decides to be fair as well?</h4>
+
+    <p>Referred to as "fair pipelines". Work has only just begun exploring these. Current research shows that these don't work (at the moment!)</p>
+  </section>
+</section>
+
+<!-- <section data-markdown><textarea data-template>
+  ## How to enforce fairness?
+  
+  Fairness constraints can be added pre, during or post training.
+  
+  ### Pre-training examples
+  - Zemel Fair Representations
+  - Beutel / Edwards & Storkey Adversarial Representation
+  - Quadrianto Fair Interpretable Representations
+  - Feldman
+  </textarea></section>
+  
+  <section data-markdown><textarea data-template>
+  ## How to enforce fairness?
+
+  ### During Training
+  - Zafar's methods
+  - Zhang
+  - Kehrenberg Fair GP
+  
+  <br/>
+
+  ### Post Training
+  - Hardt Recalibration
+  </textarea></section> -->
+  
+  <section>
+    <h2>How to enforce fairness?</h2>
+    <h3>During Training</h3>
+    Instead of building a fair representation, we just make the fairness constraints part of the objective during training of the model.
+
+    An early example of this is by Zafar et al.
+  </section>
+
+  <section>
+    <h2>How to enforce fairness?</h2>
+    <h3>During Training</h3>
+    <p>Given we have a loss function, $\mathcal{L}(\theta)$.</p>
+    
+    <p>In an unconstrained classifier, we would expect to see</p>
+
+    $$
+      \min{\mathcal{L}(\theta)}
+    $$
+  </section>
+
+  <section>
+    <h2>How to enforce fairness?</h2>
+    <h3>During Training</h3>
+    <section>
+      
+      <p>To reduce Disparate Impact, Zafar adds a constraint to the loss function.</p>
+
+      $$
+        \begin{aligned}
+          \text{min  } & \mathcal{L}(\theta) \\
+          \text{subject to  } & P(\hat{y} \neq y|z = 0) − P(\hat{y} \neq y|z = 1) \leq \epsilon \\
+          \text{subject to  } & P(\hat{y} \neq y|z = 0) − P(\hat{y} \neq y|z = 1) \geq -\epsilon
+        \end{aligned}
+      $$
+    </section>
+    <section>
+      <p>Where $\{{s_i \} }_{i=1}^{N}$ denotes a user's sensitive attributes</p>
+      <p>$\{ {d_{\theta}(x_i) \} }_{i=1}^{N}$ the signed distance to the decision boundary</p>
+      <p>$c$ is the trade-off between accuracy and fairness.</p>
+      <p>If $c$ is sufficiently small, this is the equivalent of</p>
+      $$
+        P(d_{\theta}(x) \geq 0 | s = 0) = P(d_{\theta}(x) \geq 0 | s = 1)
+      $$
+    </section>
+    <section>
+        In other words, the decisions for both sensitive groups must be equally distributed across the decision boundary up to some threshold $c$.
+    </section>
+  </section>
+
+  <section>
+    <h2>Post-training</h2>
+    <p>Calders and Verwer (2010) train two separate models: one for all datapoints with $s=0$ and another one for $s=1$</p>
+    <p>The thresholds of the model are then tweaked until they produce the same <i>positive rate</i>
+    ($P(\hat{y}=1|s=0)=P(\hat{y}=1|s=1)$)</p>
+    <p>Disadvantage: $s$ has to be known for making predictions in order to choose the correct model.</p>
+  </section>
+
+  <section>
+    <h2>Exercise</h2>
+
+    <br/>
+    <br/>
+    <br/>
+    <h3>https://tinyurl.com/ethicml</h3>
+  </section>
+
+  <section>
+    <h2>Delayed Impact of Fair Learning</h2>
+    <p>In the real world there are implications.</p>
+    <p>An individual doesn't just cease to exist after we've made our loan or bail decision.</p>
+    <p>The decision we make has <b>consequences</b>.</p>
+  </section>
+
+  <section data-markdown><textarea data-template>
+    Consider a bank's lending decision.
+
+    The outcome is not simply reject or accept the applicant for a loan. In fact, there are multiple effects of this decision.
+
+    If the applicant receives a loan, then goes on to successfully pay it back, then not only will the bank make a profit, but then the applicant's credit score will increase.
+
+    This will make future loan decisions more favorable to the applicant.
+  </textarea></section>
+
+  <section data-markdown><textarea data-template>
+      We could think of this in terms of loss functions. 
+
+      The banks objective was to maximize profit. After deciding to give the loan, the loan was repaid (with interest). The bank made money. 
+
+      To maximize the objective (minimize the negative of the loss) the bank wants to give out as many loans that are likely to be repaid as possible.
+  </textarea></section>
+
+  <section data-markdown><textarea data-template>
+    In this scenario we have a slightly different concern. We don't want loans to be given to one subgroup (such as blue race), more often than members of another subgroup (green race).
+
+    Our concern is that if the number of people who receive loans from one group outweigh the other, then as a whole, the credit rating will become a euphemism for race.
+  </textarea></section>
+
+  <section>
+    <section>
+      <h2>The Outcome Curve</h2>
+      <img src="images/outcome_curve.png" width="65%">
+    </section>
+    <section>
+        <h2>Possible areas</h2>
+        <table>
+          <tr>
+            <th>Area</th>
+            <th>Description</th>
+          </tr>
+          <tr>
+            <td>Active Harm</td>
+            <td>Expected change in credit score of an individual is negative</td>
+          </tr>
+          <tr>
+            <td>Stagnation</td>
+            <td>Expected change in credit score of an individual is 0</td>
+          </tr>
+          <tr>
+            <td>Improvement</td>
+            <td>Expected change in credit score of an individual is positive</td>
+          </tr>
+        </table>
+      </section>
+      <section>
+          <h2>Possible areas</h2>
+          <table>
+            <tr>
+              <th>Area</th>
+              <th>Description</th>
+            </tr>
+            <tr>
+              <td>Relative Harm</td>
+              <td>Expected change in credit score of an individual is less than if the selection policy had been to maximize profit</td>
+            </tr>
+            <tr>
+              <td>Relative Improvement</td>
+              <td>Expected change in credit score of an individual is better than if the selection policy had been to maximize profit</td>
+            </tr>
+          </table>
+        </section>
+      <section>
+        <p>For those interested in more of an explanation of the equations, see Appendix</p>
+      </section>
+  </section>
+
+  <section>
+
+  </section>
+
+  <section>
+    <h2>Causality</h2>
+    <p>"Correlation doesn't imply causation"</p>
+    <p class="fragment">But what is causation?</p>
+    <p class="fragment">If we can understand what <b>causes</b> unfair behavior, then we can take steps to mitigate it.</p>
+    <p class="fragment">Basic idea: if a sensitive attribute has no causal influence on prediction, don't use it.</p>
+    <p class="fragment">But how do we model causation?</p>
+  </section>
+
+  <section>
+    <h2>Causal Graphs</h2>
+    <p><b>Solution:</b> build causal graphs of your problem</p>
+    <p><b>Problem:</b> causality cannot be inferred from observational data</p>
+    <p>Observational data can only show correlations</p>
+    <p>For causal information we have to do <i>experiments</i>. (But that is often not ethical.)</p>
+  </section>
+
+  <section>
+    <h2>Example with Causal Graphs</h2>
+    <p><b>Example:</b> Law school success</p>
+    <p>Task: given GPA score and LSAT (law school entry exam), predict grades after one year in law school:
+      FYA (first year average)</p>
+    <p>Additionally two sensitive attributes: <i>race</i> and <i>gender</i></p>
+  </section>
+
+  <section>
+    <h2>Example with Causal Graphs</h2>
+    <p>Two possible graphs</p>
+    <img src="./images/lsat_causal.png"/>
+  </section>
+
+  <section>
+    <h2>Counterfactual Fairness</h2>
+    <p>$U$: set of all unobserved background variables</p>
+    <p>$P(\hat{y}_{s=i}(U) = 1|x, s=i)=P(\hat{y}_{s=j}(U) = 1|x, s=i)$</p>
+    <p>$i, j \in \{0, 1\}$</p>
+    <p>$\hat{y}_{s=k}$: prediction in the counterfactual world where $s=k$</p>
+    <p><b>practical consequence:</b> $\hat{y}$ is counterfactually fair if it does not causally depend
+    (as defined by the causal model) on $s$ or any descendants of $s$.</p>
+  </section>
+
+  <section>
+    <h2>Related idea: fairness based on similarity</h2>
+    <ul>
+    <li>First define a distance metric on your datapoints (i.e. how similar are the datapoints)
+      <ul>
+        <li>Can be just Euclidean distance but is usually something else (because of different scales)</li>
+        </ul>
+      </li>
+      </ul>
+  </section>
+
+  <section>
+    <h2>Pre-processing based on similarity</h2>
+    <ul>
+      <li>An individual is then considered to be unfairly treated if it is treated differently than its "neighbours".</li>
+      <li>For any data point we can check how many of the $k$ nearest neighbours have the same class label as that data point</li>
+      <li>If the percentage is under a certain threshold then there was discrimination against the individual corresponding to that data point.</li>
+      <li>Then: flip the class labels of those data points where the class label is considered unfair</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Considering similarity during training</h2>
+    <p>Alternative idea:</p>
+    <ul>
+      <li>a classifier is fair if and only if the predictive distributions for any two data points are at least as similar
+        as the two points themselves
+        <ul>
+         <li>(according to a given similarity measure for distributions and a given similarity measure for data points)</li>
+        </ul>
+      </li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Considering similarity during training</h2>
+    <ul>
+      <li>Needed similarity measure for distributions</li>
+      <li>Then add fairness condition as additional loss term to optimization loss</li>
+    </ul>
+  </section>
+
+
+    </div></div>
+
+    <script src="lib/js/head.min.js"></script>
+    <script src="js/reveal.js"></script>
+    <script src="settings.js"></script>
+  </body>
+</html>
