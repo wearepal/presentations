@@ -758,19 +758,19 @@ The state-of-the-art method a fair representation this is to use an *adversarial
   <section>
     <h2>How to enforce fairness?</h2>
     <h3>During Training</h3>
-    <section>
+    <!-- <section> -->
       
       <p>To reduce Disparate Impact, Zafar adds a constraint to the loss function.</p>
 
       $$
         \begin{aligned}
           \text{min  } & \mathcal{L}(\theta) \\
-          \text{subject to  } & P(\hat{y} \neq y|z = 0) − P(\hat{y} \neq y|z = 1) \leq \epsilon \\
-          \text{subject to  } & P(\hat{y} \neq y|z = 0) − P(\hat{y} \neq y|z = 1) \geq -\epsilon
+          \text{subject to  } & P(\hat{y} \neq y|s = 0) − P(\hat{y} \neq y|s = 1) \leq \epsilon \\
+          \text{subject to  } & P(\hat{y} \neq y|s = 0) − P(\hat{y} \neq y|s = 1) \geq -\epsilon
         \end{aligned}
       $$
-    </section>
-    <section>
+    <!-- </section> -->
+    <!-- <section>
       <p>Where $\{{s_i \} }_{i=1}^{N}$ denotes a user's sensitive attributes</p>
       <p>$\{ {d_{\theta}(x_i) \} }_{i=1}^{N}$ the signed distance to the decision boundary</p>
       <p>$c$ is the trade-off between accuracy and fairness.</p>
@@ -781,7 +781,7 @@ The state-of-the-art method a fair representation this is to use an *adversarial
     </section>
     <section>
         In other words, the decisions for both sensitive groups must be equally distributed across the decision boundary up to some threshold $c$.
-    </section>
+    </section> -->
   </section>
 
   <section>
@@ -795,10 +795,16 @@ The state-of-the-art method a fair representation this is to use an *adversarial
   <section>
     <h2>Exercise</h2>
 
+    <!-- <br/>
     <br/>
-    <br/>
-    <br/>
-    <h3>https://tinyurl.com/ethicml</h3>
+    <br/> -->
+    <h3>Exercise</h3>
+    <p>https://tinyurl.com/ethicml</p>
+    <h3>Further Resources</h3>
+    <h4>Google Crash Course: Fairness in ML</h4>
+    <p>https://developers.google.com/machine-learning/crash-course/fairness</p>
+    <h4>Fast.ai lecture with Fairness discussion</h4>
+    <p>http://course18.fast.ai/lessons/lesson13.html</p>
   </section>
 
   <section>
