@@ -1,0 +1,195 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <title>TAG-PAL symposium</title>
+
+    <link rel="stylesheet" href="css/reveal.css">
+    <link rel="stylesheet" href="custom_themes/pal.css" id="theme">
+
+    <!-- Theme used for syntax highlighting of code -->
+    <link rel="stylesheet" href="lib/css/monokai.css">
+
+    <!-- Printing and PDF exports -->
+    <script>
+      var link = document.createElement( 'link' );
+      link.rel = 'stylesheet';
+      link.type = 'text/css';
+      link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+      document.getElementsByTagName( 'head' )[0].appendChild( link );
+    </script>
+  </head>
+  <body>
+    <div id="hidden" style="display:none;">
+      <div id="static-content">
+        <footer>
+          <!-- <p>University of Sussex</p> -->
+          <!-- <img src="images/sussex_logo.svg" style="max-width: 10%; border: none; box-shadow: none; margin: 0;"/> -->
+          <p>NoSINN &mdash; TAG-PAL symposium
+        </footer>
+      </div>
+    </div>
+    <div class="reveal">
+<div class="slides">
+
+<section>
+<h1>NoSINN</h1>
+<h2>No Shortcuts with INNs</h2>
+
+<p><b>Thomas Kehrenberg</b>
+
+<!-- <h3>Predictive Analytics Lab, University of Sussex</h3> -->
+
+<p><img src="images/pal5.png" style="width: 14%; border: none; box-shadow: none; margin: 0;">
+<!-- <img src="images/Cifas_logo.jpg" alt="Cifas Logo" style="width: 15%; border: none;">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<img src="images/ducit_logo.jpg" alt="Ducit Logo" style="width: 15%; border: none;"> -->
+<!-- <p>Talk given at Cifas in association with Ducit</p> -->
+
+<br/>
+
+Fri, 2<sup>nd</sup> August 2019</p>
+
+<!-- <img src="images/sussex_logo.svg" style="width: 15%; border: none;"/> -->
+</section>
+
+<section>
+  <h2>Spurious correlations</h2>
+
+  <ul>
+    <li>The setup: training a classifier on a given dataset
+    <li>The problem: there can be correlations between some features and the class label $y$ that <i>only exist in the training set</i>
+    <li>Relying on these <i>spurious correlations</i> will lead to bad performance on the test set
+  </ul>
+</section>
+
+<section>
+  <h2>Example: Colorized MNIST</h2>
+
+  <div class="multicol">
+    <div class="col">
+      <p>Train set<br>
+      <img src="images/nosinn/cmnist_train.png" style="width: 70%; border: none">
+    </div>
+    <div class="col">
+      <p>Test set<br>
+      <img src="images/nosinn/cmnist_test.png" style="width: 70%; border: none">
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>Further assumptions</h2>
+
+  <ul>
+    <li>In general, problem is not solvable: how would classifier know what to learn?
+    <li>We make an assumption: it's possible to get <b>unlabeled</b> data that is like the test data
+      <ul>
+        <li>The unlabeled data, however, needs to have a "spurious label" $s$
+      </ul>
+    <li>(Other possibility: use inductive bias)
+  </ul>
+</section>
+
+<section>
+  <h2>Idea</h2>
+
+  <p>Use the unlabeled data to learn a representation without the nuisance features
+  <div class="multicol">
+    <div class="col" style="text-align: right">
+      <img src="images/nosinn/colored_digits.png" style="width: 28%; border: none">
+    </div>
+    <div class="col">
+      <p>&nbsp;<br>Encoder<br><span style="font-size: 120px">&xrarr;</span>
+    </div>
+    <div class="col" style="text-align: left">
+      <img src="images/nosinn/uncolored_digits.png" style="width: 28%; border: none">
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>Naïve solution with adversarial AE</h2>
+
+  <img src="images/nosinn/autoencoder_simple.svg" style="width: 60%; border: none">
+</section>
+
+<section>
+  <h2>Improved solution with AE</h2>
+
+  <img src="images/nosinn/autoencoder_advanced.svg" style="width: 60%; border: none">
+</section>
+
+<section>
+  <h2>Summary of problems</h2>
+
+  <ul>
+    <li>Reconstruction loss does not capture what we care about
+      <ul>
+        <li>Can the network figure out on its own what matters?
+      </ul>
+    <li>Encoder can drop information that is not relevant to reconstruction error but relevant for classification
+    <li>Encoder can "smuggle" information in the nuisance encoding
+  </ul>
+</section>
+
+<section>
+  <h2>Invertible Neural Networks</h2>
+
+  <ul>
+    <li>Explicitly, exactly invertible
+      <ul>
+        <li>Backwards evaluation has same computational complexity as fowards evaluation
+      </ul>
+    <li>No need for reconstruction loss: $\log P(x)$ can be computed exactly
+      <ul>
+        <li>$\log P(x)$: probablity that the network assigns to a given input. This is maximized during training
+        <li>$P(x)$ is computed via change-of-variables
+      </ul>
+  </ul>
+</section>
+
+<section>
+  <h2>Solution based on INNs</h2>
+
+  <img src="images/nosinn/diagram.png" style="width: 60%; border: none">
+</section>
+
+<section>
+  <h2>Results</h2>
+
+  <div class="multicol">
+    <div class="col">
+      <p>Before<br>
+      <img src="images/nosinn/originals_bestmodel.png" style="width: 70%; border: none">
+    </div>
+    <div class="col">
+      <p>After<br>
+      <img src="images/nosinn/preimages_yn_bestmodel.png" style="width: 70%; border: none">
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>Results</h2>
+
+  <img src="images/nosinn/plot.png" style="width: 80%; border: none">
+</section>
+
+<section>
+  <p>&nbsp;</p>
+  <p>&nbsp;</p>
+  <p<b>Thank you!</b></p>
+  <p<b>Questions?</b></p>
+</section>
+
+</div>
+    </div>
+
+    <script src="lib/js/head.min.js"></script>
+    <script src="js/reveal.js"></script>
+    <script src="settings.js"></script>
+  </body>
+</html>
