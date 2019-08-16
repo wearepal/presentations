@@ -68,7 +68,7 @@ body {
   font-size: 1.71em;
   font-family: "Source Serif Pro", Impact, sans-serif;
   padding: 5px 0px;
-  background-color: #264285;
+  background-color: #1E428A; /*Cobalt Blue*/
   color: white!important;
 }
 
@@ -323,7 +323,7 @@ body {
  * MATH
  *********************************************/
 .reveal .math {
-  color:#9A2617; /* Dark Ruby */
+  color:#DF465A; /*#9A2617; /* Dark Ruby */
 }
 
 /*********************************************
@@ -339,7 +339,7 @@ body {
  * HIGHLIGHT
  *********************************************/
 .reveal .highlight {
-  color:#9A2617;
+  color:#FFB81C;
 }
 
 /*********************************************
