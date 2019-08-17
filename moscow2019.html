@@ -394,7 +394,8 @@ $$
 - Suppose we have FPR<sub>S=1</sub> = FPR<sub>S=0</sub> and TPR<sub>S=1</sub> = TPR<sub>S=0</sub> (<span class="highlight">equalised odds</span>), can we have PPV<sub>S=1</sub> = PPV<sub>S=0</sub> (<span class="highlight">predictive parity</span>)?
 - YES! But only if we have a <span class="highlight">perfect dataset</span> (i.e. BR<sub>S=1</sub> = BR<sub>S=0</sub>) or a <span class="highlight">perfect predictor</span> (i.e. FPR=0 and TPR=1 for S=1 and S=0)
 
-<span class="citeme">&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Kehrenberg, Chen, NQ: Tuning fairness by marginalizing latent target labels, Oct 2018</span>
+<span class="citeme">Kehrenberg, Chen, NQ: Tuning fairness by marginalizing latent target labels, Oct 2018</span>
+<div style="height:20px;font-size:1px;">&nbsp;</div>
 <span class="citeme">Roth, Impossibility results in fairness as Bayesian inference, Feb 2019</span>
 
 </textarea></section>
@@ -410,7 +411,8 @@ $$
 - Suppose we have FPR<sub>S=1</sub> = FPR<sub>S=0</sub> and TPR<sub>S=1</sub> = TPR<sub>S=0</sub> (<span class="highlight">equalised odds</span>), can we have AR<sub>S=1</sub> = AR<sub>S=0</sub> (<span class="highlight">statistical parity</span>)?
 - YES! But only if we have a <span class="highlight">perfect dataset</span> (i.e. BR<sub>S=1</sub> = BR<sub>S=0</sub>)
 
-<span class="citeme">&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Kehrenberg, Chen, NQ: Tuning fairness by marginalizing latent target labels, Oct 2018</span>
+<span class="citeme">Kehrenberg, Chen, NQ: Tuning fairness by marginalizing latent target labels, Oct 2018</span>
+<div style="height:20px;font-size:1px;">&nbsp;</div>
 <span class="citeme">Roth, Impossibility results in fairness as Bayesian inference, Feb 2019</span>
 </textarea></section>
 
@@ -681,8 +683,10 @@ $$
 
 <img src="images/adversarialfair.png" width=38% title="Adversarially Fair"/>
 
-<span class="citeme">&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Ganin et al.,Domain-adversarial training of neural networks, JMLR 2016</span>
-<span class="citeme">&emsp;&emsp;&emsp;&emsp;Edwards and Storkey, Censoring representations with an adversary, ICLR 2016</span>
+<span class="citeme">Ganin et al.,Domain-adversarial training of neural networks, JMLR 2016</span>
+<div style="height:20px;font-size:1px;">&nbsp;</div>
+<span class="citeme">Edwards and Storkey, Censoring representations with an adversary, ICLR 2016</span>
+<div style="height:20px;font-size:1px;">&nbsp;</div>
 <span class="citeme">Beutel et al., Data decisions and theoretical implications when adversarially learning fair representations, Jul 2017</span>
 <span class="citeme">Madras et al., Learning adversarially fair and transferable representations, ICML 2018</span>
 
@@ -710,66 +714,94 @@ What if the vendor data user decides to be fair as well?
 
 - Referred to as "<span class="highlight">fair pipelines</span>". Work has only just begun exploring these. Current research shows that these don't work (at the moment!)
 
-  <span class="citeme">&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Bower et al., Fair pipelines, Jul 2017</span>
-  <span class="citeme">&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Dwork and Ilvento, Fairness under composition, Jun 2018</span>
+  <span class="citeme">Bower et al., Fair pipelines, Jul 2017</span>
+  <div style="height:20px;font-size:1px;">&nbsp;</div>
+  <span class="citeme">Dwork and Ilvento, Fairness under composition, Jun 2018</span>
   </textarea></section>
 </section>
   
   <section data-markdown data-background-color="#000"><textarea data-template>
     ## In-processing
-- Instead of building a fair representation, we just make the fairness constraints part of the objective during training of the model.
-
-- One example of this is by Zafar et al.
+- Specify fairness metrics as constraints on learning
+- Optimize for accuracy under those constraints
+- No free lunch: additional constraints lower accuracy
   </textarea></section>
 
-  <section>
-    <h2>How to enforce fairness?</h2>
-    <h3>During Training</h3>
-    <p>Given we have a loss function, $\mathcal{L}(\theta)$.</p>
-    
-    <p>In an unconstrained classifier, we would expect to see</p>
+<section>
+  <section data-markdown data-background-color="#000"><textarea data-template>
+  ## In-processing: Constraint
 
-    $$
-      \min{\mathcal{L}(\theta)}
-    $$
-  </section>
+- Given we have a loss function, $\mathcal{L}(\theta)$  
+- In an unconstrained classifier, we would expect to see $\underset{\theta}{\min}{\mathcal{L}(\theta)}$
+- To enforce <span class="highlight">statistical parity</span> metric, a constraint is added $$
+\begin{aligned}
+&\underset{\theta}{\min}  \mathcal{L}(\theta) \\
+&\text{subject to  }  P(\hat{Y} =1 |S = 0) = P(\hat{Y} =1 |S = 1)  \\
+\end{aligned}$$
 
-  <section>
-    <h2>How to enforce fairness?</h2>
-    <h3>During Training</h3>
-    <!-- <section> -->
-      
-      <p>To reduce Disparate Impact, Zafar adds a constraint to the loss function.</p>
+        <span class="citeme">Zafar et al., Fairness constraints: Mechanisms for fair classification, AISTATS 2017</span>
+  </textarea></section>
 
-      $$
-        \begin{aligned}
-          \text{min  } & \mathcal{L}(\theta) \\
-          \text{subject to  } & P(\hat{y} \neq y|s = 0) − P(\hat{y} \neq y|s = 1) \leq \epsilon \\
-          \text{subject to  } & P(\hat{y} \neq y|s = 0) − P(\hat{y} \neq y|s = 1) \geq -\epsilon
-        \end{aligned}
-      $$
-    <!-- </section> -->
-    <!-- <section>
-      <p>Where $\{{s_i \} }_{i=1}^{N}$ denotes a user's sensitive attributes</p>
-      <p>$\{ {d_{\theta}(x_i) \} }_{i=1}^{N}$ the signed distance to the decision boundary</p>
-      <p>$c$ is the trade-off between accuracy and fairness.</p>
-      <p>If $c$ is sufficiently small, this is the equivalent of</p>
-      $$
-        P(d_{\theta}(x) \geq 0 | s = 0) = P(d_{\theta}(x) \geq 0 | s = 1)
-      $$
-    </section>
-    <section>
-        In other words, the decisions for both sensitive groups must be equally distributed across the decision boundary up to some threshold $c$.
-    </section> -->
-  </section>
+  <section data-markdown data-background-color="#000"><textarea data-template>
+  ## In-processing: Constraint
+- Problem: The formulation is not convex!
+- Need to find a better way to specify the constraints
+ - Instead of $P(\hat{Y} =1 |S = 0) = P(\hat{Y} =1 |S = 1)$
+ - Limit the differences in the average strength of acceptance
+and rejection across members of different sensitive groups: $Cov(S, f) \approx \frac{1}{N} \sum\limits_{i=1}^{N} (S_i - \bar{S}) \cdot f_i$
+ - $Cov(S, f)=0$ &rarr; $S$ and $f$ independent &rarr; statistical parity
+  </textarea></section>
+</section>
 
-  <section>
-    <h2>Post-training</h2>
-    <p>Calders and Verwer (2010) train two separate models: one for all datapoints with $s=0$ and another one for $s=1$</p>
-    <p>The thresholds of the model are then tweaked until they produce the same <i>positive rate</i>
-    ($P(\hat{y}=1|s=0)=P(\hat{y}=1|s=1)$)</p>
-    <p>Disadvantage: $s$ has to be known for making predictions in order to choose the correct model.</p>
-  </section>
+<section data-background-color="#000">
+<section data-markdown><textarea data-template>
+## In-processing: Likelihood
+- **Example**: Logistic Regression
+  * model: $\; f(x) = Wx + b$, $\; \theta = \\{W, b\\}$
+  * probability score: $\; P(y=1|x, \theta)=\sigma(f(x))$
+  * with dependency on $s$: $\; P(y=1|x, \theta, s)$
+</textarea></section>
+  <section data-markdown><textarea data-template>
+  ## In-processing: Likelihood
+
+  - Manipulate the likelihood $P(y=1|x, \theta, s)$ to enforce fairness
+  - Introduce target labels $\bar{y}$
+  - $P(y=1|x, \theta, s) = \sum\limits_{\bar{y}} P(y=1|\bar{y},s)P(\bar{y}|x, \theta, s)$
+  - Intuition: change the learning goal
+
+  <span class="citeme">Kehrenberg, Chen, NQ, Tuning Fairness by Marginalizing Latent Target Labels, Oct 2018</span>
+  </textarea></section>
+
+  <section data-markdown data-background-color="#000"><textarea data-template>
+  ## In-processing: Likelihood
+
+<!--   - conceptually works best with *Demographic Parity*
+     * but was also extended to Equal Odds/Opportunity -->
+- Transparent and easy to control
+
+  ![results1](images/adult_parity_scatter_acc.svg) <!-- .element: style="height: 7em; border: none;"-->
+  ![results2](images/adult_parity_scatter_pr_pr_with_br.svg) <!-- .element: style="height: 7em; border: none;"-->
+
+  </textarea></section>
+
+  <!-- <section data-markdown><textarea data-template>
+  ## In-process: Likelihood
+
+  ![results](images/adult_race_PR.png) <!-- .element: style="width: 70%; border: none;" -->
+  <!-- </textarea></section> -->
+</section>
+
+
+  <section data-markdown data-background-color="#000"><textarea data-template>
+## Post-processing
+- Train two separate models: one for all datapoints with $S=0$ and another one for $S=1$
+- The thresholds of the model are then tweaked until they produce the same <i>positive rate</i>
+    ($P(\hat{Y}=1|S=0)=P(\hat{Y}=1|S=1)$)
+- Disadvantage: $S$ has to be known for making predictions in order to choose the correct model
+
+<span class="citeme">Calders \& Verwer: Three na&iumlve Bayes approaches for discrimination-free classification, Data Mining and Knowledge Discovery 2010.</span>
+
+  </textarea></section>
 
 <section>
 <p>&nbsp;</p>
@@ -777,26 +809,178 @@ What if the vendor data user decides to be fair as well?
 <h1>Interpretability in fairness</h1>
 </section>
 
+<section>
 <section data-markdown data-background-color="#000"><textarea data-template>
 ## Fair and interpretable representations
+- A fair representation $T_\omega(X)$ which has the sensitive attribute removed, but remains in the space of $X$ 
+- Main disentangling assumption: 
+$\phi(X) = \phi(T_{\omega}(X)) + \underbrace{\phi (\lnot T_{\omega}(X))}_{\text{Spurious}}
+$
+ - <span class="highlight">Spurious</span>: dependent on the sensitive attribute.
+ - <span class="highlight">Non-Spurious</span>: independent of the sensitive attribute.
 
-- A recent work constrained the fair representation to be in the same same as the input so that we could look at what changed
-- Learning a data representation $\tilde{X}$ for each input $X$ such that:
- - It is able to predict target variable
- - It protects the sensitive attribute $S$
- - It lies in the same input space $\mathcal{X}$
-- Assume 
   <span class="citeme">NQ, Sharmanska, Thomas, Discovering fair representations in the data domain, CVPR 2019</span>
 
   </textarea></section>
 
 <section data-markdown data-background-color="#000"><textarea data-template>
-## Contrastive/imagined examples
+## Fair and interpretable representations
 
-  <span class="citeme"></span>
+<img src="images/Architecture.png" width=70% title="Architecture"/>
+
+- <span class="highlight">No GANs?</span> To perform translation from the input to the non-spurious
+domain via GANs, we need to have real data (e.g. images, tabular data) of both domains
 
   </textarea></section>
 
+<section data-background-color="#000">
+<h2> Fair and interpretable representations</h2>
+
+  <table>
+        <tbody><tr>
+        <td width="50%">
+ <p>- Analysis on the relationship feature on <span class="highlight">Adult Income dataset</span></p>
+ <p>- Feature values of the minority group are transformed to match the majority group</p>
+ <p>- Here, the wife value is translated to husband</p></td>
+ <td width="50%">  <img src="images/output.png" width=70% title="outputs"/></td>
+        </tr>
+        </tbody>
+  </table>
+
+</section>
+
+<section data-background-color="#000">
+  <h2>Fair and interpretable representations</h2>
+  <p>Interpretable can be fair!</p>
+
+<small>
+  <table>
+        <thead><tr>
+        <td></td>
+        <td colspan="2" >original $X$</td>
+        <td colspan="2"><span class="highlight">fair & interpretable $X$</span></td>
+        <td colspan="2">latent embedding $Z$</td>
+        </tr>
+        </thead>
+        <tbody><tr>
+            <td></td>
+            <td width="10%">Accuracy $\uparrow$</td>
+            <td width="10%">Eq. Opp $\downarrow$</td>
+            <td width="10%">Accuracy $\uparrow$</td>
+            <td width="10%">Eq. Opp $\downarrow$</td>
+            <td width="10%">Accuracy $\uparrow$</td>
+            <td width="10%">Eq. Opp $\downarrow$</td>
+        </tr>
+        <tr>
+            <td width="10%">LR</td>
+            <td width="10%">$85.1\pm0.2$ </td>
+            <td width="10%">$\mathbf{9.2\pm2.3}$ </td>
+            <td width="10%">$84.2\pm0.3$ </td>
+            <td width="10%">$\mathbf{5.6\pm2.5}$  </td>
+            <td width="10%">$81.8\pm2.1$</td>
+            <td width="10%">$\mathbf{5.9\pm4.6}$ </td>
+        </tr>
+        <tr>
+            <td width="10%">SVM</td>
+            <td width="10%">$85.1\pm0.2$ </td>
+            <td width="10%">$\mathbf{8.2\pm2.3}$ </td>
+            <td width="10%">$84.2\pm0.3$ </td>
+            <td width="10%">$\mathbf{4.9\pm2.8}$ </td>
+            <td width="10%">$81.9\pm2.0$ </td>
+            <td width="10%">$\mathbf{6.7\pm4.7}$</td>
+        </tr>
+        <tr>
+            <td width="20%">Fair Reduction LR</td>
+            <td width="10%">$85.1\pm0.2$ </td>
+            <td width="10%">$\mathbf{14.9\pm1.3}$ </td>
+            <td width="10%">$84.1\pm0.3$ </td>
+            <td width="10%">$\mathbf{6.5\pm3.2}$ </td>
+            <td width="10%">$81.8\pm2.1$ </td>
+            <td width="10%">$\mathbf{5.6\pm4.8}$ </td>
+        </tr>
+        <tr>
+            <td width="10%">Fair Reduction SVM</td>
+            <td width="10%">$85.1\pm0.2$ </td>
+            <td width="10%">$\mathbf{8.2\pm2.3}$ </td>
+            <td width="10%">$84.2\pm0.3$ </td>
+            <td width="10%">$\mathbf{4.9\pm2.8}$ </td>
+            <td width="10%">$81.9\pm2.0$ </td>
+            <td width="10%">$\mathbf{6.7\pm4.7}$ </td>
+        </tr>
+        <tr>
+            <td width="10%">Kamiran & Calders LR</td>
+            <td width="10%">$84.4\pm0.2$ </td>
+            <td width="10%">$\mathbf{14.9\pm1.3}$  </td>
+            <td width="10%">$84.1\pm0.3$ </td>
+            <td width="10%">$\mathbf{1.7\pm1.3}$ </td>
+            <td width="10%">$81.8\pm2.1$ </td>
+            <td width="10%">$\mathbf{4.9\pm3.3}$ </td>
+        </tr>
+        <tr>
+            <td width="10%">Kamiran & Calders SVM</td>
+            <td width="10%">$85.1\pm0.2$ </td>
+            <td width="10%">$\mathbf{8.2\pm2.3}$ </td>
+            <td width="10%">$84.2\pm0.3$ </td>
+            <td width="10%">$\mathbf{4.9\pm2.8}$ </td>
+            <td width="10%">$81.9\pm2.0$ </td>
+            <td width="10%">$\mathbf{6.7\pm4.7}$ </td>
+        </tr>
+        <tr>
+            <td width="10%">Zafar et al.</td>
+            <td width="10%">$85.0\pm0.3$ </td>
+            <td width="10%">$\mathbf{1.8\pm0.9}$ </td>
+            <td width="10%">--- </td>
+            <td width="10%">--- </td>
+            <td width="10%">--- </td>
+            <td width="10%">--- </td>
+        </tr></tbody>
+    </table>
+    </small>
+</section>
+
+<section data-markdown data-background-color="#000"><textarea data-template>
+## Fair and interpretable representations</h2>
+- Left: Examples of the spurious residual and non-spurious translation on<span class="highlight"> CelebFaces Attributes dataset</span>
+- Right: In the semantic attribute domain ... same conclusion (<span class="highlight">changes in the eyes and lips regions</span>)
+
+  <table border="0">
+        <tbody ><tr><td width="30%" colspan="3"></td><td width="70%"></td></tr>
+        <tr>
+            <td width="10%">Translated</td>
+            <td width="20%"><img src="images/celeba_res/006126.jpg" width=60% title="Im1"/></td>
+            <td width="50%" rowspan="2"><img src="images/features.png" width=60% title="features"/></td>
+        </tr>
+        <tr>
+            <td width="10%">Residual</td>
+            <td width="20%"><img src="images/celeba_res/006126res.jpg" width=60% title="RIm1"/></td>
+        </tr></tbody>
+    </table>
+</textarea></section>
+</section>
+
+<section data-background-color="#000">
+<section data-markdown data-background-color="#000"><textarea data-template>
+## Contrastive examples via GANs
+
+- The <span class="highlight">ideal dataset</span> contains an imaginary data point for each person, i.e. the one inside the black box, whereby we <span class="highlight">intervene</span> and set the gender attribute to the opposite that is in real life
+<span class="citeme">Sharmanska, Hendricks, Darrell, NQ, Contrastive examples for addressing the tyranny of the majority, May 2019</span>
+
+  <table>
+        <tbody><tr>
+            <td width="50%"><img src="images/balanced_Page_1.png" width=100% title="Balanced1"/></td>
+            <td width="50%"><img src="images/balanced_Page_2.png" width=60% title="Balanced2"/></td>
+        </tr></tbody>
+    </table>
+
+
+  </textarea></section>
+<section data-markdown><textarea data-template>
+  ![real](images/adult_real.png) <!-- .element: style="height: 7em; border: none;"-->
+  ![contrastive](images/adult_contrastive.png) <!-- .element: style="height: 7em; border: none;"-->
+  ![difference](images/adult_diff.png) <!-- .element: style="height: 7em; border: none;"-->
+  </textarea>
+</section>
+</section>
   <section data-background-color="#000">
     <h2>Homework</h2>
 
