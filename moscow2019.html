@@ -172,7 +172,7 @@
 <section data-markdown data-background-color="#000"><textarea data-template>
 ## Sampling bias &#10132; the tyranny
 
-- In the <span class="highlight">imSitu</span> situation recognition <span class="highlight">dataset</span>, the activity cooking is over 33\% more likely to involve females than males in a training set, and a trained algorithm further amplifies the disparity to 68\%
+- In the <span class="highlight">imSitu</span> situation recognition <span class="highlight">dataset</span>, the activity cooking is over 33\% more likely to involve females than males in a training set, and a trained algorithm further <span class="highlight">amplifies</span> the disparity to 68\%
 <span class="citeme">Zhao et al.: Men also like shopping, EMNLP 2017</span>
 
 <img src="images/women_also_snowboard/example3.png" title="Men also like shopping"/>
@@ -193,7 +193,7 @@
 ## Sampling bias &#10132; the tyranny
 
 - In the <span class="highlight">UCI Adult Income dataset</span>, 30\% of the male individuals earn more than 50K per year (high income), however of the female individuals only 11\% have a high income
-- If an algorithm is trained on this data, the skewness ratio is amplified from 3:1 to 5:1 
+- If an algorithm is trained on this data, the skewness ratio is <span class="highlight">amplified</span> from 3:1 to 5:1 
 - Simply removing sensitive attribute <emph>gender</emph> from the training data is not sufficient
 
 <span class="citeme">Calders \& Verwer: Three na&iumlve Bayes approaches for discrimination-free classification, Data Mining and Knowledge Discovery 2010.</span>
@@ -644,7 +644,7 @@ Three different ways to enforce fairness:
 <section data-markdown data-background-color="#000"><textarea data-template>
 ## Pre-processing
 
-- Simplest pre-processing approach is to reweight training data points, those with higher weight are used more often and vice versa with lower weight.
+- Simplest pre-processing approach is to <span class="highlight">reweight</span> training data points, those with higher weight are used more often and vice versa with lower weight.
 - For example, the weight for a data point with $S=0$ and $Y=1$ is:
 $$
 W(S=0,Y=1) = \frac{\text{Pr}(Y=1)\text{Pr}(S=0)}{\text{Pr}(Y=1,S=0)} = \frac{\\#(S=0)\\#(Y=1)}{\\#(S=0 \land Y=1)}
@@ -657,7 +657,7 @@ $$
 <section data-markdown data-background-color="#000"><textarea data-template>
   ## Pre-processing
 
-- From reweighing to resampling
+- From reweighing to <span class="highlight">resampling</span>
  - Sampling data points with replacement according to weights
 
 <img src="images/resampling.png" width=38% title="Resampling"/>
@@ -744,12 +744,22 @@ What if the vendor data user decides to be fair as well?
 
   <section data-markdown data-background-color="#000"><textarea data-template>
   ## In-processing: Constraint
-- Problem: The formulation is not convex!
+- Problem: The formulation is <span class="highlight">not convex</span>!
 - Need to find a better way to specify the constraints
  - Instead of $P(\hat{Y} =1 |S = 0) = P(\hat{Y} =1 |S = 1)$
  - Limit the differences in the average strength of acceptance
 and rejection across members of different sensitive groups: $Cov(S, f) \approx \frac{1}{N} \sum\limits_{i=1}^{N} (S_i - \bar{S}) \cdot f_i$
  - $Cov(S, f)=0$ &rarr; $S$ and $f$ independent &rarr; statistical parity
+  </textarea></section>
+
+  <section data-markdown data-background-color="#000"><textarea data-template>
+  ## In-processing: Constraint
+- Or, return <span class="highlight">a set of models</span> that trade-off fairness and accuracy
+- Could promote a <span class="highlight">transparent</span> selection of operating points
+
+<img src="images/pareto.png" width=32% title="Pareto Efficient Solutions"/>
+
+        <span class="citeme">NQ and Sharmanska, Recycling privileged learning and distribution matching for fairness, NIPS 2017</span>
   </textarea></section>
 </section>
 
@@ -757,17 +767,22 @@ and rejection across members of different sensitive groups: $Cov(S, f) \approx \
 <section data-markdown><textarea data-template>
 ## In-processing: Likelihood
 - **Example**: Logistic Regression
-  * model: $\; f(x) = Wx + b$, $\; \theta = \\{W, b\\}$
-  * probability score: $\; P(y=1|x, \theta)=\sigma(f(x))$
-  * with dependency on $s$: $\; P(y=1|x, \theta, s)$
+  * model: $f(X) = \theta_1 X_1 + \ldots + \theta_D X_D$,
+  * probability score: $ \text{Pr}(Y=1|X, \theta)=\sigma(f(X))$
+  * with dependency on $S$: $ P(Y=1|X, \theta, S)$
 </textarea></section>
   <section data-markdown><textarea data-template>
   ## In-processing: Likelihood
 
-  - Manipulate the likelihood $P(y=1|x, \theta, s)$ to enforce fairness
-  - Introduce target labels $\bar{y}$
-  - $P(y=1|x, \theta, s) = \sum\limits_{\bar{y}} P(y=1|\bar{y},s)P(\bar{y}|x, \theta, s)$
-  - Intuition: change the learning goal
+  - Manipulate the likelihood $\text{Pr}(Y=1|X, \theta, S)$ to enforce fairness
+  - Introduce <span class="highlight">target labels</span> $\bar{Y}$: $\text{Pr}(Y=1|X, \theta, S) = \sum\limits_{\bar{Y}} \text{Pr}(Y=1|\bar{Y},S)\text{Pr}(\bar{Y}|X, \theta, S)$ (Intuition: change the learning goal)
+  - Choose four free parameters such that $\theta$ is targeting a fair output (consult the slides on <span class="highlight">mutual exclusivity</span> of fairness metrics)!
+  $
+  \text{Pr}(Y=0|\bar{Y}=0,S=0) \;\   \text{Pr}(Y=0|\bar{Y}=0,S=1)
+  $
+  $
+  \text{Pr}(Y=1|\bar{Y}=1,S=0) \;\   \text{Pr}(Y=1|\bar{Y}=1,S=1)
+  $
 
   <span class="citeme">Kehrenberg, Chen, NQ, Tuning Fairness by Marginalizing Latent Target Labels, Oct 2018</span>
   </textarea></section>
@@ -777,7 +792,7 @@ and rejection across members of different sensitive groups: $Cov(S, f) \approx \
 
 <!--   - conceptually works best with *Demographic Parity*
      * but was also extended to Equal Odds/Opportunity -->
-- Transparent and easy to control
+- Controlling fairness with the <span class="highlight">quantities that matter</span> (e.g. TPR, PR/AR (Positive/Acceptance Rate))
 
   ![results1](images/adult_parity_scatter_acc.svg) <!-- .element: style="height: 7em; border: none;"-->
   ![results2](images/adult_parity_scatter_pr_pr_with_br.svg) <!-- .element: style="height: 7em; border: none;"-->
