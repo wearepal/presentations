@@ -196,6 +196,8 @@
 - If an algorithm is trained on this data, the skewness ratio is <span class="highlight">amplified</span> from 3:1 to 5:1 
 - Simply removing sensitive attribute <emph>gender</emph> from the training data is not sufficient
 
+<span class="citeme">Pedreshi, Ruggieri, Turini: Discrimination-aware data mining, KDD, 2008.</span>
+  <div style="height:20px;font-size:1px;">&nbsp;</div>
 <span class="citeme">Calders \& Verwer: Three na&iumlve Bayes approaches for discrimination-free classification, Data Mining and Knowledge Discovery 2010.</span>
 <span class="citeme">Kamishima et al.: Fairness-Aware classifier with prejudice remover regularizer, ECML 2012 </span>
 </textarea></section>
@@ -1049,6 +1051,14 @@ domain via GANs, we need to have real data (e.g. images, tabular data) of both d
 
   </textarea>
 </section>
+<section data-markdown><textarea data-template>
+## Interpretability with contrastive examples
+
+- All previous work with adversarial learning try to <span class="highlight">remove</span> sensitive attributes from data
+- Instead, we use adversarial learning to <span class="highlight">generate</span> data points with pre-specified sensitive attributes (contrastive examples)
+- Contrastive examples can be easily interpreted because they do have the semantic meaning of the input
+- Interpretability in fairness is an integral ingredient to encourage <span class="highlight">public conversations</span> regarding fairness in machine learning
+</textarea></section>
 </section>
   <section data-background-color="#000">
     <h2>Homework</h2>
