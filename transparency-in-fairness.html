@@ -33,19 +33,18 @@
 <body>
 <div id="hidden" style="display:none;"><div id="static-content">
     <footer>
-        <p><font color=#fff>Deep Learning and Bayesian Methods Summer School 2019</font></p>
+        <p><font color=#fff>Conference on Data Science and Optimization 2019, The Fields Institute</font></p>
     </footer>
 </div> </div>
 <div class="reveal"><div class="slides">
 
     <section data-background-color="#000">
-        <h1><span class="highlight">Fairness in <br>Machine Learning</span></h1>
+        <h1><span class="highlight">Transparency in Fairness</span></h1>
 
-        <p>by Novi Quadrianto</p>
-        <p>with thanks to Oliver Thomas and Thomas Kehrenberg</p>
+        <p>by Oliver Thomas</p>
+        <p>Predictive Analytics (PAL) Lab, University of Sussex (UK)</p>
 
         <img src="images/sussex_logo.png" style="width: 14%; border: none;"/>
-        <img src="images/hse_logo.png" style="width: 14%; border: none;"/>
     </section>
 
     <section data-background-color="#000" data-markdown><textarea data-template>
@@ -54,64 +53,7 @@
 - What and why of fairness in machine learning
 - Algorithmic fairness definitions
 - Approaches to enforce algorithmic fairness
-  - Bayesian and deep approaches
-- Interpretability in algorithmic fairness
-</textarea></section>
-
-    <section data-background-color="#000" data-markdown><textarea>
-  ## Take Home Messages
-
-  - Bias (a systematic deviation from a true state) is everywhere
-  - Uncontrolled bias can cause unfairness in machine learning
-  - If you don't think about bias, it will come back to haunt you
-</textarea></section>
-
-    <section data-background-color="#000" data-markdown> <textarea data-template>
-## Machine Learning
-
-  <blockquote><b>A study of computer programmes that improve their performance at some task with data.</b>
-  </blockquote>
-
-- Machine learning for <span class="highlight">automated decision-making</span> (ADM):
- - hiring decisions
- - bail decisions
- - credit approval
- - ...
-
- <span class="citeme">AlgorithmWatch: Automating society, Jan 2019</span>
-</textarea></section>
-
-    <section data-background-color="#000" data-markdown><textarea data-template>
-## Classification
-
-- Given some input $X$, predict a class label $Y \in \\{1, ..., C\\}$
-- $X$ is usually a **vector**
-  - often with high number of dimensions
-- Simplest case: **binary classification**, $Y \in \\{-1, 1\\}$
-  - for example: to give a loan ($Y=1$) or not ($Y=-1$) to this person?
-</textarea></section>
-
-    <section data-background-color="#000" data-markdown><textarea data-template>
-## Classification
-
-- We are looking to train a function $f$ that maps $\mathcal{X}$ to $\mathcal{Y}$
-- The output is the prediction: $\hat{Y} = f(X)$
-- we want $\hat{Y}$ to be as close as possible to the label $Y$
-- $f$ can be implemented as
-  - a deep neural network
-  - an SVM
-  - a Gaussian process model
-</textarea></section>
-
-    <section data-markdown data-background-color="#000"><textarea data-template>
-## Training data
-
-- Training data: a set of pairs $(X,Y)$
-  - input data $X$ with corresponding label $Y$
-- We are looking for model that works well on the training data
-- If we make predictions on data that is *very different* from the training data,
-  the model will perform badly
-- Problem if the training data encode <span class="highlight">societal biases</span>
+- Transparency in algorithmic fairness
 </textarea></section>
 
     <section data-background-color="#fff">
@@ -139,38 +81,10 @@
 <img width=90% src="images/fairML.png" title="Fair ML"/>
 </textarea></section>
 
-    <section data-markdown data-background-color="#000"><textarea data-template>
-## Sources of unfairness
 
-- The problem can be divided into <span class="highlight">two categories</span> (both types of bias can appear together):
- - Bias stemming from biased training data
- - Bias stemming from the algorithms themselves
-</textarea></section>
 
     <section data-markdown data-background-color="#000"><textarea data-template>
-## Bias from training data
-
-- <span class="highlight">Sampling bias</span>: the data sample on which the algorithm is trained for is not representative of the overall population
-- <span class="highlight">Selective labels</span>: only observe the outcome of one side of the decision
-- <span class="highlight">Proxy labels</span>: e.g. for predictive policing, we do not have data on who commits crimes, and only have data on who is arrested
-
-<span class="citeme">Chouldechova \& Roth: The frontiers of fairness in machine learning, Oct 2018</span>
-<span class="citeme">Tolan: Fair and unbiased algorithmic decision making: current state and future challenges, Dec 2018</span>
-</textarea></section>
-
-    <section data-markdown data-background-color="#000"><textarea data-template>
-## Bias from algorithm
-
-- <span class="highlight">Tyranny of the majority</span>: it is simpler to fit to the majority groups than to the minority groups because of generalization
-- <span class="highlight">Feedback effects</span>: model at time $t+1$ has to consider training data plus decisions of the model at time $t$
-
-<span class="citeme">Chouldechova \& Roth: The frontiers of fairness in machine learning, Oct 2018</span>
-<span class="citeme">Tolan: Fair and unbiased algorithmic decision making: current state and future challenges, Dec 2018</span>
-
-</textarea></section>
-
-    <section data-markdown data-background-color="#000"><textarea data-template>
-## Sampling bias &#10132; the tyranny
+## Sampling bias &#10132; tyranny of the majority
 
 - In the <span class="highlight">imSitu</span> situation recognition <span class="highlight">dataset</span>, the activity cooking is over 33\% more likely to involve females than males in a training set, and a trained algorithm further <span class="highlight">amplifies</span> the disparity to 68\%
 <span class="citeme">Zhao et al.: Men also like shopping, EMNLP 2017</span>
@@ -180,7 +94,7 @@
 </textarea></section>
 
     <section data-markdown data-background-color="#000"><textarea data-template>
-## Sampling bias &#10132; the tyranny
+## Sampling bias &#10132; tyranny of the majority
 
 - <span class="highlight">The reason is</span>: the algorithm predicts the gender from the activity and not from looking at the person
 <span class="citeme">Anne Hendricks et al.: Women also snowboard, ECCV 2018</span>
@@ -190,7 +104,7 @@
 </textarea></section>
 
     <section data-markdown data-background-color="#000"><textarea data-template>
-## Sampling bias &#10132; the tyranny
+## Sampling bias &#10132; tyranny of the majority
 
 - In the <span class="highlight">UCI Adult Income dataset</span>, 30\% of the male individuals earn more than 50K per year (high income), however of the female individuals only 11\% have a high income
 - If an algorithm is trained on this data, the skewness ratio is <span class="highlight">amplified</span> from 3:1 to 5:1
@@ -231,125 +145,8 @@
  - Removing indirect discrimination by enforcing <span class="highlight">equality on the outcomes</span> between groups
 </textarea></section>
 
-    <section data-markdown data-background-color="#000"><textarea data-template>
-## Running example
-
-- Task: predict whether someone should be admitted ($Y=1$) or not ($Y=-1$) to the Deep Learning and Bayesian Methods Summer School 2019!
-- Two protected groups: <span style="color: blue">blue</span> group and <span style="color: green">green</span> group
-  - blue: $S=0$, and green: $S=1$
-- In the training set: <span style="color: blue">20% of blue</span> applicants were admitted, <span style="color: green">50% of green</span> applicants were admitted
-</textarea></section>
-
-    <section data-markdown data-background-color="#000"><textarea data-template>
-## Equality on the outcomes
-
-<span class="highlight">Positive prediction outcomes</span>:
-$
-\text{Pr}(\hat{Y}=1 | S=0) = \text{Pr}(\hat{Y}=1 | S=1)
-$
-
-- $\hat{Y} \in \\{1,-1\\}$ and it is our predicted label
-- When evaluating the algorithm on the test set, both groups ($S=0$ and $S=1$)
-  should have the same number of positive predictions ($\hat{Y}=1$)
-- In the summer school admission example: same percentage from both blue and green groups will be admitted (e.g. 30%)
-- This criterion is called <span class="highlight">statistical or demographic parity</span>
-</textarea></section>
-
-    <section data-markdown data-background-color="#000"><textarea data-template>
-## Side effects of statistical parity
-
-- Enforcing statistical parity necessarily produces <span class="highlight">lower accuracy</span>
-- Consider this: we want to enforce 30% acceptance for the <span style="color: blue">blue</span> group but the training data only has 20% accepted
-  - some individuals of the <span style="color: blue">blue</span> group have to be "misclassified" ($\hat{Y} = 1$ instead of $\hat{Y} = -1$)
-    to make the numbers work
-- Not surprising because we are computing accuracy against the biased data
-</textarea></section>
-
-    <section data-markdown data-background-color="#000"><textarea data-template>
-## Fairness &ndash; Accuracy trade-off
-
-- Usually we don't want to have too bad accuracy with respect to the (bias) data
-- Goal: find algorithm that produces fair result at highest possible accuracy
-- Otherwise it's easy: a *random classifier* is very fair (but useless)
-  - Random classifier: just predict $\hat{Y} = 1$ 50% of the time regardless of input
-</textarea></section>
-
-
-    <section data-markdown data-background-color="#000"><textarea data-template>
-## Back to the running example
-
-Consider again the summer school admission example:
-- Two features: test/essay score and group (blue and green) of individuals
-- Task: predict if they should be admitted ($Y=1$) or not ($Y=-1$)
-- Composition of the training dataset: 50% <span style="color: blue">blue</span>, 50% <span style="color: green">green</span>. 20% of <span style="color: blue">blue</span> have $Y=1$, 50% of <span style="color: green">green</span> have $Y=1$
-- The dataset is heavily skewed but let's ignore that for now and just try to make accurate predictions for this dataset
-</textarea></section>
-
-    <section data-markdown data-background-color="#000"><textarea data-template>
-## Accurate predictions
-
-(Reminder: 20% of <span style="color: blue">blue</span> have $Y=1$, 50% of <span style="color: green">green</span> have $Y=1$)
-
-- A simple way to make relatively accurate predictions:
- - for <span style="color: green">green</span> individuals base the prediction on test/essay score
- - for <span style="color: blue">blue</span> individuals ignore test/essay score and always predict $Y=-1$
-- Result: up to 90% accuracy (80% in <span style="color: blue">blue</span> group and 100% in <span style="color: green">green</span> group)
-</textarea></section>
-
-    <section data-markdown data-background-color="#000"><textarea data-template>
-## Accurate but not fair
-
-- The dataset was already skewed but the algorithm's prediction are even more "unfair"
-- This is because it's easier to just base the decision on group information than to figure out the effect of the test score
-- This is a toy case but it can happen with real data too
-- <span class="highlight">What we do not want</span>: the algorithm "being lazy" in a subgroup
-- <span class="highlight">What we want</span>: the algorithm should make equally good predictions for all subgroups
-</textarea></section>
-
-    <section data-markdown data-background-color="#000"><textarea data-template>
-## Equality on the outcomes
-
-<span class="highlight">TPR outcomes</span>:
-$
-\text{Pr}(\hat{Y}=1 | S=0, Y=1) = \text{Pr}(\hat{Y}=1 | S=1, Y=1)
-$
-
-- with $Y, \hat{Y} \in \\{1,-1\\}$ and $S \in \\{0,1\\}$
-- The probability of predicting positive class, given that the true label is positive, should be the same for all groups
-- In the summer school admission example: both blue and green groups will have the same true positive rate TPR (e.g. 60%)
-- This criterion is called <span class="highlight">equality of opportunity</span>
-</textarea></section>
-
-    <section data-markdown data-background-color="#000"><textarea data-template>
-## Equalised odds
-
-<span class="highlight">TPR and TNR outcomes</span>:
-$
-\text{Pr}(\hat{Y}=y | S=0, Y=y) = \text{Pr}(\hat{Y}=y | S=1, Y=y)
-$
-
-for all possible values for $y$
-
-- Stricter version of equality of opportunity
-- TPR and TNR (true negative rate) must be the same in all groups
-  - TPR = TP / (TP + FN), TNR = TN / (TN + FP)
-</textarea></section>
-
-    <section data-markdown data-background-color="#000"><textarea data-template>
-## Accuracy&ndash;Fairness trade-off
-
-- EOpp (Equality of Opportunity) and EOdd (Equalised Odds) both assume that the training data is correct
-- A perfect classifier (that always predicts the correct label) fulfills EOpp and EOdd
-- However: a random classifier does as well
-  - a random classifier achieves 50% TPR (and TNR) in all groups
-- Achieving EOpp or EOdd at low accuracy is easy
-</textarea></section>
-
-    <section>
         <section data-markdown data-background-color="#000"><textarea data-template>
-    ## Mini-summary
-
-Several notions of statistical fairness:
+    ## Several notions of statistical fairness:
  - Statistical parity
  - Equalised odds
  - Equality of opportunity
@@ -419,211 +216,6 @@ $$
 
     <section data-markdown data-background-color="#000"><textarea data-template>
 ## Which fairness notion to use?
-- In our summer school, we have 20K applicants (50% <span style="color: blue">blue</span>, 50% <span style="color: green">green</span>), and we can only accept 50% of all applicants
-- Our entrance test is highly predictive of success
- - 80% of those who pass the test will successfully graduate
- - And, only 10% of those who don't pass the test will graduate
-- We have a lot of applications from people who don't pass the test
- - 60% of <span style="color: blue">blue</span> applicants pass the test
- - 40% of <span style="color: green">green</span> applicants pass the test
-</textarea></section>
-
-    <section>
-        <h3>Confusion Tables</h3>
-        <h4><span style="color: blue">blue</span> Applicants</h4>
-        <table>
-            <thead><tr>
-                <th></th>
-                <th>Accepted</th>
-                <th>Not</th>
-            </tr></thead>
-            <tbody><tr>
-                <td>Actually Graduate</td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>Don't Graduate</td>
-                <td></td>
-                <td></td>
-            </tr></tbody>
-        </table>
-        <br>
-        <h4><span style="color: green">green</span> Applicants</h4>
-        <table>
-            <thead><tr>
-                <th></th>
-                <th>Accepted</th>
-                <th>Not</th>
-            </tr></thead>
-            <tbody><tr>
-                <td>Actually Graduate</td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>Don't Graduate</td>
-                <td></td>
-                <td></td>
-            </tr></tbody>
-        </table>
-    </section>
-
-    <section data-background-color="#000">
-        <p>Solving this problem with <span class="highlight">statistical parity</span> fairness metric?</p>
-        <section>???</section>
-        <section>Select 50% of applicants of both <span style="color: blue">blue</span> and <span style="color: green">green</span> applicants</section>
-        <section>
-            <small>
-                <h4><span style="color: blue">blue</span> Applicants</h4>
-                <table>
-                    <thead><tr>
-                        <th></th>
-                        <th>Accepted</th>
-                        <th>Not</th>
-                    </tr></thead>
-                    <tbody><tr>
-                        <td>Actually Graduate</td>
-                        <td>4000 (80%)</td>
-                        <td>1200</td>
-                    </tr>
-                    <tr>
-                        <td>Don't Graduate</td>
-                        <td>1000 (20%)</td>
-                        <td>3800</td>
-                    </tr>
-                    <tr><td></td><td>5000</td><td></td></tr></tbody>
-                </table>
-                <br>
-                <h4><span style="color: green">green</span> Applicants</h4>
-                <table>
-                    <thead><tr>
-                        <th></th>
-                        <th>Accepted</th>
-                        <th>Not</th>
-                    </tr></thead>
-                    <tbody><tr>
-                        <td>Actually Graduate</td>
-                        <td>3300</td>
-                        <td>500 (10%)</td>
-                    </tr>
-                    <tr>
-                        <td>Don't Graduate</td>
-                        <td>1700</td>
-                        <td>4500 (90%)</td>
-                    </tr>
-                    <tr><td></td><td>5000</td><td></td></tr></tbody>
-                </table>
-            </small>
-            <p>
-                10% of qualified <span style="color: blue">blue</span> applicants are being rejected whilst an additional 10% of unqualified <span style="color: green">green</span> are being accepted</p>
-        </section>
-    </section>
-
-    <section data-background-color="#000">
-        <p>Solving this problem with <span class="highlight">equality of opportunity</span> fairness metric?</p>
-        <section>???</section>
-        <section>Select 55.5% of <span style="color: blue">blue</span> applicants and 44.5% of <span style="color: green">green</span> applicants, giving a TPR of 85.4% for both groups.</section>
-        <section>
-            <small>
-                <h4><span style="color: blue">blue</span> Applicants</h4>
-                <table>
-                    <thead><tr>
-                        <th></th>
-                        <th>Accepted</th>
-                        <th>Not</th>
-                    </tr></thead>
-                    <tbody><tr>
-                        <td>Actually Graduate</td>
-                        <td>4440</td>
-                        <td>760</td>
-                    </tr>
-                    <tr>
-                        <td>Don't Graduate</td>
-                        <td>1110</td>
-                        <td>3690</td>
-                    </tr>
-                    <tr><td></td><td>5550</td><td></td></tr></tbody>
-                </table>
-                <br>
-                <h4><span style="color: green">green</span> Applicants</h4>
-                <table>
-                    <thead><tr>
-                        <th></th>
-                        <th>Accepted</th>
-                        <th>Not</th>
-                    </tr></thead>
-                    <tbody><tr>
-                        <td>Actually Graduate</td>
-                        <td>3245</td>
-                        <td>555</td>
-                    </tr>
-                    <tr>
-                        <td>Don't Graduate</td>
-                        <td>1205</td>
-                        <td>4995</td>
-                    </tr>
-                    <tr><td></td><td>4450</td><td></td></tr></tbody>
-                </table>
-            </small>
-
-            <p>4.5% of qualified <span style="color: blue">blue</span> applicants are being rejected whilst an additional 4.5% of unqualified <span style="color: green">green</span> are being accepted</p>
-        </section>
-
-    </section>
-
-    <section data-background-color="#000">
-        <p>Solving this problem with <span class="highlight">predictive parity</span> fairness metric?</p>
-        <section>???</section>
-        <section>Select only the applicants who pass the test</section>
-        <section>
-            <small>
-                <h4><span style="color: blue">blue</span> Applicants</h4>
-                <table>
-                    <thead><tr>
-                        <th></th>
-                        <th>Accepted</th>
-                        <th>Not</th>
-                    </tr></thead>
-                    <tbody><tr>
-                        <td>Actually Graduate</td>
-                        <td>4800</td>
-                        <td>400</td>
-                    </tr>
-                    <tr>
-                        <td>Don't Graduate</td>
-                        <td>1200</td>
-                        <td>3600</td>
-                    </tr>
-                    <tr><td></td><td>6000</td><td></td></tr></tbody>
-                </table>
-                <br>
-                <h4><span style="color: green">green</span> Applicants</h4>
-                <table>
-                    <thead><tr>
-                        <th></th>
-                        <th>Accepted</th>
-                        <th>Not</th>
-                    </tr></thead>
-                    <tbody><tr>
-                        <td>Actually Graduate</td>
-                        <td>3200</td>
-                        <td>600</td>
-                    </tr>
-                    <tr>
-                        <td>Don't Graduate</td>
-                        <td>800</td>
-                        <td>5400</td>
-                    </tr>
-                    <tr><td></td><td>4000</td><td></td></tr></tbody>
-                </table>
-            </small>
-            <p>Could lead to systemic reinforcement of bias</p>
-        </section>
-    </section>
-
-    <section data-markdown data-background-color="#000"><textarea data-template>
-## Which fairness notion to use?
 - There's no right answer, all the above are "fair"
 - It's important to consult <span class="highlight">domain experts</span> to find which is the best fit for each problem
 - There is no one-size fits all
@@ -657,21 +249,6 @@ $$
 - To make the reweighted dataset to be a <span class="highlight">perfect dataset</span> ($Y \perp S$)
 
 <span class="citeme">Kamiran and Calders, Data preprocessing techniques for classification without discrimination, KAIS 2012</span>
-</textarea></section>
-
-    <section data-markdown data-background-color="#000"><textarea data-template>
-  ## Pre-processing
-
-- From reweighing to <span class="highlight">resampling</span>
- - Sampling data points with replacement according to weights
-
-<img src="images/resampling.png" width=38% title="Resampling"/>
-<img src="images/illustration.png" width=32% title="Illustration"/>
-
-<span class="citeme">Kamiran
- and Calders, Data preprocessing techniques for classification without discrimination, KAIS 2012</span>
-<span class="citeme">Sharmanska, Hendricks, Darrell, NQ, Contrastive examples for addressing the tyranny of the majority, May 2019</span>
-
 </textarea></section>
 
     <section data-markdown data-background-color="#000"><textarea data-template>
@@ -727,112 +304,18 @@ What if the vendor data user decides to be fair as well?
   </textarea></section>
     </section>
 
-    <section data-markdown data-background-color="#000"><textarea data-template>
-    ## In-processing
-- Specify fairness metrics as constraints on learning
-- Optimise for accuracy under those constraints
-- No free lunch: additional constraints lower accuracy
-  </textarea></section>
-
-    <section>
-        <section data-markdown data-background-color="#000"><textarea data-template>
-  ## In-processing: Constraint
-
-- Given we have a loss function, $\mathcal{L}(\theta)$
-- In an unconstrained classifier, we would expect to see $\underset{\theta}{\min}{\mathcal{L}(\theta)}$
-- To enforce <span class="highlight">statistical parity</span> metric, a constraint is added $$
-\begin{aligned}
-&\underset{\theta}{\min}  \mathcal{L}(\theta) \\
-&\text{subject to  }  P(\hat{Y} =1 |S = 0) = P(\hat{Y} =1 |S = 1)  \\
-\end{aligned}$$
-- Problem: The formulation is <span class="highlight">not convex</span>!
-
-        <span class="citeme">Zafar et al., Fairness constraints: Mechanisms for fair classification, AISTATS 2017</span>
-  </textarea></section>
-
-        <section data-markdown data-background-color="#000"><textarea data-template>
-  ## In-processing: Constraint
-- Need to find a better way to specify the constraints
- - Instead of $P(\hat{Y} =1 |S = 0) = P(\hat{Y} =1 |S = 1)$
- - Limit the differences in the average strength of acceptance
-and rejection across members of different sensitive groups: $Cov(S-\hat{S}, f)  = \mathbf{E}[(S-\hat{S})f(X)] - \mathbf{E}[(S-\hat{S})]\mathbf{E}[f(X)]$ $\approx \frac{1}{N} \sum\limits_{i=1}^{N} (S_i - \hat{S}) \cdot f_i$
- - $Cov(S-\hat{S}, f)=0$ &rarr; equal positive rates across groups &rarr; <span class="highlight">statistical parity</span>
-  </textarea></section>
-
-        <section data-markdown data-background-color="#000"><textarea data-template>
-  ## In-processing: Constraint
-- Or, return <span class="highlight">a set of models</span> that trade-off fairness and accuracy
-- Could promote a <span class="highlight">transparent</span> selection of operating points
-
-<img src="images/pareto.png" width=33% title="Pareto Efficient Solutions"/>
-
-        <span class="citeme">NQ and Sharmanska, Recycling privileged learning and distribution matching for fairness, NIPS 2017</span>
-  </textarea></section>
-    </section>
-
-    <section data-background-color="#000">
-        <section data-markdown><textarea data-template>
-## In-processing: Likelihood
-- **Example**: Logistic Regression
-  * model: $f(X) = \theta_1 X_1 + \ldots + \theta_D X_D$,
-  * probability score: $ \text{Pr}(Y=1|X, \theta)=\sigma(f(X))$
-  * with dependency on sensitive grouping $S$: $ P(Y=1|X, \theta, S)$
-</textarea></section>
-        <section data-markdown><textarea data-template>
-  ## In-processing: Likelihood
-
-  - Manipulate the likelihood $\text{Pr}(Y=1|X, \theta, S)$ to enforce fairness
-  - Introduce (latent) <span class="highlight">target labels</span> $\bar{Y}$: $\text{Pr}(Y=1|X, \theta, S) = \sum\limits_{\bar{Y}} \text{Pr}(Y=1|\bar{Y},S)\text{Pr}(\bar{Y}|X, \theta, S)$ (Intuition: change the learning goal)
-  - Choose four free parameters such that $\theta$ is targeting a fair output (consult the slides on <span class="highlight">mutual exclusivity</span> of fairness metrics)!
-  $
-  \text{Pr}(Y=0|\bar{Y}=0,S=0) \;\   \text{Pr}(Y=0|\bar{Y}=0,S=1)
-  $
-  $
-  \text{Pr}(Y=1|\bar{Y}=1,S=0) \;\   \text{Pr}(Y=1|\bar{Y}=1,S=1)
-  $
-
-  <span class="citeme">Kehrenberg, Chen, NQ, Tuning Fairness by Marginalizing Latent Target Labels, Oct 2018</span>
-  </textarea></section>
-
-        <section data-markdown data-background-color="#000"><textarea data-template>
-  ## In-processing: Likelihood
-
-            <!--   - conceptually works best with *Demographic Parity*
-                 * but was also extended to Equal Odds/Opportunity -->
-- Controlling fairness with the <span class="highlight">quantities that matter</span> (e.g. TPR, and PR/AR)
-
-  ![results1](images/adult_parity_scatter_acc.svg) <!-- .element: style="height: 7em; border: none;"-->
-  ![results2](images/adult_parity_scatter_pr_pr_with_br.svg) <!-- .element: style="height: 7em; border: none;"-->
-
-  </textarea></section>
-
-        <!-- <section data-markdown><textarea data-template>
-        ## In-process: Likelihood
-
-        ![results](images/adult_race_PR.png) <!-- .element: style="width: 70%; border: none;" -->
-        <!-- </textarea></section> -->
-    </section>
-
-
-    <section data-markdown data-background-color="#000"><textarea data-template>
-## Post-processing
-- Train two separate models: one for all datapoints with $S=0$ and another one for $S=1$
-- The thresholds of the model are then tweaked until they produce the same <i>positive rate</i>, i.e. $P(\hat{Y}=1|S=0)=P(\hat{Y}=1|S=1)$
-- Disadvantage: $S$ has to be known for making predictions in order to choose the correct model
-
-<span class="citeme">Calders \& Verwer: Three na&iumlve Bayes approaches for discrimination-free classification, Data Mining and Knowledge Discovery 2010.</span>
-
-  </textarea></section>
 
     <section>
         <p>&nbsp;</p>
         <p>&nbsp;</p>
-        <h1>Interpretability in fairness</h1>
+        <h1>Transparency in fairness</h1>
     </section>
+
+
 
     <section>
         <section data-markdown data-background-color="#000"><textarea data-template>
-## Fair and interpretable representations
+## Fair representations in the data domain
 - A fair representation $T_\omega(X)$ which has the sensitive attribute removed, but remains in the space of $X$
 - Main disentangling assumption:
 $\phi(X) = \phi(T_{\omega}(X)) + \underbrace{\phi (\lnot T_{\omega}(X))}_{\text{Spurious}}
@@ -845,7 +328,7 @@ $
   </textarea></section>
 
         <section data-markdown data-background-color="#000"><textarea data-template>
-## Fair and interpretable representations
+## Fair representations in the data domain
 
 <img src="images/Architecture.png" width=70% title="Architecture"/>
 
@@ -855,7 +338,7 @@ domain via GANs, we need to have real data (e.g. images, tabular data) of both d
   </textarea></section>
 
         <section data-background-color="#000">
-            <h2> Fair and interpretable representations</h2>
+            <h2>Fair representations in the data domain</h2>
 
             <table>
                 <tbody><tr>
@@ -871,7 +354,7 @@ domain via GANs, we need to have real data (e.g. images, tabular data) of both d
         </section>
 
         <section data-background-color="#000">
-            <h2>Fair and interpretable representations</h2>
+            <h2>Fair representations in the data domain</h2>
             <p>Interpretable can be fair!</p>
 
             <small>
@@ -960,7 +443,7 @@ domain via GANs, we need to have real data (e.g. images, tabular data) of both d
         </section>
 
         <section data-markdown data-background-color="#000"><textarea data-template>
-## Fair and interpretable representations</h2>
+## Fair representations in the data domain</h2>
             - <span class="highlight">Left</span>: Examples of the spurious residual and non-spurious translation on<span class="highlight"> CelebFaces Attributes dataset</span>
 - <span class="highlight">Right</span>: In the semantic attribute domain ... same conclusion (<span class="highlight">changes in the eyes and lips regions</span>)
 <center>
@@ -980,9 +463,23 @@ domain via GANs, we need to have real data (e.g. images, tabular data) of both d
 </textarea></section>
     </section>
 
+        <section data-markdown data-background-color="#000"><textarea data-template>
+## Deep generative modelling
+$$
+\begin{aligned}
+&\underset{\theta}{\min}  \mathbf{E}_{x}(-\text{log} p_\theta(x))   \\
+\end{aligned}$$
+- Representing data points in a latent space 
+- Disentangling the latent space into two components:
+ - <span class="highlight">Spurious</span>: dependent on the sensitive attribute.
+ - <span class="highlight">Non-Spurious</span>: independent of the sensitive attribute.
+- No GANs? 
+ - GANs have no encoder to infer the latent space
+  </textarea></section>
+
     <section data-background-color="#000">
         <section data-markdown data-background-color="#000"><textarea data-template>
-## Contrastive examples via GANs
+## Contrastive examples
 
 - The <span class="highlight">ideal dataset</span> contains an imaginary data point for each person, i.e. the one inside the black box, whereby we <span class="highlight">intervene</span> and set the gender attribute to the opposite that is in real life
 <span class="citeme">Sharmanska, Hendricks, Darrell, NQ, Contrastive examples for addressing the tyranny of the majority, May 2019</span>
@@ -1057,7 +554,6 @@ domain via GANs, we need to have real data (e.g. images, tabular data) of both d
 - All previous work with adversarial learning try to <span class="highlight">remove</span> sensitive attributes from data
 - Instead, we use adversarial learning to <span class="highlight">generate</span> data points with pre-specified sensitive attributes (contrastive examples)
 - Contrastive examples can be easily interpreted because they do have the semantic meaning of the input
-- Interpretability in fairness is an integral ingredient to encourage <span class="highlight">public conversations</span> regarding fairness in machine learning
 </textarea></section>
     </section>
     <section data-background-color="#000">
@@ -1083,7 +579,7 @@ domain via GANs, we need to have real data (e.g. images, tabular data) of both d
 Topics:
 - Uncertainty in fairness
 - Fairness in a dynamic setting
-- Interpretability in fairness
+- Transparency in fairness
  </textarea> </section>
 
 
