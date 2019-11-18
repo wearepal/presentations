@@ -315,7 +315,7 @@ What if the vendor data user decides to be fair as well?
 
     <section>
         <section data-markdown data-background-color="#000"><textarea data-template>
-## Fair representations in the data domain
+## Fair in the data domain
 - A fair representation $T_\omega(X)$ which has the sensitive attribute removed, but remains in the space of $X$
 - Main disentangling assumption:
 $\phi(X) = \phi(T_{\omega}(X)) + \underbrace{\phi (\lnot T_{\omega}(X))}_{\text{Spurious}}
@@ -328,7 +328,7 @@ $
   </textarea></section>
 
         <section data-markdown data-background-color="#000"><textarea data-template>
-## Fair representations in the data domain
+## Fair in the data domain
 
 <img src="images/Architecture.png" width=70% title="Architecture"/>
 
@@ -338,7 +338,7 @@ domain via GANs, we need to have real data (e.g. images, tabular data) of both d
   </textarea></section>
 
         <section data-background-color="#000">
-            <h2>Fair representations in the data domain</h2>
+            <h2>Fair in the data domain</h2>
 
             <table>
                 <tbody><tr>
@@ -354,7 +354,7 @@ domain via GANs, we need to have real data (e.g. images, tabular data) of both d
         </section>
 
         <section data-background-color="#000">
-            <h2>Fair representations in the data domain</h2>
+            <h2>Fair in the data domain</h2>
             <p>Interpretable can be fair!</p>
 
             <small>
@@ -443,7 +443,7 @@ domain via GANs, we need to have real data (e.g. images, tabular data) of both d
         </section>
 
         <section data-markdown data-background-color="#000"><textarea data-template>
-## Fair representations in the data domain</h2>
+## Fair in the data domain</h2>
             - <span class="highlight">Left</span>: Examples of the spurious residual and non-spurious translation on<span class="highlight"> CelebFaces Attributes dataset</span>
 - <span class="highlight">Right</span>: In the semantic attribute domain ... same conclusion (<span class="highlight">changes in the eyes and lips regions</span>)
 <center>
@@ -464,17 +464,15 @@ domain via GANs, we need to have real data (e.g. images, tabular data) of both d
     </section>
 
         <section data-markdown data-background-color="#000"><textarea data-template>
-## Deep generative modelling
-$$
+## Fair, and transferable
+- We use deep generative modelling: $$
 \begin{aligned}
-&\underset{\theta}{\min}  \mathbf{E}_{x}(-\text{log} p_\theta(x))   \\
+&\underset{\theta}{\min}  \mathbf{E}_{x}(-\text{log} p_\theta(x|z)) + \lambda I(z_d,s)  \\
 \end{aligned}$$
 - Representing data points in a latent space 
-- Disentangling the latent space into two components:
+- Disentangling the latent space (previous work was on the reconstruction space) into two components:
  - <span class="highlight">Spurious</span>: dependent on the sensitive attribute.
  - <span class="highlight">Non-Spurious</span>: independent of the sensitive attribute.
-- No GANs? 
- - GANs have no encoder to infer the latent space
   </textarea></section>
 
     <section data-background-color="#000">
@@ -556,32 +554,10 @@ $$
 - Contrastive examples can be easily interpreted because they do have the semantic meaning of the input
 </textarea></section>
     </section>
-    <section data-background-color="#000">
-        <h2>Homework</h2>
 
-        <!-- <br/>
-        <br/>
-        <br/> -->
-        <h3><span class="highlight">Practical Session</span></h3>
-        <p>https://tinyurl.com/ethicml</p>
-        <h3><span class="highlight">Further Resources</span></h3>
-        <h4>Google Crash Course: Fairness in ML</h4>
-        <p>https://developers.google.com/machine-learning/crash-course/fairness</p>
-        <h4>Fast.ai lecture with Fairness discussion</h4>
-        <p>http://course18.fast.ai/lessons/lesson13.html</p>
-    </section>
-
-    <section data-markdown data-background-color="#000"><textarea data-template>
-## Shameless Plug
-
-<p>Several PostDoc and PhD student positions will be available soon (for details contact <span class="highlight">n.quadrianto at sussex.ac.uk</span>)</p>
-
-Topics:
-- Uncertainty in fairness
-- Fairness in a dynamic setting
-- Transparency in fairness
- </textarea> </section>
-
+<section data-markdown><textarea data-template>
+## Take home messages
+</textarea></section>
 
 
 </div></div>
