@@ -31,30 +31,41 @@
     }
 </style>
 <body>
-<div id="hidden" style="display:none;"><div id="static-content">
-    <footer>
-        <p><font color=#fff>Conference on Data Science and Optimization 2019, The Fields Institute</font></p>
-    </footer>
-</div> </div>
+<div id="hidden" style="display:none;">
+    <div id="static-content">
+        <footer>
+            <p><font color=#fff>Conference on Data Science and Optimization 2019, The Fields Institute</font></p>
+        </footer>
+    </div>
+</div>
 <div class="reveal"><div class="slides">
 
     <section data-background-color="#000">
         <h1><span class="highlight">Transparency in Fairness</span></h1>
 
-        <p>by Oliver Thomas</p>
-        <p>Predictive Analytics (PAL) Lab, University of Sussex (UK)</p>
+        <p>Oliver Thomas - ot44 at sussex.ac.uk</p>
+        <p>Predictive Analytics Lab (PAL), University of Sussex, UK</p>
 
         <img src="images/sussex_logo.png" style="width: 14%; border: none;"/>
     </section>
 
     <section data-background-color="#000" data-markdown><textarea data-template>
-## Contents
+        ## Contents
 
-- What and why of fairness in machine learning
-- Algorithmic fairness definitions
-- Approaches to enforce algorithmic fairness
-- Transparency in algorithmic fairness
-</textarea></section>
+        - What and why of fairness in machine learning
+        - Algorithmic fairness definitions
+        - Approaches to enforce algorithmic fairness
+        - Transparency in algorithmic fairness
+    </textarea></section>
+
+    <section data-markdown><textarea data-template>
+    ## Take home messages
+
+    - Fairness is _Domain Specific_.
+    - If you don't think about bias, it will come back to haunt you.
+    - Accuracy only tells part of the story.
+    - Transparency can be a positive addition to your model.
+    </textarea></section>
 
     <section data-background-color="#fff">
         <img src="images/pp_mb.png" width=72% title="Pro-Publica - Machine Bias"/>
@@ -64,68 +75,70 @@
         <img width=72% src="images/amazon.png" title="Amazon CV Screening"/>
     </section>
 
-    <section data-background-color="#fff">
-        <img width=90% src="images/sveaekonomi.png" title="Svea Ekonomi"/>
-    </section>
+<!--    <section data-background-color="#fff">-->
+<!--        <img width=90% src="images/sveaekonomi.png" title="Svea Ekonomi"/>-->
+<!--    </section>-->
+
+<!--    <section data-background-color="#fff">-->
+<!--        <img src="images/norman.png" width=58% title="Norman"/>-->
+<!--    </section>-->
 
     <section data-background-color="#fff">
-        <img src="images/norman.png" width=58% title="Norman"/>
+        <img src="images/bots-at-the-gate.png" width=40% title="Bots At The Gate"/>
     </section>
 
     <section data-markdown data-background-color="#000"><textarea data-template>
-## Fairness in machine learning
+        ## Fairness in Machine Learning
 
-- A fair machine learning system takes biased datasets and outputs non-discriminatory decisions to people with differing <span class="highlight">protected attributes</span> such as race, gender, and age
-- For example, ensuring classifier to be equally accurate on male and female populations
+        - A fair machine learning system takes biased datasets and outputs non-discriminatory decisions to people with differing <span class="highlight">protected attributes</span> such as race, gender, and age
+        - For example, ensuring classifier to be equally accurate on male and female populations
 
-<img width=90% src="images/fairML.png" title="Fair ML"/>
-</textarea></section>
+        <img width=90% src="images/fairML.png" title="Fair ML"/>
+    </textarea></section>
 
-
-
-    <section data-markdown data-background-color="#000"><textarea data-template>
-## Sampling bias &#10132; tyranny of the majority
-
-- In the <span class="highlight">imSitu</span> situation recognition <span class="highlight">dataset</span>, the activity cooking is over 33\% more likely to involve females than males in a training set, and a trained algorithm further <span class="highlight">amplifies</span> the disparity to 68\%
-<span class="citeme">Zhao et al.: Men also like shopping, EMNLP 2017</span>
-
-<img src="images/women_also_snowboard/example3.png" title="Men also like shopping"/>
-
-</textarea></section>
-
-    <section data-markdown data-background-color="#000"><textarea data-template>
-## Sampling bias &#10132; tyranny of the majority
-
-- <span class="highlight">The reason is</span>: the algorithm predicts the gender from the activity and not from looking at the person
-<span class="citeme">Anne Hendricks et al.: Women also snowboard, ECCV 2018</span>
-
-<img src="images/women_also_snowboard/example2.png" title="Women also snowboard"/>
-
-</textarea></section>
-
-    <section data-markdown data-background-color="#000"><textarea data-template>
-## Sampling bias &#10132; tyranny of the majority
-
-- In the <span class="highlight">UCI Adult Income dataset</span>, 30\% of the male individuals earn more than 50K per year (high income), however of the female individuals only 11\% have a high income
-- If an algorithm is trained on this data, the skewness ratio is <span class="highlight">amplified</span> from 3:1 to 5:1
-- Simply removing sensitive attribute <emph>gender</emph> from the training data is not sufficient
-
-<span class="citeme">Pedreshi, Ruggieri, Turini: Discrimination-aware data mining, KDD, 2008.</span>
-  <div style="height:20px;font-size:1px;">&nbsp;</div>
-<span class="citeme">Calders \& Verwer: Three na&iumlve Bayes approaches for discrimination-free classification, Data Mining and Knowledge Discovery 2010.</span>
-<span class="citeme">Kamishima et al.: Fairness-Aware classifier with prejudice remover regularizer, ECML 2012 </span>
-</textarea></section>
 
 
     <section data-markdown data-background-color="#000"><textarea data-template>
-## Enforcing fairness
+        ## Sampling bias &#10132; tyranny of the majority
 
-- No matter in what way the data is biased: we want to enforce fairness
-  - Idea: just tell the algorithm that it should treat all groups in the same way
-- Question: <span class="highlight">how do we define fairness?</span>
-  - Really hard question
-  - IN SHORT, it is an application-specific
-</textarea></section>
+        - In the <span class="highlight">imSitu</span> situation recognition <span class="highlight">dataset</span>, the activity cooking is over 33\% more likely to involve females than males in a training set, and a trained algorithm further <span class="highlight">amplifies</span> the disparity to 68\%
+        <span class="citeme">Zhao et al.: Men also like shopping, EMNLP 2017</span>
+
+        <img src="images/women_also_snowboard/example3.png" title="Men also like shopping"/>
+    </textarea></section>
+
+    <section data-markdown data-background-color="#000"><textarea data-template>
+        ## Sampling bias &#10132; tyranny of the majority
+
+        - <span class="highlight">The reason is</span>: the algorithm predicts the gender from the activity and not from looking at the person
+        <span class="citeme">Anne Hendricks et al.: Women also snowboard, ECCV 2018</span>
+
+        <img src="images/women_also_snowboard/example2.png" title="Women also snowboard"/>
+    </textarea></section>
+
+<!--    <section data-markdown data-background-color="#000"><textarea data-template>-->
+<!--        ## Sampling bias &#10132; tyranny of the majority-->
+<!--        -->
+<!--        - In the <span class="highlight">UCI Adult Income dataset</span>, 30\% of the male individuals earn more than 50K per year (high income), however of the female individuals only 11\% have a high income-->
+<!--        - If an algorithm is trained on this data, the skewness ratio is <span class="highlight">amplified</span> from 3:1 to 5:1-->
+<!--        - Simply removing sensitive attribute <emph>gender</emph> from the training data is not sufficient-->
+<!--        -->
+<!--        <span class="citeme">Pedreshi, Ruggieri, Turini: Discrimination-aware data mining, KDD, 2008.</span>-->
+<!--          <div style="height:20px;font-size:1px;">&nbsp;</div>-->
+<!--        <span class="citeme">Calders \& Verwer: Three na&iumlve Bayes approaches for discrimination-free classification, Data Mining and Knowledge Discovery 2010.</span>-->
+<!--        <span class="citeme">Kamishima et al.: Fairness-Aware classifier with prejudice remover regularizer, ECML 2012 </span>-->
+<!--    </textarea></section>-->
+
+
+    <section data-markdown data-background-color="#000"><textarea data-template>
+        ## Enforcing fairness
+
+        - No matter in what way the data is biased: we want to enforce fairness
+          - Idea: just tell the algorithm that it should treat all groups in the same way
+        - Question: <span class="highlight">how do we define fairness?</span>
+          - Really hard question
+          - IN SHORT, it is an application-specific
+    </textarea></section>
 
     <section>
         <p>&nbsp;</p>
@@ -134,94 +147,117 @@
     </section>
 
     <section data-markdown data-background-color="#000"><textarea data-template>
-## Fairness definitions
+        ## Fairness definitions
 
-- Discrimination in the law:
- - <span class="highlight">Direct discrimination</span> with respect to intent
- - <span class="highlight">Indirect discrimination</span> with respect to consequences
-<span class="citeme">Article 21, Charter of Fundamental Rights</span>
-- From the legal context to algorithmic fairness, e.g.:
- - Removing direct discrimination by <span class="highlight">not using group information at prediction</span>
- - Removing indirect discrimination by enforcing <span class="highlight">equality on the outcomes</span> between groups
-</textarea></section>
-
-        <section data-markdown data-background-color="#000"><textarea data-template>
-    ## Several notions of statistical fairness:
- - Statistical parity
- - Equalised odds
- - Equality of opportunity
- - Predictive parity
-  </textarea></section>
-
-        <section data-markdown data-background-color="#000"><textarea data-template>
-    ## Statistical fairness notions
-
-- Statistical parity (
-   $
-  \hat{Y} \perp S
-  $):
-    $
-    \text{Pr}(\hat{Y}=1 | S=0) = \text{Pr}(\hat{Y}=1 | S=1)
-    $
-- Equalised odds ($
-  \hat{Y} \perp S | Y
-  $):
-    $
-    \text{Pr}(\hat{Y}=y | S=0, Y=y) = \text{Pr}(\hat{Y}=y | S=1, Y=y)
-    $
-- Predictive parity ($
-  Y \perp S | \hat{Y}
-  $):
-    $
-    \text{Pr}(Y=y | S=0, \hat{Y}=y) = \text{Pr}(Y=y | S=1, \hat{Y}=y)
-    $
-- <span class="highlight">Let's have all the fairness metrics</span>! If we are fair with regards to all notions of fair, then we're fair... right?
-</textarea></section>
-    </section>
-
+        - Discrimination in the law:
+         - <span class="highlight">Direct discrimination</span> with respect to intent
+         - <span class="highlight">Indirect discrimination</span> with respect to consequences
+        <span class="citeme">Article 21, EU Charter of Fundamental Rights</span>
+        - From the legal context to algorithmic fairness, e.g.:
+         - Removing direct discrimination by <span class="highlight">not using group information at prediction</span>
+         - Removing indirect discrimination by enforcing <span class="highlight">equality on the outcomes</span> between groups
+    </textarea></section>
 
     <section data-markdown data-background-color="#000"><textarea data-template>
-## Mutual exclusivity by Bayes' rule
+        ## Several notions of statistical fairness:
+        - Statistical parity
+        - Equalised odds
+        - Equality of opportunity
+        - Predictive parity
 
-<small>
-$$
-\underbrace{\text{Pr}(Y=1|\hat{Y}=1)}_{\text{Positive Predicted Value (PPV)}} = \frac{\text{Pr}(\hat{Y}=1|Y=1)\overbrace{\text{Pr}(Y=1)}^{\text{Base Rate (BR)}}}{\underbrace{\text{Pr}(\hat{Y}=1|Y=1)}_{\text{True Positive Rate (TPR)}}\text{Pr}(Y=1) + \underbrace{\text{Pr}(\hat{Y}=1|Y=-1)}_{\text{False Positive Rate (FPR)}}(1-\text{Pr}(Y=1))}
-$$
-</small>
+        _Setup_: Binary Classification
 
-- Suppose we have FPR<sub>S=1</sub> = FPR<sub>S=0</sub> and TPR<sub>S=1</sub> = TPR<sub>S=0</sub> (<span class="highlight">equalised odds</span>), can we have PPV<sub>S=1</sub> = PPV<sub>S=0</sub> (<span class="highlight">predictive parity</span>)?
-- YES! But only if we have a <span class="highlight">perfect dataset</span> (i.e. BR<sub>S=1</sub> = BR<sub>S=0</sub>) or a <span class="highlight">perfect predictor</span> (i.e. FPR=0 and TPR=1 for S=1 and S=0)
+        learn some function $~ f: X \rightarrow \hat{Y}$
 
-<span class="citeme">Kehrenberg, Chen, NQ: Tuning fairness by marginalizing latent target labels, Oct 2018</span>
-<div style="height:20px;font-size:1px;">&nbsp;</div>
-<span class="citeme">Roth, Impossibility results in fairness as Bayesian inference, Feb 2019</span>
+        s.t. $~ \hat{Y} \approx Y$
 
-</textarea></section>
+        where $~ S, Y, \hat{Y} \in \\{0,1\\}$
+    </textarea></section>
 
     <section data-markdown data-background-color="#000"><textarea data-template>
-## Mutual exclusivity by Bayes' rule
-<small>
-$$
-\overbrace{\text{Pr}(\hat{Y}=1)}^{\text{Acceptance/Positive Rate (AR or PR)}} = \underbrace{\text{Pr}(\hat{Y}=1|Y=1)}_{\text{TPR}}\underbrace{\text{Pr}(Y=1)}_{\text{Base Rate (BR)}} + \underbrace{\text{Pr}(\hat{Y}=1|Y=-1)}_{\text{FPR}}(1-\text{Pr}(Y=1))
-$$
-</small>
+        ## Statistical fairness notions
 
-- Suppose we have FPR<sub>S=1</sub> = FPR<sub>S=0</sub> and TPR<sub>S=1</sub> = TPR<sub>S=0</sub> (<span class="highlight">equalised odds</span>), can we have AR<sub>S=1</sub> = AR<sub>S=0</sub> (<span class="highlight">statistical parity</span>)?
-- YES! But only if we have a <span class="highlight">perfect dataset</span> (i.e. BR<sub>S=1</sub> = BR<sub>S=0</sub>)
-
-<span class="citeme">Kehrenberg, Chen, NQ: Tuning fairness by marginalizing latent target labels, Oct 2018</span>
-<div style="height:20px;font-size:1px;">&nbsp;</div>
-<span class="citeme">Roth, Impossibility results in fairness as Bayesian inference, Feb 2019</span>
-</textarea></section>
+        - Statistical parity (
+           $
+          \hat{Y} \perp S
+          $):
+            $
+            \text{Pr}(\hat{Y}=1 | S=0) = \text{Pr}(\hat{Y}=1 | S=1)
+            $
+        - Equalised odds ($
+          \hat{Y} \perp S | Y
+          $):
+            $
+            \text{Pr}(\hat{Y}=y | S=0, Y=y) = \text{Pr}(\hat{Y}=y | S=1, Y=y)
+            $
+        - Predictive parity ($
+          Y \perp S | \hat{Y}
+          $):
+            $
+            \text{Pr}(Y=y | S=0, \hat{Y}=y) = \text{Pr}(Y=y | S=1, \hat{Y}=y)
+            $
+        - <span class="highlight">Let's have all the fairness metrics</span>! If we are fair with regards to all notions of fair, then we're fair... right?
+    </textarea></section>
 
     <section data-markdown data-background-color="#000"><textarea data-template>
-## Which fairness notion to use?
-- There's no right answer, all the above are "fair"
-- It's important to consult <span class="highlight">domain experts</span> to find which is the best fit for each problem
-- There is no one-size fits all
-- There is also a notion of <span class="highlight">individual fairness</span> (similar individuals to be treated similarly), and
-metrics <span class="highlight">in-between</span> statistical and individual fairness
-</textarea></section>
+        ## Mutual exclusivity by Bayes' rule
+
+        <small>
+        $$
+        \underbrace{\text{Pr}(Y=1|\hat{Y}=1)}_{\text{Positive Predicted Value (PPV)}} = \frac{\text{Pr}(\hat{Y}=1|Y=1)\overbrace{\text{Pr}(Y=1)}^{\text{Base Rate (BR)}}}{\underbrace{\text{Pr}(\hat{Y}=1|Y=1)}_{\text{True Positive Rate (TPR)}}\text{Pr}(Y=1) + \underbrace{\text{Pr}(\hat{Y}=1|Y=-1)}_{\text{False Positive Rate (FPR)}}(1-\text{Pr}(Y=1))}
+        $$
+        </small>
+
+        <section>
+            Suppose we have FPR<sub>S=1</sub> = FPR<sub>S=0</sub> and TPR<sub>S=1</sub> = TPR<sub>S=0</sub> (<span class="highlight">equalised odds</span>), can we have PPV<sub>S=1</sub> = PPV<sub>S=0</sub> (<span class="highlight">predictive parity</span>)?
+        </section>
+        <section>
+            YES! But only if we have a <span class="highlight">perfect dataset</span> (i.e. BR<sub>S=1</sub> = BR<sub>S=0</sub>) or a <span class="highlight">perfect predictor</span> (i.e. FPR=0 and TPR=1 for S=1 and S=0)
+            <span class="citeme">Kehrenberg, Chen, NQ: Tuning fairness by marginalizing latent target labels, Oct 2018</span>
+            <div style="height:20px;font-size:1px;">&nbsp;</div>
+            <span class="citeme">Roth, Impossibility results in fairness as Bayesian inference, Feb 2019</span>
+        </section>
+
+    </textarea></section>
+
+    <section data-markdown data-background-color="#000"><textarea data-template>
+        ## Mutual exclusivity by Bayes' rule
+        <small>
+        $$
+        \overbrace{\text{Pr}(\hat{Y}=1)}^{\text{Acceptance/Positive Rate (AR or PR)}} = \underbrace{\text{Pr}(\hat{Y}=1|Y=1)}_{\text{TPR}}\underbrace{\text{Pr}(Y=1)}_{\text{Base Rate (BR)}} + \underbrace{\text{Pr}(\hat{Y}=1|Y=-1)}_{\text{FPR}}(1-\text{Pr}(Y=1))
+        $$
+        </small>
+
+        <section>
+        Suppose we have FPR<sub>S=1</sub> = FPR<sub>S=0</sub> and TPR<sub>S=1</sub> = TPR<sub>S=0</sub> (<span class="highlight">equalised odds</span>), can we have AR<sub>S=1</sub> = AR<sub>S=0</sub> (<span class="highlight">statistical parity</span>)?
+        </section>
+
+        <section>
+        YES! But only if we have a <span class="highlight">perfect dataset</span> (i.e. BR<sub>S=1</sub> = BR<sub>S=0</sub>)
+
+        <span class="citeme">Kehrenberg, Chen, NQ: Tuning fairness by marginalizing latent target labels, Oct 2018</span>
+        <div style="height:20px;font-size:1px;">&nbsp;</div>
+        <span class="citeme">Roth, Impossibility results in fairness as Bayesian inference, Feb 2019</span>
+        </section>
+
+    </textarea></section>
+
+    <section data-markdown data-background-color="#000"><textarea data-template>
+        ## So... We just need a perfect dataset?
+
+        Perfect is difficult.
+
+        Requires $~ Y \perp S ~$ which is rarely observed.
+    </textarea></section>
+
+    <section data-markdown data-background-color="#000"><textarea data-template>
+        ## Which fairness notion to use?
+        - There's no right answer, all the above are "fair".
+        - It's important to consult <span class="highlight">domain experts</span> to find which is the best fit for each problem.
+        - There is no one-size fits all fairness metric.
+        - There is also a notion of <span class="highlight">individual fairness</span> (similar individuals to be treated similarly), and
+        metrics <span class="highlight">in-between</span> statistical and individual fairness.
+    </textarea></section>
 
     <section>
         <p>&nbsp;</p>
@@ -230,57 +266,57 @@ metrics <span class="highlight">in-between</span> statistical and individual fai
     </section>
 
     <section data-markdown data-background-color="#000"><textarea data-template>
-## How to enforce fairness?
+        ## How to enforce fairness?
 
-<span class="highlight">Three</span> different ways to enforce fairness:
+        <span class="highlight">Three</span> different ways to enforce fairness:
 
-<img src="images/fairmethods.png" width=75% title="Fair Methods"/>
+        <img src="images/fairmethods.png" width=75% title="Fair Methods"/>
 
-</textarea></section>
-
-    <section data-markdown data-background-color="#000"><textarea data-template>
-## Pre-processing
-
-- Simplest pre-processing approach is to <span class="highlight">reweight</span> training data points, those with higher weight are used more often and vice versa with lower weight.
-- For example, the weight for a data point with $S=0$ and $Y=1$ is:
-$$
-W(S=0,Y=1) = \frac{\text{Pr}(Y=1)\text{Pr}(S=0)}{\text{Pr}(Y=1,S=0)} = \frac{\\#(S=0)\\#(Y=1)}{\\#(S=0 \land Y=1)}
-$$
-- To make the reweighted dataset to be a <span class="highlight">perfect dataset</span> ($Y \perp S$)
-
-<span class="citeme">Kamiran and Calders, Data preprocessing techniques for classification without discrimination, KAIS 2012</span>
-</textarea></section>
+    </textarea></section>
 
     <section data-markdown data-background-color="#000"><textarea data-template>
-  ## Pre-processing
+        ## Pre-processing
 
-- Another popular approach is to produce a "fair" representation
-- Consider that we have 2 roles, a <span class="highlight">data vendor</span>, who is charge of collecting the data and preparing it
-- Our other role is a <span class="highlight">data user</span>, someone who will be making predictions based on our data
-- The data vendor is concerned that the data user may be using their data to make unfair decisions. So the <span class="highlight">data vendor decides to learn a new, fair representation</span>
-</textarea></section>
+        - Simplest pre-processing approach is to <span class="highlight">reweight</span> training data points, those with higher weight are used more often and vice versa with lower weight.
+        - For example, the weight for a data point with $S=0$ and $Y=1$ is:
+        $$
+        W(S=0,Y=1) = \frac{\text{Pr}(Y=1)\text{Pr}(S=0)}{\text{Pr}(Y=1,S=0)} = \frac{\\#(S=0)\\#(Y=1)}{\\#(S=0 \land Y=1)}
+        $$
+        - To make the reweighted dataset to be a <span class="highlight">perfect dataset</span> ($Y \perp S$)
+
+        <span class="citeme">Kamiran and Calders, Data preprocessing techniques for classification without discrimination, KAIS 2012</span>
+    </textarea></section>
 
     <section data-markdown data-background-color="#000"><textarea data-template>
-  ## Pre-processing
+        ## Pre-processing
 
-- Many <span class="highlight">adversarial-based</span> fair representation learning approaches, e.g. using a "Gradient-Reversal Layer"
+        - Another popular approach is to produce a "fair" representation
+        - Consider that we have 2 roles, a <span class="highlight">data vendor</span>, who is charge of collecting the data and preparing it
+        - Our other role is a <span class="highlight">data user</span>, someone who will be making predictions based on our data
+        - The data vendor is concerned that the data user may be using their data to make unfair decisions. So the <span class="highlight">data vendor decides to learn a new, fair representation</span>
+    </textarea></section>
 
-<img src="images/adversarialfair.png" width=38% title="Adversarially Fair"/>
+    <section data-markdown data-background-color="#000"><textarea data-template>
+        ## Pre-processing
 
-<span class="citeme">Ganin et al.,Domain-adversarial training of neural networks, JMLR 2016</span>
-<div style="height:20px;font-size:1px;">&nbsp;</div>
-<span class="citeme">Edwards and Storkey, Censoring representations with an adversary, ICLR 2016</span>
-<div style="height:20px;font-size:1px;">&nbsp;</div>
-<span class="citeme">Beutel et al., Data decisions and theoretical implications when adversarially learning fair representations, Jul 2017</span>
-<span class="citeme">Madras et al., Learning adversarially fair and transferable representations, ICML 2018</span>
+        - Many <span class="highlight">adversarial-based</span> fair representation learning approaches, e.g. using a "Gradient-Reversal Layer"
 
-</textarea></section>
+        <img src="images/models/adversarialfair.png" width=38% title="Adversarially Fair"/>
 
-<section data-markdown><textarea data-template>
-## Problems?
+        <span class="citeme">Ganin et al.,Domain-adversarial training of neural networks, JMLR 2016</span>
+        <div style="height:20px;font-size:1px;">&nbsp;</div>
+        <span class="citeme">Edwards and Storkey, Censoring representations with an adversary, ICLR 2016</span>
+        <div style="height:20px;font-size:1px;">&nbsp;</div>
+        <span class="citeme">Beutel et al., Data decisions and theoretical implications when adversarially learning fair representations, Jul 2017</span>
+        <span class="citeme">Madras et al., Learning adversarially fair and transferable representations, ICML 2018</span>
 
-Can we visualise/understand the latent representation $z$?
-  </textarea></section>
+    </textarea></section>
+
+    <section data-markdown data-background-color="#000"><textarea data-template>
+        ## Problems?
+
+        Can we visualise/understand the latent representation $z$?
+    </textarea></section>
 
 
     <section>
@@ -293,48 +329,52 @@ Can we visualise/understand the latent representation $z$?
 
     <section>
         <section data-markdown data-background-color="#000"><textarea data-template>
-## Fair in the data domain
-- A fair representation $T_\omega(X)$ which has the sensitive attribute removed, but remains in the space of $X$
-- Main disentangling assumption:
-$\phi(X) = \phi(T_{\omega}(X)) + \underbrace{\phi (\lnot T_{\omega}(X))}_{\text{Spurious}}
-$
- - <span class="highlight">Spurious</span>: dependent on the sensitive attribute.
- - <span class="highlight">Non-Spurious</span>: independent of the sensitive attribute.
+        ## Fair in the data domain
+        - A fair representation $T_\omega(X)$ which has the sensitive attribute removed, but remains in the space of $X$
+        - Main disentangling assumption:
+        $\phi(X) = \phi(T_{\omega}(X)) + \underbrace{\phi (\lnot T_{\omega}(X))}_{\text{Spurious}}
+        $
+         - <span class="highlight">Spurious</span>: dependent on the sensitive attribute.
+         - <span class="highlight">Non-Spurious</span>: independent of the sensitive attribute.
 
-  <span class="citeme">NQ, Sharmanska, Thomas, Discovering fair representations in the data domain, CVPR 2019</span>
+          <span class="citeme">NQ, Sharmanska, Thomas, Discovering fair representations in the data domain, CVPR 2019</span>
 
-  </textarea></section>
-
-        <section data-markdown data-background-color="#000"><textarea data-template>
-## Fair in the data domain
-
-<img src="images/Architecture.png" width=70% title="Architecture"/>
-
-- <span class="highlight">No GANs?</span> To perform translation from the input to the non-spurious
-domain via GANs, we need to have real data (e.g. images, tabular data) of both domains
-
-  </textarea></section>
+        </textarea></section>
 
         <section data-markdown data-background-color="#000"><textarea data-template>
-## Fair in the data domain
+            ## Fair in the data domain
 
-The optimisation problem:
-$$\mini_{T_\omega}   \underbrace{\sum_{n=1}^N\Lcal(T_{\omega}(\x^n),y^n)}_{\text{Prediction loss}} + \lambda_1 \underbrace{\sum_{n=1}^{N}\|\x^n-T_{\omega}(\x^n)\|_2^2}_{\text{Reconstruction loss}} + \nonumber\\
-                        + \lambda_2\left(\underbrace{- \text{HSIC}(\phi (\lnot T_{\omega}(\x{})),S|Y=+1)}_{\text{Spurious loss}} + \underbrace{\text{HSIC}(\phi ( T_{\omega}(\x{})),S|Y=+1)}_{\text{Non-Spurious loss}}\right) $$
-          </textarea></section>
+            <img src="images/models/Architecture.png" width=70% title="Architecture"/>
+
+            - <span class="highlight">No GANs?</span> To perform translation from the input to the non-spurious
+            domain via GANs, we need to have real data (e.g. images, tabular data) of both domains
+
+        </textarea></section>
 
         <section data-markdown data-background-color="#000"><textarea data-template>
-## Fair in the data domain
+        ## Fair in the data domain
 
- Experiments on the <span class="highlight">Adult Income dataset</span>
-- This dataset is frequently used in fairness research.
-- It has $45,222$ data points, each with $14$ features such as relationship status, gender, occupation.
-- We use gender as a binary sensitive attribute.
-- The binary task is to predict whether a person is a high-earner (>\$50K p.a.) or not.
-               </textarea>
-            </section>
-            <section data-background-color="#000">
-            	<h2>Results on the adult income dataset</h2>
+        The optimisation problem:
+
+        $\min_{T_\omega} \sum_{n=1}^N\mathcal{L}(T_{\omega}(\mathbf{x}^n),y^n)$
+
+        $+ \lambda_1 \sum_{n=1}^{N}\|\mathbf{x}^n-T_{\omega}(\mathbf{x}^n)\|_2^2$
+
+        $+ \lambda_2 \\|(- \mathrm{HSIC}(\phi (\lnot T_{\omega}(\mathbf{x})),S|Y=+1) + \mathrm{HSIC}(\phi ( T_{\omega}(\mathrm{x})),S|Y=+1)\\|)$
+        </textarea></section>
+
+        <section data-markdown data-background-color="#000"><textarea data-template>
+            ## Fair in the data domain
+
+             Experiments on the <span class="highlight">Adult Income dataset</span>
+            - This dataset is frequently used in fairness research.
+            - It has $45,222$ data points, each with $14$ features such as relationship status, gender, occupation.
+            - We use gender as a binary sensitive attribute.
+            - The binary task is to predict whether a person is a high-earner (>\$50K p.a.) or not.
+        </textarea></section>
+
+        <section data-background-color="#000">
+            <h2>Results on the adult income dataset</h2>
             <table>
                 <tbody><tr>
                     <td width="50%">
@@ -345,7 +385,6 @@ $$\mini_{T_\omega}   \underbrace{\sum_{n=1}^N\Lcal(T_{\omega}(\x^n),y^n)}_{\text
                 </tr>
                 </tbody>
             </table>
-
         </section>
 
         <section data-background-color="#000">
@@ -451,16 +490,20 @@ Experiments on <span class="highlight"> CelebA dataset</span>
 - <span class="highlight">Right</span>: In the semantic attribute domain ... same conclusion (<span class="highlight">changes in the eyes and lips regions</span>)
 <center>
   <table style="border-collapse: collapse; border: none;">
-        <tbody ><tr style="border: none;"><td width="30%" colspan="3" style="border: none;"></td><td width="30%" style="border: none;"></td><td width="40%" style="border: none;"></td></tr>
+        <tbody ><tr style="border: none;"><td width="40%" colspan="4" style="border: none;"></td><td width="1%" style="border: none;"></td><td width="40%" style="border: none;"></td></tr>
         <tr style="border: none;">
             <td width="10%" style="border: none;">Non-spurious</td>
             <td width="20%" style="border: none;"><img src="images/celeba_res/006126.jpg" width=70% title="Im1"/></td>
-            <td width="30%" rowspan="2" style="border: none;"><hr width="2" size="250"></td>
-            <td width="40%" rowspan="2" style="border: none;"><img src="images/features.png" width=100% title="features"/></td>
+            <td width="20%" style="border: none;"><img src="images/celeba_res/015365.jpg" width=70% title="Im1"/></td>
+            <td width="20%" style="border: none;"><img src="images/celeba_res/015505.jpg" width=70% title="Im1"/></td>
+            <td width="1%" rowspan="2" style="border: none;"><hr width="2" size="250"></td>
+            <td width="30%" rowspan="2" style="border: none;"><img src="images/features.png" width=100% title="features"/></td>
         </tr>
         <tr style="border: none;">
             <td width="10%" style="border: none;">Spurious</td>
             <td width="20%" style="border: none;"><img src="images/celeba_res/006126res.jpg" width=60% title="RIm1"/></td>
+            <td width="20%" style="border: none;"><img src="images/celeba_res/015365res.jpg" width=60% title="RIm1"/></td>
+            <td width="20%" style="border: none;"><img src="images/celeba_res/015505res.jpg" width=60% title="RIm1"/></td>
         </tr></tbody>
     </table></center>
 </textarea></section>
@@ -470,19 +513,57 @@ Experiments on <span class="highlight"> CelebA dataset</span>
             <h2>Problems?</h2>
             <h4>Spurious and non-spurious visualisations are not exciting!</h4>
             <h4>Residual unfairness (transferability)</h4>
+            <img src="images/cmnist%20train.png" width="30%">
+            <img src="images/cmnist%20test.png" width="30%">
         </section>
  
         <section data-markdown data-background-color="#000"><textarea data-template>
-## Fair, and transferable
-- We use deep generative modelling: $$
-\begin{aligned}
-&\underset{\theta}{\min}  \mathbf{E}_{x}(-\text{log} p_\theta(x|z)) + \lambda I(z_d,s)  \\
-\end{aligned}$$
-- Representing data points in a latent space 
-- Disentangling the latent space (previous work was on the reconstruction space) into two components:
- - <span class="highlight">Spurious</span>: dependent on the sensitive attribute.
- - <span class="highlight">Non-Spurious</span>: independent of the sensitive attribute.
-  </textarea></section>
+            ## Fair, and transferable... Idea 1
+            We use deep generative modelling:
+
+            $\mathcal{L} = \mathbb{E}{q_{\theta_{enc}}(z|x)}[\log p_{\theta_{dec}}(x|z, s) - \log p_{\theta_{dec}}(s|z)]- \beta D_{KL}(q_{\theta_{enc}}(z |x) \| p(z))$
+            - Representing data points in a latent space
+            - Disentangling the latent space (previous work was on the reconstruction space) into two components:
+             - <span class="highlight">Spurious</span>: dependent on the sensitive attribute.
+             - <span class="highlight">Non-Spurious</span>: independent of the sensitive attribute.
+        </textarea></section>
+
+        <section data-markdown data-background-color="#000"><textarea data-template>
+            ## Fair, and transferable... Idea 1
+            <img src="images/models/CVAE.png" width="60%">
+        </textarea></section>
+
+        <section data-markdown data-background-color="#000"><textarea data-template>
+            ## Fair, and transferable... Idea 1
+            <img src="images/train_original_x_31500.png" width="30%">
+            <img src="images/train_reconstruction_y_31500.png" width="30%">
+            <img src="images/train_reconstruction_s_31500.png" width="30%">
+        </textarea></section>
+
+        <section data-markdown data-background-color="#000"><textarea data-template>
+            ## Fair, and transferable... Idea 2
+            We use deep generative modelling:
+
+            $\min_\theta \mathbb{E}_x (- \log p_\theta (x|z)) + \lambda I(z_d, s)$
+
+            - Representing data points in a latent space
+            - Disentangling the latent space (previous work was on the reconstruction space) into two components:
+             - <span class="highlight">Spurious</span>: dependent on the sensitive attribute.
+             - <span class="highlight">Non-Spurious</span>: independent of the sensitive attribute.
+        </textarea></section>
+
+        <section data-markdown data-background-color="#000"><textarea data-template>
+            ## Fair, and transferable... Idea 2
+            <img src="images/models/CFlow.png" width="30%">
+        </textarea></section>
+
+        <section data-markdown data-background-color="#000"><textarea data-template>
+            ## Fair, and transferable... Idea 2
+            <img src="images/train_original_x_15000.png" width="30%">
+            <img src="images/train_reconstruction_y_15000.png" width="30%">
+            <img src="images/train_reconstruction_s_15000.png" width="30%">
+        </textarea></section>
+
 
     <section data-background-color="#000">
         <section data-markdown data-background-color="#000"><textarea data-template>
@@ -566,7 +647,29 @@ Experiments on <span class="highlight"> CelebA dataset</span>
     </section>
 
 <section data-markdown><textarea data-template>
-## Take home messages
+    ## Take home messages
+
+    - Fairness is _Domain Specific_.
+    - If you don't think about bias, it will come back to haunt you.
+    - Accuracy only tells part of the story.
+    - Transparency can be a positive addition to your model.
+</textarea></section>
+
+<section data-markdown data-background-color="#000"><textarea data-template>
+    ## Shameless Plug
+
+    Interested in comparing fairness approaches?
+
+    `pip install EthicML`
+
+    ---
+
+    Several PostDoc and PhD student positions will be available soon (for details contact <span class="highlight">n.quadrianto at sussex.ac.uk</span>)
+
+    Topics
+    - Uncertainty in fairness
+    - Fairness in a dynamic setting
+    - Interpretability in fairness
 </textarea></section>
 
 
