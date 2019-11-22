@@ -1,8 +1,14 @@
 # Algorithmic Fairness
 
+## Data Science & Optimization Confernce Toronto 2019
+- [Slides](./transparency-in-fairness.html)
+
+## DeepBayes Summer School Moscow 2019
+- [Slides](./moscow2019.html)
+
 ## ML Summer School
-### [Lecture](./mlss.html)
-### [Exercise](https://tinyurl.com/ethicml)
+- [Lecture](./mlss.html)
+- [Exercise](https://tinyurl.com/ethicml)
 
 ## Topics in Computing Module
 ### [Part 1](./algo-fairness-part1.html)
