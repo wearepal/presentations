@@ -1,7 +1,10 @@
 # Algorithmic Fairness
 
+## Transparency in Algorithmic Fairness
+- [Slides](./transparency-in-algorithmic-fairness.html)
+
 ## Data Science & Optimization Confernce Toronto 2019
-- [Slides](./transparency-in-fairness.html)
+- [Slides](./toronto2019.html)
 
 ## DeepBayes Summer School Moscow 2019
 - [Slides](./moscow2019.html)
