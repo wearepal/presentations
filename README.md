@@ -3,7 +3,7 @@
 ## Transparency in Algorithmic Fairness
 - [Slides](./transparency-in-algorithmic-fairness.html)
 
-## Data Science & Optimization Confernce Toronto 2019
+## Data Science & Optimization Conference Toronto 2019
 - [Slides](./toronto2019.html)
 
 ## DeepBayes Summer School Moscow 2019
@@ -25,4 +25,6 @@
 - Delayed Impact of Fair Machine Learning
 - Fair Causal models
 
-### [Summary](./fairness-summary.html)
+## Sumaries
+- [Summary](./fairness-summary.html)
+- [Overview](./fairness-overview.html)
