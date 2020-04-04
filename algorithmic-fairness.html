@@ -30,6 +30,14 @@
         margin: 0;
     }
 </style>
+<style>
+.container{
+    display: flex;
+}
+.col{
+    flex: 1;
+}
+</style>
 <body>
 
 <div class="reveal"><div class="slides">
@@ -113,7 +121,7 @@
 
     <section data-markdown data-background-color="#000"><textarea data-template>
         ## Equality on the outcomes
-When protected attribute $s$, target label $y$, predicted label $\widehat{y}$ is binary: 
+When protected attribute $s$, target label $y$, predicted label $\widehat{y}$ is <span class="highlight">binary</span>: 
         - Equality of acceptance rate (AR) 
            :
             $
@@ -138,7 +146,7 @@ When protected attribute $s$, target label $y$, predicted label $\widehat{y}$ is
         $
 <p align="left">&bull; Suppose we have FPR<sub>s=1</sub> = FPR<sub>s=0</sub> and TPR<sub>s=1</sub> = TPR<sub>s=0</sub> (<span class="highlight">equality of TPR/FPR</span>), can we have PPV<sub>s=1</sub> = PPV<sub>s=0</sub> (<span class="highlight">equality of PPV</span>)?</p>
 
-<p align="left">&bull; YES! But only if we have a <span class="highlight">perfect dataset</span> (i.e. BR<sub>s=1</sub> = BR<sub>s=0</sub>) or a <span class="highlight">perfect predictor</span> (i.e. FPR=0 and TPR=1 for s=1 and s=0)</p>
+<p align="left">&bull; YES! But only if we have a <span class="highlight">balanced dataset</span> (i.e. BR<sub>s=1</sub> = BR<sub>s=0</sub>) or a <span class="highlight">perfect predictor</span> (i.e. FPR=0 and TPR=1 for s=1 and s=0)</p>
 <span class="citeme">Kehrenberg, Chen, NQ: Tuning fairness by balancing target labels, Frontiers in Artificial Intelligence, Minor Revision.</span>
 
     </textarea></section>
@@ -173,7 +181,7 @@ When protected attribute $s$, target label $y$, predicted label $\widehat{y}$ is
 - No free lunch: additional constraints lower accuracy
 
 <img src="images/pareto.png" width=33% style="margin:0px 0px"/>
-
+     
 <span class="citeme">NQ and Sharmanska, Recycling privileged learning and distribution matching for fairness, NIPS 2017</span>
 </textarea></section>
 
@@ -189,30 +197,23 @@ When protected attribute $s$, target label $y$, predicted label $\widehat{y}$ is
 
   <section data-markdown data-background-color="#000"><textarea data-template>
   ## Intuitive control parameters
-  - Control fairness-accuracy trade off with <span class="highlight">the rate of positive predictions</span> (e.g. $PR=0.6$ for $s=0$ and $s=1$)
-  - Introduce new <span class="highlight">target labels</span> $\widehat{y}$ such that the <span class="highlight">dataset is balanced</span>: $P(\widehat{y}, s) = P(\widehat{y})P(s)$.
-  - Need to connect target labels $\widehat{y}$ and dataset label $y$. Let $\eta_s(x)=P(y=1|x, s)$ denote the dataset conditional probability, and accordingly for target conditional probility $\bar{\eta}_s(x)$, we have the following linear relationship:
-
-\begin{align}
-  \bar{\eta}_s(x)=(P(\bar{y}=1|y=1,s) + P(\bar{y}=0|y=0,s) - 1)\eta_s(x) + 1 - P(\bar{y}=0|y=0,s)
-\end{align}
-
+  - Introduce new <span class="highlight">target labels</span> $\widehat{y}$ such that the <span class="highlight">dataset is balanced</span>: $P(\widehat{y}, s) = P(\widehat{y})P(s)$
+  - Need to connect target labels $\widehat{y}$ and dataset label $y$. Let $\eta_s(x)=P(y=1|x, s)$ denote the dataset conditional probability, and accordingly for $\widehat{\eta}_s(x)$, we have the following <span class="highlight">linear relationship</span>:
+  $\widehat{\eta}_s(x)=m_s\cdot \eta_s(x) + b_s$ with $m_s := P(\widehat{y}=1|y=1,s) + P(\widehat{y}=0|y=0,s) - 1$, and $
+  b_s := 1 - P(\widehat{y}=0|y=0,s) $
+  - We can ensure balanced dataset condition by requiring <span class="highlight">equal positive predictions</span> in the transition probabilities $P(\widehat{y}|y,s)$.
   <span class="citeme">Kehrenberg, Chen, NQ, Tuning fairness by balancing target labels, Frontiers in Artificial Intelligence, Minor revision.</span>
   </textarea></section>
 
 <section data-markdown data-background-color="#000"><textarea data-template>
-  ## Intuitive control parameters
-  - Controlling fairness with <span class="highlight">the rate of positive predictions</span> (e.g. $PR=0.6$ for $s=0$ and $s=1$)
-  - Linear model: $f(x) = \langle\theta,x\rangle$, with probability score: $ P(y=1|x, \theta, s)$
-  - Manipulate the likelihood $\text{Pr}(y=1|x, \theta, s)$ to enforce fairness
-  - Introduce latent <span class="highlight">target labels</span> $\widehat{y}$ (we are changing the learning goal): $\text{Pr}(y=1|x, \theta, s) = \sum\limits_{\widehat{y}\in\\{1,-1\\}} \text{Pr}(y=1|\widehat{y},s)\text{Pr}(\widehat{y}|x, \theta, s)$ 
-  - For $\widehat{y}=\\{1,-1\\}$ and $s=\\{0,1\\}$, choose four free parameters $\text{Pr}(y=1|\widehat{y}=i,s=j)$ such that $\theta$ is targeting a fair output
- <!-- $
-  \text{Pr}(y=1|\bar{y}=0,s=0) \;\   \text{Pr}(y=1|\bar{y}=0,s=1)
-  $
-  $
-  \text{Pr}(y=1|\bar{y}=1,s=0) \;\   \text{Pr}(y=1|\bar{y}=1,s=1)
-  $-->
+  ## Accuracy&ndash;Fairness trade-off
+  - As there is some freedom is choosing $m_s$ and $b_s$, it is important to consider what the effect of different values is.
+  - The probability that $y$ and $\widehat{y}$ disagree ($y\neq\widehat{y}$) for any input $x$ in the dataset is given by:
+
+  $P(y\neq\widehat{y}|s)=P\left(\left|\eta_s(x) - \tfrac{1}{2}\right| < t_s\right)$
+with $t_s = \left|\frac{m_s+2b_s-1}{2m_s}\right|$
+ - The term $t_s$ determines the accuracy penalty that we have to accept in order to gain fairness.
+ - The value of $t_s$ can be taken into account when choosing $m_s$ and $b_s$ 
 
   <span class="citeme">Kehrenberg, Chen, NQ, Tuning fairness by balancing target labels, Frontiers in Artificial Intelligence, Minor revision.</span>
   </textarea></section>
@@ -220,211 +221,32 @@ When protected attribute $s$, target label $y$, predicted label $\widehat{y}$ is
   <section data-markdown data-background-color="#000"><textarea data-template>
   ## Transparency in fairness
 
-- Controlling fairness with the <span class="highlight">quantities that matter</span> (e.g. $TPR=0.9$, and $TNR = 0.6$ for $s=0$ and $s=1$)
+- Control fairness-accuracy trade off with <span class="highlight">the rate of positive predictions</span> (e.g. $PR=0.6$ for $s=0$ and $s=1$)
 - Existing approaches rely on intermediate, unintuitive control parameters
 such as $\tau=5$ and $\mu=1.2$.
 
 <img src="images/eo_together_acc_.png" width=30% />
-<img src="images/eo_together_control_.png" width=29.4% />
-<img src="images/eo_together_legend_.png" width=31% />
+<img src="images/eo_together_control_.png" width=30% />
+<img src="images/eo_together_legend_.png" width=30% />
 
   </textarea></section>
 
-
         <section data-markdown data-background-color="#000"><textarea data-template>
         ## Challenges?
 
-        - Understanding what have been changed to achieve fairness
-        - Looking at pre-processing methods, by learning <span class="highlight">a fair representation</span>
-          <center><img src="images/models/adversarialfair.png" width=35% title="Adversarially Fair" style="margin:-10px -10px"/> <p style="font-size:10px">Picture credit: Madras, et al., 2018.</p></center>
-        - How to understand or visualise the learned fair representation $Z$?
-        </textarea></section>
-
-    <section data-markdown data-background-color="#000"><textarea data-template>
-        ## Pre-processing: Learning fair representations
-        - Inspired by the work on <span class="highlight">attribution map</span> in computer vision for transparency of deep learning models:
-        <center>
-        <img src="images/gradcam.jpg" width=50% title="GradCam" style="margin:0px -10px"/> <p style="font-size:10px">Picture credit: Selvaraju, et al., 2017.</p>
-        </center>
-        - Ensure that the learned representation can be "<span class="highlight">overlayed</span>" back to the input data 
-
-    </textarea></section>
-
-<section data-markdown data-background-color="#000"><textarea data-template>
-## Fair representations in the data domain
-- A fair representation $Z:=T_\omega(x)$ which has the protected attribute removed, but remains in the space of $x$
-- Main disentangling assumption: $\phi(x) = \phi(T_{\omega}(x)) + \underbrace{\phi (\lnot T_{\omega}(x))}_{\text{Spurious}}$
- - <span class="highlight">Spurious</span>: dependent on the protected attribute
- - <span class="highlight">Non-Spurious</span>: independent of the protected attribute
-
-<span class="citeme">NQ, Sharmanska, Thomas, Discovering fair representations in the data domain, CVPR 2019</span>
-
-        </textarea></section>
-
-        <section data-markdown data-background-color="#000"><textarea data-template>
-        ## Architecture and optimization
-
-        <img src="images/models/Architecture.png" width=70% title="Architecture"/>
-        <p align="left">$\underset{T_\omega}{\text{min.}}\quad \underbrace{\mathrm{Dep.}(\phi ( T_{\omega}(\mathrm{x})),S|y=1)}_{\text{non-spurious loss}} \quad\underbrace{- \mathrm{Dep.}(\phi (\lnot T_{\omega}(\mathbf{x})),S|y=1)}_{\text{spurious loss}}  $
-        $+ \text{prediction loss} \quad+ \text{reconstruction loss}$</p>
-
-        </textarea></section>
-
- 
-
-        <section data-background-color="#000">
-<h2>Transparency in fairness</h2>
-
-<p align="left">Experiments on <span class="highlight"> CelebA dataset</span>: $202,599$ celebrity face images with $40$ attributes, <span class="highlight">gender</span> as the binary protected attribute, the attribute <span class="highlight">smiling</span> as the classification task</p>
-
-           <small>
-                <table>
-                    <thead><tr>
-                        <td></td>
-                        <td>Acc.</td>
-                        <td><span class="highlight">TPR Diff.</span></td>
-                        <td>TPR male</td>
-                        <td>TPR female</td>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td>original <span class="highlight">image</span> representation $\mathbf{x}\in\mathbb{R}^{2048}$</td>
-                        <td width="10%">89.70</td>
-                        <td width="10%">7.54</td>
-                        <td width="15%">92.03</td>
-                        <td width="15%">84.50</td>
-                    </tr>
-                   <!-- <tr>
-                        <td>original <span class="highlight">attribute</span> representation $\mathbf{x}\in\mathbb{R}^{40}$</td>
-                        <td width="10%">79.1</td>
-                        <td width="10%">39.9</td>
-                        <td width="10%">90.8</td>
-                        <td width="10%">50.9</td>
-                    </tr>-->
-                    <tr>
-                        <td>fair <span class="highlight">image</span> representation in the data domain $T_{\omega}(\mathbf{x})\in\mathbb{R}^{2048}$</td>
-                        <td width="10%">91.31</td>
-                        <td width="10%">4.76</td>
-                        <td width="15%">91.85</td>
-                        <td width="15%">87.09</td>
-                    </tr>
-                   <!-- <tr>
-                        <td>fair <span class="highlight">attribute</span> representation in the data domain $T_{\omega}(\mathbf{x})\in\mathbb{R}^{40}$</td>
-                        <td width="10%">75.9</td>
-                        <td width="10%">12.4</td>
-                        <td width="10%">87.2</td>
-                        <td width="10%">74.8</td>
-                    </tr>-->
-                    </tbody>
-                </table>
-            </small>
-  <table align="center" style="border-collapse: collapse; border: none;">
-        <tbody ><tr style="border: none;"><td width="40%" colspan="4" style="border: none;"></td><td width="1%" style="border: none;"></td><td width="40%" style="border: none;"></td></tr>
-        <tr style="border: none;">
-            <td width="10%" style="border: none;">Non-spurious</td>
-            <td width="20%" style="border: none;"><img src="images/celeba_res/006126.jpg" width=100% title="Im1"/></td>
-            <td width="10%" style="border: none;">Spurious</td>
-            <td width="20%" style="border: none;"><img src="images/celeba_res/006126res.jpg" width=100% title="RIm1"/></td>
-        </tr></tbody>
-    </table>
-</section>
-
-        <section data-markdown data-background-color="#000"><textarea data-template>
-        ## Challenges?
-
-          - Spurious/non-spurious (w.r.t. gender) visualisations are too coarse!
-            <table align="center" style="border-collapse: collapse; border: none;">
-        <tbody ><tr style="border: none;"><td width="40%" colspan="4" style="border: none;"></td><td width="1%" style="border: none;"></td><td width="40%" style="border: none;"></td></tr>
-        <tr style="border: none;">
-            <td width="30%" style="border: none;">Spurious (what we have)</td>
-            <td width="20%" style="border: none;"><img src="images/celeba_res/006126res.jpg" width=100% style="margin:-20px 0px"/></td>
-            <td width="30%" style="border: none;">Spurious (what we want)</td>
-            <td width="20%" style="border: none;"><img src="images/spurious.png" width=60% style="margin:-20px 0px"/></td>
-        </tr></tbody>
-    </table>
-          - Residual unfairness (transferability) problem
-
-        <center>
-            <img src="images/nyclu.png" width="35%" title="New York Civil Liberties Union" style="margin:-20px 0px"/><p style="font-size:10px">Picture credit: New York Civil Liberties Union</p>
-        </center>
-        </textarea></section>
-
-        <section  data-background-color="#000">
-            <h2>Fair and transferable </h2>
-            <table>
-    <tbody>
-        <tr>
-            <td style="border: none;" width="50%"> <img src="images/diagram.png" width=100% style="margin:-20px 0px"/></td>
-            <td style="border: none;"> <p>Disentangling the latent space (c.f. on the reconstruction space) into two components:<ul>
-            <li><span class="highlight">Spurious</span>: dependent on the protected attribute</li>
-            <li><span class="highlight">Non-Spurious</span>: independent of the protected attribute</li>
-            </ul></p></td>
-        </tr>
-    </tbody>
-    </table>
-
- <span class="citeme">Kehrenberg, Bartlett, Thomas, NQ, NoSiNN: Removing spurious correlations with null-sampling, under review</span>
-        </section>
-
-<section data-markdown data-background-color="#000"><textarea data-template>
-## Invertible Neural Network 
-
-- We leverage flow-based models to <span class="highlight">preserve all information relevant to $y$</span> that is independent of $s$ (during pre-training phase)
-- Flow-based models permit exact likelihood estimation through warping a base density with a series of <span class="highlight">invertible transformation</span> 
-<!--- We have:
-$\underset{\theta}{\text{min.}}\quad \mathbb{E}_x [- \log p_\theta (x|z)] + \lambda \text{Dep.}(z^{\text{invariant}}, s)$ 
-with $\log p(x) = \log \mathcal{N}(z_0; 0, \mathbb{I}) + \sum_\{i=1\}^\{L\} \log | \det (\frac{\mathrm{d} f_i}{\mathrm{d}z_\{i-1\}})|$-->
-- We conjecture that the latent representations of flow-based models are more robust to <span class="highlight">out-of-distribution</span> data
-
-<!-- 
-- The invertible network $f_\theta$ maps the inputs $x$ to a representation $z$: $f_\theta(x) = [z^{\text{spurious}}, z^{\text{invariant}}] := z$
-- We have:
-$\underset{\theta}{\text{min.}}\quad \mathbb{E}_x [- \log p_\theta (x|z)] + \lambda \text{Dep.}(z^{\text{invariant}}, s)$ with $\log p(x) = \log \mathcal{N}(z_0; 0, \mathbb{I}) + \sum_\{i=1\}^\{L\} \log | \det (\frac{\mathrm{d} f_i}{\mathrm{d}z_\{i-1\}})|$
-
-\mathbb{E}_x [- \log p_\theta (x|z)] + \lambda \text{Dep.}(z_d, s)$, with $\log p(x) = \log \mathcal{N}(z; 0, \mathbb{I}) +  \sum_{i=1}^{L} \log | \det ( \frac{\mathop{}\!\mathrm{d} f_i}{ \mathrm{d}z_{i-1}}) |-->
-        </textarea></section>
-
-        <section data-markdown data-background-color="#000"><textarea data-template>
-## Transferability results
-- Experiments on <span class="highlight">Adult Income dataset</span>
-- We evaluate the performance of our method for mixing factors ($\eta$) of value $\\{0, 0.1, ..., 1\\}$ (at $\eta = 0.5$ the dataset is perfectly balanced)
-
-<center>
-<img src="images/transfer_2.png" width=40% title="Transferability" style="margin:0px 0px"/>
-
-</center>
-        </textarea></section>
-
-        <section data-background-color="#000">
-            <h2>Transparency in fairness</h2>
-                <table>
-    <tbody>
-        <tr>
-            <td style="border: none;" width="30%"> <img src="images/train_original_x_15000.png" width=100% style="margin:-20px 0px"/> <p>Original data</p></td>
-            <td style="border: none;" width="30%">  <img src="images/celeba_reconstructions_with_bias_highlighted.png" width=100% style="margin:-20px 0px"/><p>Non-Spurious</p></td>
-            <td style="border: none;" width="30%">  <img src="images/train_reconstruction_s_15000.png" width=100% style="margin:-20px 0px"/><p>Spurious</p></td>
-        </tr>
-    </tbody>
-    </table>
-    <p align="left">&bull; <span class="highlight">Gender</span> as the protected attribute</p>
-    <p align="left">&bull; Unfortunately, the model lightens the <span class="highlight">skintone</span> when gender-neutralising male faces</p>
-        </section>
-
-
-
-        <section data-markdown data-background-color="#000"><textarea data-template>
-        ## Challenges?
-
-          - Can we provide <span class="highlight">an individual-level explanation</span> of fair systems without the difficult learning of fair ("genderless faces") representations?
+        - Consider that we have 2 roles, a <span class="highlight">data vendor</span>, who is charge of collecting the data and preparing it 
+        - Our other role is a <span class="highlight">data user</span>, someone who will be making predictions based on our data
+        - The data vendor is concerned that the data user may be using their data to make unfair decisions. 
+        - So the data vendor decides to rely on <span class="highlight">pre-processing methods</span>
         </textarea></section>
 
         <section data-markdown data-background-color="#000"><textarea data-template>
 ## Pre-processing: Contrastive examples
 
-- The <span class="highlight">ideal dataset</span> contains an imaginary data point for each person, i.e. the one inside the black box, whereby we <span class="highlight">intervene</span> and set the gender attribute to the opposite that is in real life
+- The <span class="highlight"> balanced dataset</span> contains an imaginary data point for each person, i.e. the one inside the black box, whereby we <span class="highlight">intervene</span> and set the gender attribute to the opposite that is in real life
   <img src="images/balanced_Page_1.png" width=50% title="Balanced1"/>
   <img src="images/balanced_Page_2.png" width=30% title="Balanced2"/>
+<span class="citeme">NQ, Sharmanska, Thomas, Discovering fair representations in the data domain, CVPR 2019</span>
 <span class="citeme">Sharmanska, Hendricks, Darrell, NQ, Contrastive examples for addressing the tyranny of the majority, under review</span>
   </textarea></section>
 
@@ -454,10 +276,10 @@ $\underset{\theta}{\text{min.}}\quad \mathbb{E}_x [- \log p_\theta (x|z)] + \lam
 </textarea></section>
 
         <section data-background-color="#000">
-<h2>Results on the CelebA dataset</h2>
-
-<p align="left">&bull; We use <span class="highlight">gender and age</span> as the two protected attributes.</p>
-<p align="left">&bull; We use <span class="highlight">smiling</span> as the classification task. </p>
+<h2>Results on the Diversity in Faces dataset</h2>
+<p align="left">&bull; We use <span class="highlight">skin colour (light/dark)</span> as the two protected attributes.</p>
+<p align="left">&bull; The classification task is to predict <span class="highlight">seven age groups</span>: [0-3],[4-12],
+[13-19],[20-30],[31-45],[46-60],[61+]. </p>
 
            <small>
                 <table>
@@ -471,33 +293,33 @@ $\underset{\theta}{\text{min.}}\quad \mathbb{E}_x [- \log p_\theta (x|z)] + \lam
                     <tbody>
                     <tr>
                         <td>logistic regression (original)</td>
-                        <td width="10%">89.71</td>
-                        <td width="10%">6.69</td>
-                        <td width="10%">6.40</td>
+                        <td width="10%">69.79</td>
+                        <td width="10%">1.55</td>
+                        <td width="10%">0.76</td>
                     </tr>
                     <tr>
                         <td>logistic regression (original and GAN contrastive)</td>
-                        <td width="10%">88.94</td>
-                        <td width="10%">3.50</td>
-                        <td width="10%">2.79</td>
+                        <td width="10%">69.81</td>
+                        <td width="10%">1.3</td>
+                        <td width="10%">0.69</td>
                     </tr>
                     <tr>
                         <td>logistic regression (original and NN contrastive)</td>
-                        <td width="10%">88.78</td>
-                        <td width="10%">3.32</td>
-                        <td width="10%">3.53</td>
+                        <td width="10%">69.72</td>
+                        <td width="10%">1.43</td>
+                        <td width="10%">0.63</td>
                     </tr>
                     <tr>
                         <td>$\ddagger$logistic regression (original and GAN contrastive with output consistency)</td>
-                        <td width="10%">94.15</td>
-                        <td width="10%">3.51</td>
-                        <td width="10%">2.18</td>
+                        <td width="10%">72.14</td>
+                        <td width="10%">0.89</td>
+                        <td width="10%">0.54</td>
                     </tr>
                     </tbody>
                 </table>
             </small><br>
 
-            <p align="left">$\ddagger$: <span class="highlight">Rejection learning</span> -- classifier only makes a prediction if there is an agreement between original and contrastive examples (occurs in $17,237$ out of $20,000$ test examples, i.e. $86.185\%$).</p>
+            <p align="left">$\ddagger$: <span class="highlight">Rejection learning</span> -- classifier only makes a prediction if there is an agreement between original and contrastive examples (occurs in $364,766$ out of $412,556$ test examples, i.e. $88.42\%$).</p>
 </section>
 
 
@@ -505,11 +327,7 @@ $\underset{\theta}{\text{min.}}\quad \mathbb{E}_x [- \log p_\theta (x|z)] + \lam
     ## Future directions
 - <b>BayesianGDPR</b>: Bayesian models and algorithms for fairness and transparency (ERC Starting Grant -- 1 April 2020 - 31 March 2025)
 <center>
-  <img src="images/bayesiangdpr.png" width=40% title="BayesianGDPR" />
-</center>
-- <b>TANGO</b>: Deep mutual understanding for human-machine symbiosis (EU FET Proactive Human-Centric AI <b><span class="highlight">proposal</span></b>)
-<center>
-  <img src="images/TANGO.jpg" width=60% title="TANGO"/>
+  <img src="images/bayesiangdpr.png" width=100% title="BayesianGDPR" />
 </center>
 </textarea></section>
 
@@ -518,6 +336,14 @@ $\underset{\theta}{\text{min.}}\quad \mathbb{E}_x [- \log p_\theta (x|z)] + \lam
 - <b>Inclusive Green Infrastructures for Urban Well-Being</b> (British Academy -- 18 November 2019 - 17 November 2021) 
 <center>
   <img src="images/greeninfrastructure.png" width=100% title="Green Infrastructures" style="margin:0px 0px"/>
+</center>
+</textarea></section>
+
+<section data-markdown data-background-color="#fff"><textarea data-template>
+    ## Future directions
+- <b>INTERVENE</b>: Causal machine learning for interventional modelling 
+<center>
+  <img src="images/causal.jpg" width=100% title="INTERVENE" style="margin:0px 0px" />
 </center>
 </textarea></section>
 
