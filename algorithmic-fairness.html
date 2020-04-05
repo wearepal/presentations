@@ -201,20 +201,19 @@ When protected attribute $s$, target label $y$, predicted label $\widehat{y}$ is
   - Need to connect target labels $\widehat{y}$ and dataset label $y$. Let $\eta_s(x)=P(y=1|x, s)$ denote the dataset conditional probability, and accordingly for $\widehat{\eta}_s(x)$, we have the following <span class="highlight">linear relationship</span>:
   $\widehat{\eta}_s(x)=m_s\cdot \eta_s(x) + b_s$ with $m_s := P(\widehat{y}=1|y=1,s) + P(\widehat{y}=0|y=0,s) - 1$, and $
   b_s := 1 - P(\widehat{y}=0|y=0,s) $
-  - We can ensure balanced dataset condition by requiring <span class="highlight">equal positive predictions</span> in the transition probabilities $P(\widehat{y}|y,s)$.
+  - Ensure balanced dataset condition by <span class="highlight">controlling the positive predictions</span> $P(\widehat{y}=1|s)$ in the transition probabilities $P(\widehat{y}|y,s)$.
   <span class="citeme">Kehrenberg, Chen, NQ, Tuning fairness by balancing target labels, Frontiers in Artificial Intelligence, Minor revision.</span>
   </textarea></section>
 
 <section data-markdown data-background-color="#000"><textarea data-template>
   ## Accuracy&ndash;Fairness trade-off
-  - As there is some freedom is choosing $m_s$ and $b_s$, it is important to consider what the effect of different values is.
-  - The probability that $y$ and $\widehat{y}$ disagree ($y\neq\widehat{y}$) for any input $x$ in the dataset is given by:
+  - As there is some freedom in choosing $m_s$ and $b_s$, it is important to consider what the effect of different values is
+  - <span class="highlight">Theorem</span>: The probability that $y$ and $\widehat{y}$ disagree ($y\neq\widehat{y}$) for any input $x$ in the dataset is given by:
 
   $P(y\neq\widehat{y}|s)=P\left(\left|\eta_s(x) - \tfrac{1}{2}\right| < t_s\right)$
 with $t_s = \left|\frac{m_s+2b_s-1}{2m_s}\right|$
- - The term $t_s$ determines the accuracy penalty that we have to accept in order to gain fairness.
- - The value of $t_s$ can be taken into account when choosing $m_s$ and $b_s$ 
-
+ - The term $t_s$ determines the accuracy penalty that we have to accept in order to gain fairness
+ - The value of $t_s$ can be taken into account when choosing <span class="highlight">the rate of positive predictions</span> ($m_s$ and $b_s$)
   <span class="citeme">Kehrenberg, Chen, NQ, Tuning fairness by balancing target labels, Frontiers in Artificial Intelligence, Minor revision.</span>
   </textarea></section>
 
@@ -311,9 +310,9 @@ such as $\tau=5$ and $\mu=1.2$.
                     </tr>
                     <tr>
                         <td>$\ddagger$logistic regression (original and GAN contrastive with output consistency)</td>
-                        <td width="10%">72.14</td>
-                        <td width="10%">0.89</td>
-                        <td width="10%">0.54</td>
+                        <td width="10%"><span class="highlight">72.14</span></td>
+                        <td width="10%"><span class="highlight">0.89</span></td>
+                        <td width="10%"><span class="highlight">0.54</span></td>
                     </tr>
                     </tbody>
                 </table>
@@ -325,15 +324,17 @@ such as $\tau=5$ and $\mu=1.2$.
 
 <section data-markdown data-background-color="#fff"><textarea data-template>
     ## Future directions
-- <b>BayesianGDPR</b>: Bayesian models and algorithms for fairness and transparency (ERC Starting Grant -- 1 April 2020 - 31 March 2025)
-<center>
-  <img src="images/bayesiangdpr.png" width=100% title="BayesianGDPR" />
-</center>
+- <b>BayesianGDPR</b>: Bayesian models and algorithms for fairness and transparency (<span class="highlight">ERC Starting Grant</span> -- 1 April 2020 - 31 March 2025)
+<p align="center">
+  <img src="images/bayesiangdpr.png" width=80% title="BayesianGDPR" />
+</p>
+
+
 </textarea></section>
 
 <section data-markdown data-background-color="#fff"><textarea data-template>
     ## Future directions
-- <b>Inclusive Green Infrastructures for Urban Well-Being</b> (British Academy -- 18 November 2019 - 17 November 2021) 
+- <b>Inclusive Green Infrastructures for Urban Well-Being</b> (<span class="highlight">British Academy</span> -- 18 November 2019 - 17 November 2021) 
 <center>
   <img src="images/greeninfrastructure.png" width=100% title="Green Infrastructures" style="margin:0px 0px"/>
 </center>
@@ -341,7 +342,8 @@ such as $\tau=5$ and $\mu=1.2$.
 
 <section data-markdown data-background-color="#fff"><textarea data-template>
     ## Future directions
-- <b>INTERVENE</b>: Causal machine learning for interventional modelling 
+- <b>INTERVENE</b>: Causal machine learning for interventional modelling (<span class="highlight">Surgo Foundation</span>)
+<p align="center">
 <center>
   <img src="images/causal.jpg" width=100% title="INTERVENE" style="margin:0px 0px" />
 </center>
