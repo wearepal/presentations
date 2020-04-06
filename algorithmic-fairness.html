@@ -38,6 +38,7 @@
     flex: 1;
 }
 </style>
+
 <body>
 
 <div class="reveal"><div class="slides">
@@ -122,20 +123,24 @@
     <section data-markdown data-background-color="#000"><textarea data-template>
         ## Equality on the outcomes
 When protected attribute $s$, target label $y$, predicted label $\widehat{y}$ is <span class="highlight">binary</span>: 
-        - Equality of acceptance rate (AR) 
-           :
-            $
-            \text{Pr}(\widehat{y}=1|s=1)=\text{Pr}(\widehat{y}=1|s=0)
-            $
-        - Equality of true positive rate (TPR):
+    <div class="container">
+    <div class="col">
+        <p align="left">&bull; Equality of acceptance rate (<span class="highlight">AR</span>): $\text{Pr}(\widehat{y}=1|s=1)=\text{Pr}(\widehat{y}=1|s=0)$</p>
+    </div>
+    <div class="col">
+    <center>
+    <img src="images/AR.png" width=70% title="AR" />
+    </center></div>
+    </div>   
+        <p align="left">&bull; Equality of true positive rate (<span class="highlight">TPR</span>):
             $
             \text{Pr}(\widehat{y}=1|s=1,y=1)=\text{Pr}(\widehat{y}=1|s=0,y=1)
-            $
-        - Equality of positive predicted value (PPV):
+            $</p>
+        <p align="left">&bull; Equality of positive predicted value (<span class="highlight">PPV</span>):
             $
             \text{Pr}(y=1|s=1,\widehat{y}=1)=\text{Pr}(y=1|s=0,\widehat{y}=1)
-            $
-        - <span class="highlight">Let's have all the fairness metrics</span>! If we are fair with regards to all notions of fair, then we're fair... right?
+            $</p>
+        <p align="left">&bull; If we are fair with regards to <span class="highlight">all notions of fair</span>, then we're fair... right?</p>
     </textarea></section>
 
     <section data-markdown data-background-color="#000"><textarea data-template>
