@@ -140,13 +140,12 @@ When protected attribute $s$, target label $y$, predicted label $\widehat{y}$ is
 
     <section data-markdown data-background-color="#000"><textarea data-template>
         ## Mutual exclusivity by Bayes' rule
-<p align="left">For each protected attribute $s$, we have:</p>       
+<p align="left">&bull; Suppose we have <span class="highlight">equality of TPR/FPR</span> (FPR<sub>s=1</sub> = FPR<sub>s=0</sub> and TPR<sub>s=1</sub> = TPR<sub>s=0</sub>), can we have <span class="highlight">equality of PPV</span> (PPV<sub>s=1</sub> = PPV<sub>s=0</sub>)? <b><span class="highlight">NO!</b></p> 
+<p align="left">&bull; For each protected attribute $s=0$ and $s=1$, we compute:</p>       
         $
         \underbrace{\text{Pr}(y=1|\widehat{y}=1)}_{\text{Positive Predicted Value (PPV)}} = \frac{\overbrace{\text{Pr}(\widehat{y}=1|y=1)}^{\text{True Positive Rate (TPR)}}\times\overbrace{\text{Pr}(y=1)}^{\text{Base Rate (BR)}}}{\text{Pr}(\widehat{y}=1|y=1)\text{Pr}(y=1) + \underbrace{\text{Pr}(\widehat{y}=1|y=-1)}_{\text{False Positive Rate (FPR)}}(1-\text{Pr}(y=1))}
         $
-<p align="left">&bull; Suppose we have FPR<sub>s=1</sub> = FPR<sub>s=0</sub> and TPR<sub>s=1</sub> = TPR<sub>s=0</sub> (<span class="highlight">equality of TPR/FPR</span>), can we have PPV<sub>s=1</sub> = PPV<sub>s=0</sub> (<span class="highlight">equality of PPV</span>)?</p>
-
-<p align="left">&bull; YES! But only if we have a <span class="highlight">balanced dataset</span> (i.e. BR<sub>s=1</sub> = BR<sub>s=0</sub>) or a <span class="highlight">perfect predictor</span> (i.e. FPR=0 and TPR=1 for s=1 and s=0)</p>
+<p align="left">&bull; <span class="highlight">EXCEPTION</span>: if we have a <span class="highlight">balanced dataset</span> (i.e. BR<sub>s=1</sub> = BR<sub>s=0</sub>) or a <span class="highlight">perfect predictor</span> (i.e. FPR=0 and TPR=1 for s=1 and s=0)</p>
 <span class="citeme">Kehrenberg, Chen, NQ: Tuning fairness by balancing target labels, Frontiers in Artificial Intelligence, Minor Revision.</span>
 
     </textarea></section>
@@ -155,7 +154,7 @@ When protected attribute $s$, target label $y$, predicted label $\widehat{y}$ is
     <section data-markdown data-background-color="#000"><textarea data-template>
         ## Which fairness notion to use?
         - There's no right answer, all the above are "fair"
-        - Fairness is fundamentally not a challenge of algorithms alone, but very much a sociological challenge
+        - Fairness is fundamentally <span class="highlight">not a challenge of algorithms alone</span>, but very much a sociological challenge
         - It's important to consult <span class="highlight">domain experts</span> to find which is the best fit for each problem
         - Importantly, if we want to encourage <span class="highlight">public conversations</span>, <span class="highlight">transparency</span> in how fairness is met is an integral ingredient
     </textarea></section>
@@ -197,32 +196,30 @@ When protected attribute $s$, target label $y$, predicted label $\widehat{y}$ is
 
   <section data-markdown data-background-color="#000"><textarea data-template>
   ## Intuitive control parameters
-  - Introduce new <span class="highlight">target labels</span> $\widehat{y}$ such that the <span class="highlight">dataset is balanced</span>: $P(\widehat{y}, s) = P(\widehat{y})P(s)$
-  - Need to connect target labels $\widehat{y}$ and dataset label $y$. Let $\eta_s(x)=P(y=1|x, s)$ denote the dataset conditional probability, and accordingly for $\widehat{\eta}_s(x)$, we have the following <span class="highlight">linear relationship</span>:
+  - Control fairness-accuracy trade off with <span class="highlight">the rate of positive predictions</span> (e.g. $PR=0.6$ for $s=0$ and $s=1$)
+  - Introduce new <span class="highlight">target labels</span> $\widehat{y}$ such that the <span class="highlight">dataset is balanced</span>
+  - Need to connect target labels $\widehat{y}$ and dataset label $y$. Let $\eta_s(x)=P(y=1|x, s)$ denote the dataset conditional probability, and accordingly for $\widehat{\eta}_s(x)$, we have the following <span class="highlight">linear relationship</span>:<br>
   $\widehat{\eta}_s(x)=m_s\cdot \eta_s(x) + b_s$ with $m_s := P(\widehat{y}=1|y=1,s) + P(\widehat{y}=0|y=0,s) - 1$, and $
   b_s := 1 - P(\widehat{y}=0|y=0,s) $
-  - Ensure balanced dataset condition by <span class="highlight">controlling the positive predictions</span> $P(\widehat{y}=1|s)$ in the transition probabilities $P(\widehat{y}|y,s)$.
   <span class="citeme">Kehrenberg, Chen, NQ, Tuning fairness by balancing target labels, Frontiers in Artificial Intelligence, Minor revision.</span>
   </textarea></section>
 
 <section data-markdown data-background-color="#000"><textarea data-template>
   ## Accuracy&ndash;Fairness trade-off
-  - As there is some freedom in choosing $m_s$ and $b_s$, it is important to consider what the effect of different values is
+  - Ensure balanced dataset condition by <span class="highlight">controlling the positive predictions</span> $P(\widehat{y}=1|s)$ (e.g. $PR=0.6$ for $s=0$ and $s=1$) in the transition probabilities $P(\widehat{y}|y,s)$
   - <span class="highlight">Theorem</span>: The probability that $y$ and $\widehat{y}$ disagree ($y\neq\widehat{y}$) for any input $x$ in the dataset is given by:
 
-  $P(y\neq\widehat{y}|s)=P\left(\left|\eta_s(x) - \tfrac{1}{2}\right| < t_s\right)$
+  $P(y\neq\widehat{y}|s)=P\left(\left|\eta_s(x) - \tfrac{1}{2}\right| < t_s\right) \leq Ct_s^\lambda$
 with $t_s = \left|\frac{m_s+2b_s-1}{2m_s}\right|$
  - The term $t_s$ determines the accuracy penalty that we have to accept in order to gain fairness
- - The value of $t_s$ can be taken into account when choosing <span class="highlight">the rate of positive predictions</span> ($m_s$ and $b_s$)
   <span class="citeme">Kehrenberg, Chen, NQ, Tuning fairness by balancing target labels, Frontiers in Artificial Intelligence, Minor revision.</span>
   </textarea></section>
 
   <section data-markdown data-background-color="#000"><textarea data-template>
   ## Transparency in fairness
 
-- Control fairness-accuracy trade off with <span class="highlight">the rate of positive predictions</span> (e.g. $PR=0.6$ for $s=0$ and $s=1$)
-- Existing approaches rely on intermediate, unintuitive control parameters
-such as $\tau=5$ and $\mu=1.2$.
+- <span class="highlight">Left</span>: Accuracy&ndash;Fairness trade-off; <span class="highlight">Right</span>: the achieved TPR
+- By setting different target PR for our method, we can affect TPR as well, where <span class="highlight">higher $PR_t$ leads to higher $TPR$</span>
 
 <img src="images/eo_together_acc_.png" width=30% />
 <img src="images/eo_together_control_.png" width=30% />
@@ -276,7 +273,7 @@ such as $\tau=5$ and $\mu=1.2$.
 
         <section data-background-color="#000">
 <h2>Results on the Diversity in Faces dataset</h2>
-<p align="left">&bull; We use <span class="highlight">skin colour (light/dark)</span> as the two protected attributes.</p>
+<p align="left">&bull; We use <span class="highlight">skin colour (light/dark)</span> as the protected attribute.</p>
 <p align="left">&bull; The classification task is to predict <span class="highlight">seven age groups</span>: [0-3],[4-12],
 [13-19],[20-30],[31-45],[46-60],[61+]. </p>
 
@@ -360,6 +357,17 @@ such as $\tau=5$ and $\mu=1.2$.
 <h1><span class="highlight" >Thank you!</span></h1>
     </textarea></section>
 
+    <section data-background-color="#000" data-markdown><textarea data-template>
+        ## Extra: Constrained optimization
+
+$
+\underset{w\in\Lambda}{\text{minimise}}\quad \frac{1}{N}\sum_{n=1}^{N}\Delta(y^n,f(x^n;w))+\tau||w||^2 + \mu(\text{Unfairness}(w))
+$
+
+- For example, the term $\text{Unfairness}(w)$ can be a distribution matching criterion that ensures the distributions $\text{Pr}(\text{sign}(f(x;w))==y|s=0,y=1)$ and $\text{Pr}(\text{sign}(f(x;w))==y|s=1,y=1)$ to be close, this is to satisfy the <span class="highlight">equality of true positive rate criterion</span>
+- Instead of setting exogenously parameters $\tau,\mu$ to balance the multiple chunks of the objective, we can use <span class="highlight">multi-objective optimisation approaches</span> to return a set of models 
+
+    </textarea></section>
 
 </div></div>
 
