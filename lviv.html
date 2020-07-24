@@ -1599,10 +1599,57 @@
     </section>
 
   <section>
+    <h2>Fairness without constraints</h2>
+    <ul>
+      <li>Most fairness methods for "during training" are formulated as constraints
+      <li>This means either
+          <ul>
+              <li>Using very special models where constrained-based optimization is possible
+              <li>Using Lagrange multipliers
+          </ul>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Lagrange multipliers</h2>
+    <p>Constrained optimization problem:
+    <p>$$\min\limits_\theta\, f(\theta) \quad\text{s.th.}~ g(\theta) = 0$$
+    <p>This gets reformulated as
+    <p>$f(\theta) + \lambda g(\theta)$
+    <p>where $\lambda$ has to be determined, but is usually just set to some value
+  </section>
+
+  <section>
+      <h2>Shortcomings of this</h2>
+      <ul>
+        <li>The value of $\lambda$ has no real meaning and is usually just set to arbitrary values
+        <li>It's hard to tell whether the constraint is fulfilled
+      </ul>
+  </section>
+
+  <section>
+      <h2>Alternate approach</h2>
+      <ul>
+        <li>Introduce <em>pseudo labels</em> $\bar{y}$.
+        <li>Make sure $\bar{y}$ is fair ($\bar{y}\perp s$).
+        <li>Use $\bar{y}$ as prediction target.
+      </ul>
+      <p>$$P(y=1|x,s,\theta)=\sum\limits_{\bar{y}\in\{0,1\}} P(y=1|\bar{y},s)P(\bar{y}|x,\theta)$$
+  </section>
+
+  <section>
+      <h2>Alternate approach</h2>
+      <p>For demographic parity:
+      <p>$P(\bar{y}|s=0)=P(\bar{y}|s=1)$
+      <p>This allows us to compute $P(y=1|\bar{y},s)$. Which is all we need.
+      <p>Details: <em>Tuning Fairness by Balancing Target Labels</em> (Kehrenberg et al., 2020)
+  </section>
+
+  <section>
     <h2>Causality</h2>
     <p><b>Motivation</b>:
     <ul>
-      <li>Fairness metrics so far have only looked at <em>correlations</em> between the sensitive attribute and the prediction
+      <li>Fairness methods so far have only looked at <em>correlations</em> between the sensitive attribute and the prediction
       <li>But isn't a causal path more important?
     </ul>
   </section>
