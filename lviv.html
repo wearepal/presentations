@@ -956,33 +956,162 @@
         </p>
     </section>
 
+    <section>
+        <h2>Delayed Impact of Fair Learning</h2>
+        <p>In the real world there are implications.</p>
+        <p>An individual doesn't just cease to exist after we've made our loan or bail decision.</p>
+        <p>The decision we make has <b>consequences</b>.</p>
+    </section>
+
+    <section data-markdown><textarea data-template>
+        ## Delayed Impact of Fair Learning
+
+        Consider a bank's lending decision.
+
+        The outcome is not simply reject or accept the applicant for a loan. In fact, there are multiple effects of this decision.
+
+        If the applicant receives a loan, then goes on to successfully pay it back, then not only will the bank make a profit, but then the applicant's credit score will increase.
+
+        This will make future loan decisions more favorable to the applicant.
+    </textarea></section>
+
+    <section data-markdown><textarea data-template>
+        ## Delayed Impact of Fair Learning
+
+        We could think of this in terms of loss functions.
+
+        The banks objective was to maximize profit. After deciding to give the loan, the loan was repaid (with interest). The bank made money.
+
+        To maximize the objective (minimize the negative of the loss) the bank wants to give out as many loans that are likely to be repaid as possible.
+    </textarea></section>
+
+    <section data-markdown><textarea data-template>
+        ## Delayed Impact of Fair Learning
+
+        In this scenario we have a slightly different concern. We don't want loans to be given to one subgroup (such as blue race), more often than members of another subgroup (green race).
+
+        Our concern is that if the number of people who receive loans from one group outweigh the other, then as a whole, the credit rating will become a euphemism for race.
+    </textarea></section>
+
+    <section>
+        <section>
+            <h2>The Outcome Curve</h2>
+            <img src="images/outcome_curve.png" width="65%">
+        </section>
+        <section>
+            <h2>Possible areas</h2>
+            <table>
+                <tr>
+                    <th>Area</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td>Active Harm</td>
+                    <td>Expected change in credit score of an individual is negative</td>
+                </tr>
+                <tr>
+                    <td>Stagnation</td>
+                    <td>Expected change in credit score of an individual is 0</td>
+                </tr>
+                <tr>
+                    <td>Improvement</td>
+                    <td>Expected change in credit score of an individual is positive</td>
+                </tr>
+            </table>
+        </section>
+        <section>
+            <h2>Possible areas</h2>
+            <table>
+                <tr>
+                    <th>Area</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td>Relative Harm</td>
+                    <td>Expected change in credit score of an individual is less than if the selection policy had been to maximize profit</td>
+                </tr>
+                <tr>
+                    <td>Relative Improvement</td>
+                    <td>Expected change in credit score of an individual is better than if the selection policy had been to maximize profit</td>
+                </tr>
+            </table>
+        </section>
+    </section>
+
     <section data-markdown><textarea data-template>
         ## How to enforce fairness?
 
-        Fairness constraints can be added pre, during or post training.
+        Fairness constraints can be added <span class="highlight">pre</span>, <span class="highlight">during</span> or <span class="highlight">post</span> training.
 
-        Pre-training examples
+        <span class="highlight">Pre-training</span> examples
         - Zemel Fair Representations
         - Beutel Adversarial Representation
         - Quadrianto Fair Interpretable Representations
-        - Feldman
+        - Kehrenberg Null-sampling
     </textarea></section>
 
     <section data-markdown><textarea data-template>
-        During Training
+        ## How to enforce fairness?
+
+        <span class="highlight">During</span> Training
         - Zafar's methods
-        - Zhang
+        - Zhang Gradient Projection
         - Kehrenberg Fair GP
 
-        Post Training
-        - Hardt Recalibrating
+        <span class="highlight">Post</span> Training
+        - Hardt Recalibration
     </textarea></section>
 
     <section data-markdown><textarea data-template>
-        More on those next week...
+        More on those shortly...
     </textarea></section>
 
     <section data-markdown><textarea data-template>
+        # Simple Approaches
+    </textarea></section>
+
+    <section>
+        <section>
+            <h2>Removing a sensitive feature</h2>
+
+            <p>"If we just remove the sensitive feature, then our model can't be unfair"</p>
+            <p></p>
+            <p>This doesn't work, why?</p>
+        </section>
+
+        <section>
+            <h2>Removing a sensitive feature</h2>
+
+            <p>Because ML methods are excellent at finding <span class="highlight">patterns in data</span></p>
+
+            <p><span class="citeme">Pedreschi et al.</span></p>
+        </section>
+    </section>
+
+    <section>
+        <section>
+            <h2>Reweighing</h2>
+
+            <p>Kamiran & Calders determined that one source of unfairness was imbalanced training data.</p>
+
+            <p>Simply count the current distribution of demographics</p>
+
+            <img src="reweighing_before.png"/>
+        </section>
+
+        <section>
+            <h2>Reweighing</h2>
+
+            <p>Then either up/down-sample or assign instance weights to members of each group in the training set
+                so that the results are "normalised".</p>
+
+            <img src="reweighing_after.png"/>
+        </section>
+    </section>
+
+    <section data-markdown><textarea data-template>
+        ## Fair Representations
+
         Popular approach is to add produce a "fair" representation. Consider that we have 2 roles, a data vendor, who is charge of collecting the data and preparing it. Our other role is a data user, someone who will be making predictions based on our data.
 
         The data vendor is concerned that the data user may be using their data to make unfair decisions. So the data vendor decides to learn a new, fair representation.
@@ -1011,6 +1140,55 @@
 
             <p>Referred to as "fair pipelines". Work has only just begun exploring these. Current research shows that these don't work (at the moment!)</p>
         </section>
+    </section>
+
+    <section>
+        <h2>How to enforce fairness?</h2>
+        <h3>During Training</h3>
+        Instead of building a fair representation, we just make the fairness constraints part of the objective during training of the model.
+
+        An early example of this is by Zafar et al.
+    </section>
+
+    <section>
+        <h2>How to enforce fairness?</h2>
+        <h3>During Training</h3>
+        <p>Given we have a loss function, $\mathcal{L}(\theta)$.</p>
+
+        <p>In an unconstrained classifier, we would expect to see</p>
+
+        $$
+        \min{\mathcal{L}(\theta)}
+        $$
+    </section>
+
+    <section>
+        <h2>How to enforce fairness?</h2>
+        <h3>During Training</h3>
+        <!-- <section> -->
+
+        <p>To reduce Disparate Impact, Zafar adds a constraint to the loss function.</p>
+
+        $$
+        \begin{aligned}
+        \text{min  } & \mathcal{L}(\theta) \\
+        \text{subject to  } & P(\hat{y} \neq y|s = 0) − P(\hat{y} \neq y|s = 1) \leq \epsilon \\
+        \text{subject to  } & P(\hat{y} \neq y|s = 0) − P(\hat{y} \neq y|s = 1) \geq -\epsilon
+        \end{aligned}
+        $$
+        <!-- </section> -->
+        <!-- <section>
+          <p>Where $\{{s_i \} }_{i=1}^{N}$ denotes a user's sensitive attributes</p>
+          <p>$\{ {d_{\theta}(x_i) \} }_{i=1}^{N}$ the signed distance to the decision boundary</p>
+          <p>$c$ is the trade-off between accuracy and fairness.</p>
+          <p>If $c$ is sufficiently small, this is the equivalent of</p>
+          $$
+            P(d_{\theta}(x) \geq 0 | s = 0) = P(d_{\theta}(x) \geq 0 | s = 1)
+          $$
+        </section>
+        <section>
+            In other words, the decisions for both sensitive groups must be equally distributed across the decision boundary up to some threshold $c$.
+        </section> -->
     </section>
 
 
