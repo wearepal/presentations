@@ -1163,6 +1163,8 @@
     <section data-markdown><textarea data-template>
         The state-of-the-art method a fair representation this is to use an *adversarial* network, using a "Gradient-Reversal Layer" from Ganin et al.
 
+        <span class="citeme">Ganin et al. 2016</span>
+
         ![](./images/adversarial.svg)
     </textarea></section>
 
@@ -1182,6 +1184,26 @@
             <h4>What if the vendor data user decides to be fair as well?</h4>
 
             <p>Referred to as "fair pipelines". Work has only just begun exploring these. Current research shows that these don't work (at the moment!)</p>
+        </section>
+    </section>
+
+    <section>
+        <section>
+            <h2>Variational Fair Autoencoder</h2>
+            <p>idea: Let's "disentangle" the sensitive attribute using the variational autoencoder framework!</p>
+        </section>
+        <section>
+            <h2>Variational Fair Autoencoder</h2>
+            <img src="vfae_graphical_model.png">
+            <p><span class="citeme">Louizos et al. 2017</span> </p>
+        </section>
+        <section>
+            <h2>Variational Fair Autoencoder</h2>
+            <p>Where $z_1$ and $z_2$ are encouraged to confirm to a prior distribution</p>
+        </section>
+        <section>
+            <h2>Problems with doing this?</h2>
+            <p>Similar to adversarial model, but more principled.</p>
         </section>
     </section>
 
