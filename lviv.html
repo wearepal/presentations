@@ -1646,6 +1646,18 @@
   </section>
 
   <section>
+    <h2>Multinomial sensitive attribute</h2>
+    <p>The usual metrics for Demographic Parity are only defined for binary attributes: it's either a <em>ratio</em> or a <em>difference</em> of two probabilities.
+    <p><b>Alternative</b>:
+    <p>Hirschfeld-Gebelein-Rényi Maximum Correlation Coefficient (HGR)
+    <ul>
+        <li>defined on the domain [0,1]
+        <li>$HGR(Y,S) = 0$ iff $Y\perp S$
+        <li>$HGR(Y,S) = 1$ iff there is a deterministic function to map between them
+    </ul>
+  </section>
+
+  <section>
     <h2>Causality</h2>
     <p><b>Motivation</b>:
     <ul>
@@ -1786,18 +1798,6 @@
     <ul>
       <li>Causal models are very promising and arguably the "right" way to solve the problem.
       <li>However these models are difficult to obtain.
-    </ul>
-  </section>
-
-  <section>
-    <h2>Multinomial sensitive attribute</h2>
-    <p>The usual metrics for Demographic Parity are only defined for binary attributes: it's either a <em>ratio</em> or a <em>difference</em> of two probabilities.
-    <p><b>Alternative</b>:
-    <p>Hirschfeld-Gebelein-Rényi Maximum Correlation Coefficient (HGR)
-    <ul>
-        <li>defined on the domain [0,1]
-        <li>$HGR(Y,S) = 0$ iff $Y\perp S$
-        <li>$HGR(Y,S) = 1$ iff there is a deterministic function to map between them
     </ul>
   </section>
 
