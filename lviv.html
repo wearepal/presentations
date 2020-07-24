@@ -1598,6 +1598,150 @@
         </textarea></section>
     </section>
 
+  <section>
+    <h2>Causality</h2>
+    <p><b>Motivation</b>:
+    <ul>
+      <li>Fairness metrics so far have only looked at <em>correlations</em> between the sensitive attribute and the prediction
+      <li>But isn't a causal path more important?
+    </ul>
+  </section>
+
+  <section>
+    <h2>Causality</h2>
+    <p>Example:
+    <p>Admissions at Berkeley college.
+    <p>Men were found to be accepted with much higher probability. Was it discrimination?
+  </section>
+
+  <section>
+    <h2>Causality</h2>
+    <p>Was it discrimination?
+    <p>Not necessarily! The reason was that women were applying to more competitive departments.
+    <p>Departments like medicine and law are very competitive (hard to get in).
+    <p>Departments like computer science are much less competetive (because it's boring ;).
+  </section>
+
+  <section>
+    <h2>Causality</h2>
+    <ul>
+      <li>$R$: admission decision
+      <li>$A$: gender
+      <li>$X$: department choice
+    </ul>
+    <p>
+    <img src="images/berkeley_admission.png" style="width: 30%">
+  </section>
+
+  <section>
+    <h2>Causality</h2>
+    <!-- <p>"Correlation doesn't imply causation"</p> -->
+    <!-- <p class="fragment">But what is causation?</p> -->
+    <p>If we can understand what <b>causes</b> unfair behavior, then we can take steps to mitigate it.</p>
+    <p class="fragment">Basic idea: a sensitive attribute may only affect the prediction via legitimate causal paths.</p>
+    <p class="fragment">But how do we model causation?</p>
+  </section>
+
+  <section>
+    <h2>Causal Graphs</h2>
+    <p><b>Solution:</b> build causal graphs of your problem</p>
+    <p><b>Problem:</b> causality cannot be inferred from observational data</p>
+    <ul>
+      <li>Observational data can only show correlations
+      <li>For causal information we have to do <i>experiments</i>. (But that is often not ethical.)
+      <li>Currently: just guess the causal structure
+    </ul>
+  </section>
+
+  <section>
+    <h2>Path-specific causal fairness</h2>
+    <p>
+    $A$ is a sensitive attribute, and its direct effect on $Y$ and effect through $M$ is considered unfair.
+    But $L$ is considered admissible.
+    <p><img src="images/path-specific-fairness.png" style="width: 70%">
+  </section>
+
+  <section>
+    <h2>Path-specific causal fairness</h2>
+    <p>With a structural causal model (SCM), like this:
+    <p><img src="images/scm.png" style="width: 50%">
+    <p>You can figure out exactly how each feature should be incorporated in order to make a fair prediction.
+  </section>
+
+  <section>
+    <h2>Path-specific causal fairness</h2>
+    <ul>
+      <li><b>Advantage:</b> we can figure out <em>exactly</em> how to avoid unfairness
+      <li><b>Problem:</b> requires an SCM, which we usually don't have and which is hard to get
+      <li><b>Problem:</b> we have to decide for each feature individually whether it's admissible
+        <ul>
+          <li>This will not work for computer vision tasks where the raw features are pixels
+        </ul>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Counterfactual Fairness</h2>
+    <ul>
+      <li>slightly different idea but also based on SCMs (structural causal model)
+      <li>we're basically asking: in the counterfactual world where your gender was different, would you have been accepted?
+        <ul>
+          <li><em>counterfactual</em>: something that has not happened or is not the case
+        </ul>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Counterfactuals</h2>
+    <p>Example of a counterfactual statement:
+    <blockquote>If Oswald had not shot Kennedy, no-one else would have.</blockquote>
+    <p>This is counterfactual, because Oswald did in fact shoot Kennedy.
+    <p>It's a claim about a counterfactual world.
+  </section>
+
+  <section>
+    <h2>Counterfactual Fairness</h2>
+    <p>$U$: set of all unobserved background variables</p>
+    <p>$P(\hat{y}_{s=i}(U) = 1|x, s=i)=P(\hat{y}_{s=j}(U) = 1|x, s=i)$</p>
+    <p>$i, j \in \{0, 1\}$</p>
+    <p>$\hat{y}_{s=k}$: prediction in the counterfactual world where $s=k$</p>
+    <p><b>practical consequence:</b> $\hat{y}$ is counterfactually fair if it does not causally depend
+    (as defined by the causal model) on $s$ or any descendants of $s$.</p>
+  </section>
+
+  <section>
+    <h2>The problem of getting the SCM</h2>
+    <ul>
+      <li>Causal models cannot be learned from observational data only
+        <ul>
+          <li>You can try, but there is no <em>unique</em> solution
+        </ul>
+      <li>Different causal models can lead to very different results
+    </ul>
+  </section>
+
+  <section>
+    <h2>Example with Causal Graphs</h2>
+    <p><b>Example:</b> Law school success</p>
+    <p>Task: given GPA score and LSAT (law school entry exam), predict grades after one year in law school:
+      FYA (first year average)</p>
+    <p>Additionally two sensitive attributes: <i>race</i> and <i>gender</i></p>
+  </section>
+
+  <section>
+    <h2>Example with Causal Graphs</h2>
+    <p>Two possible graphs</p>
+    <img src="./images/lsat_causal.png"/>
+  </section>
+
+  <section>
+    <h2>Summary</h2>
+    <ul>
+      <li>Causal models are very promising and arguably the "right" way to solve the problem.
+      <li>However they are difficult to obtain
+    </ul>
+  </section>
+
 
 </div></div>
 
