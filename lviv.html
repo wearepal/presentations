@@ -945,6 +945,49 @@
     </textarea></section>
 
     <section>
+      <h2>Fairness based on similarity</h2>
+      <ul>
+      <li>First define a distance metric on your datapoints (i.e. how similar are the datapoints)
+        <ul>
+          <li>Can be just Euclidean distance but is usually something else (because of different scales)</li>
+          <li>This is the hardest step and requires domain knowledge</li>
+        </ul>
+        </li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Pre-processing based on similarity</h2>
+      <ul>
+        <li>An individual is then considered to be unfairly treated if it is treated differently than its "neighbours".</li>
+        <li>For any data point we can check how many of the $k$ nearest neighbours have the same class label as that data point</li>
+        <li>If the percentage is under a certain threshold then there was discrimination against the individual corresponding to that data point.</li>
+        <li>Then: flip the class labels of those data points where the class label is considered unfair</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Considering similarity during training</h2>
+      <p>Alternative idea:</p>
+      <ul>
+        <li>a classifier is fair if and only if the predictive distributions for any two data points are at least as similar
+          as the two points themselves
+          <ul>
+           <li>(according to a given similarity measure for distributions and a given similarity measure for data points)</li>
+          </ul>
+        </li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Considering similarity during training</h2>
+      <ul>
+        <li>Needed similarity measure for distributions</li>
+        <li>Then add fairness condition as additional loss term to optimization loss</li>
+      </ul>
+    </section>
+
+    <section>
         <h2>Which fairness criteria should we use?</h2>
         <p>We've seen several statistical definitions and Individual Fairness</p>
         <p>
