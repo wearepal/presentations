@@ -1139,7 +1139,7 @@
 
             <p>Simply count the current distribution of demographics</p>
 
-            <img src="reweighing_before.png"/>
+            <img src="images/reweighing_before.png"/>
         </section>
 
         <section>
@@ -1148,7 +1148,7 @@
             <p>Then either up/down-sample or assign instance weights to members of each group in the training set
                 so that the results are "normalised".</p>
 
-            <img src="reweighing_after.png"/>
+            <img src="images/reweighing_after.png"/>
         </section>
     </section>
 
@@ -1194,7 +1194,7 @@
         </section>
         <section>
             <h2>Variational Fair Autoencoder</h2>
-            <img src="vfae_graphical_model.png">
+            <img src="images/vfae_graphical_model.png">
             <p><span class="citeme">Louizos et al. 2017</span> </p>
         </section>
         <section>
@@ -1254,6 +1254,348 @@
         <section>
             In other words, the decisions for both sensitive groups must be equally distributed across the decision boundary up to some threshold $c$.
         </section> -->
+    </section>
+
+    <section>
+        <h1>Transparency and Fairness</h1>
+    </section>
+
+    <section data-markdown><textarea data-template>
+        ## Pre-processing
+
+        - Many <span class="highlight">adversarial-based</span> fair representation learning approaches, e.g. using a "Gradient-Reversal Layer"
+
+        <img src="images/models/adversarialfair.png" width=38% title="Adversarially Fair"/>
+
+        <span class="citeme">Ganin et al.,Domain-adversarial training of neural networks, JMLR 2016</span>
+        <div style="height:20px;font-size:1px;">&nbsp;</div>
+        <span class="citeme">Edwards and Storkey, Censoring representations with an adversary, ICLR 2016</span>
+        <div style="height:20px;font-size:1px;">&nbsp;</div>
+        <span class="citeme">Beutel et al., Data decisions and theoretical implications when adversarially learning fair representations, Jul 2017</span>
+        <span class="citeme">Madras et al., Learning adversarially fair and transferable representations, ICML 2018</span>
+
+    </textarea></section>
+
+
+    <section data-markdown><textarea data-template>
+        ## Problems?
+
+        Can we visualise/understand the latent representation $z$?
+    </textarea></section>
+
+    <section>
+        <section data-markdown><textarea data-template>
+            ## Fair in the data domain
+            - A fair representation $T_\omega(X)$ which has the sensitive attribute removed, but remains in the space of $X$
+            - Main disentangling assumption:
+            $\phi(X) = \phi(T_{\omega}(X)) + \underbrace{\phi (\lnot T_{\omega}(X))}_{\text{Spurious}}
+            $
+            - <span class="highlight">Spurious</span>: dependent on the sensitive attribute.
+            - <span class="highlight">Non-Spurious</span>: independent of the sensitive attribute.
+
+            <span class="citeme">NQ, Sharmanska, Thomas, Discovering fair representations in the data domain, CVPR 2019</span>
+        </textarea></section>
+
+        <section data-markdown><textarea data-template>
+            ## Fair in the data domain
+
+            <img src="images/models/Architecture.png" width=70% title="Architecture"/>
+
+            - <span class="highlight">No GANs?</span> To perform translation from the input to the non-spurious
+            domain via GANs, we need to have real data (e.g. images, tabular data) of both domains
+        </textarea></section>
+
+        <section data-markdown><textarea data-template>
+            ## Fair in the data domain
+
+            The optimisation problem:
+
+            $\min_{T_\omega} \sum_{n=1}^N\mathcal{L}(T_{\omega}(\mathbf{x}^n),y^n)$
+
+            $+ \lambda_1 \sum_{n=1}^{N}\|\mathbf{x}^n-T_{\omega}(\mathbf{x}^n)\|_2^2$
+
+            $+ \lambda_2 \\|(- \mathrm{HSIC}(\phi (\lnot T_{\omega}(\mathbf{x})),S|Y=+1) + \mathrm{HSIC}(\phi ( T_{\omega}(\mathrm{x})),S|Y=+1)\\|)$
+        </textarea></section>
+
+        <section data-markdown><textarea data-template>
+            ## Fair in the data domain
+
+            Experiments on the <span class="highlight">Adult Income dataset</span>
+            - This dataset is frequently used in fairness research.
+            - It has $45,222$ data points, each with $14$ features such as relationship status, gender, occupation.
+            - We use gender as a binary sensitive attribute.
+            - The binary task is to predict whether a person is a high-earner (>\$50K p.a.) or not.
+        </textarea></section>
+
+        <section>
+            <h2>Results on the adult income dataset</h2>
+            <table>
+                <tbody><tr>
+                    <td width="50%">
+                        <p>- Analysis on the relationship feature</p>
+                        <p>- Feature values of the <span class="highlight">minority group are transformed to match the majority group</span></p>
+                        <p>- Here, the wife value is translated to husband</p></td>
+                    <td width="50%">  <img src="images/output.png" width=70% title="outputs"/></td>
+                </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section>
+            <h2>Results on the adult income dataset</h2>
+            <p>Interpretable can be fair!</p>
+
+            <small>
+                <table>
+                    <thead><tr>
+                        <td></td>
+                        <td colspan="2" >original $X$</td>
+                        <td colspan="2"><span class="highlight">fair & interpretable $X$</span></td>
+                        <td colspan="2">latent embedding $Z$</td>
+                    </tr>
+                    </thead>
+                    <tbody><tr>
+                        <td></td>
+                        <td width="10%">Accuracy $\uparrow$</td>
+                        <td width="10%">Eq. Opp $\downarrow$</td>
+                        <td width="10%">Accuracy $\uparrow$</td>
+                        <td width="10%">Eq. Opp $\downarrow$</td>
+                        <td width="10%">Accuracy $\uparrow$</td>
+                        <td width="10%">Eq. Opp $\downarrow$</td>
+                    </tr>
+                    <tr>
+                        <td width="10%">LR</td>
+                        <td width="10%">$85.1\pm0.2$ </td>
+                        <td width="10%">$\mathbf{9.2\pm2.3}$ </td>
+                        <td width="10%">$84.2\pm0.3$ </td>
+                        <td width="10%">$\mathbf{5.6\pm2.5}$  </td>
+                        <td width="10%">$81.8\pm2.1$</td>
+                        <td width="10%">$\mathbf{5.9\pm4.6}$ </td>
+                    </tr>
+                    <tr>
+                        <td width="10%">SVM</td>
+                        <td width="10%">$85.1\pm0.2$ </td>
+                        <td width="10%">$\mathbf{8.2\pm2.3}$ </td>
+                        <td width="10%">$84.2\pm0.3$ </td>
+                        <td width="10%">$\mathbf{4.9\pm2.8}$ </td>
+                        <td width="10%">$81.9\pm2.0$ </td>
+                        <td width="10%">$\mathbf{6.7\pm4.7}$</td>
+                    </tr>
+                    <tr>
+                        <td width="20%">Fair Reduction LR</td>
+                        <td width="10%">$85.1\pm0.2$ </td>
+                        <td width="10%">$\mathbf{14.9\pm1.3}$ </td>
+                        <td width="10%">$84.1\pm0.3$ </td>
+                        <td width="10%">$\mathbf{6.5\pm3.2}$ </td>
+                        <td width="10%">$81.8\pm2.1$ </td>
+                        <td width="10%">$\mathbf{5.6\pm4.8}$ </td>
+                    </tr>
+                    <tr>
+                        <td width="10%">Fair Reduction SVM</td>
+                        <td width="10%">$85.1\pm0.2$ </td>
+                        <td width="10%">$\mathbf{8.2\pm2.3}$ </td>
+                        <td width="10%">$84.2\pm0.3$ </td>
+                        <td width="10%">$\mathbf{4.9\pm2.8}$ </td>
+                        <td width="10%">$81.9\pm2.0$ </td>
+                        <td width="10%">$\mathbf{6.7\pm4.7}$ </td>
+                    </tr>
+                    <tr>
+                        <td width="10%">Kamiran & Calders LR</td>
+                        <td width="10%">$84.4\pm0.2$ </td>
+                        <td width="10%">$\mathbf{14.9\pm1.3}$  </td>
+                        <td width="10%">$84.1\pm0.3$ </td>
+                        <td width="10%">$\mathbf{1.7\pm1.3}$ </td>
+                        <td width="10%">$81.8\pm2.1$ </td>
+                        <td width="10%">$\mathbf{4.9\pm3.3}$ </td>
+                    </tr>
+                    <tr>
+                        <td width="10%">Kamiran & Calders SVM</td>
+                        <td width="10%">$85.1\pm0.2$ </td>
+                        <td width="10%">$\mathbf{8.2\pm2.3}$ </td>
+                        <td width="10%">$84.2\pm0.3$ </td>
+                        <td width="10%">$\mathbf{4.9\pm2.8}$ </td>
+                        <td width="10%">$81.9\pm2.0$ </td>
+                        <td width="10%">$\mathbf{6.7\pm4.7}$ </td>
+                    </tr>
+                    <tr>
+                        <td width="10%">Zafar et al.</td>
+                        <td width="10%">$85.0\pm0.3$ </td>
+                        <td width="10%">$\mathbf{1.8\pm0.9}$ </td>
+                        <td width="10%">--- </td>
+                        <td width="10%">--- </td>
+                        <td width="10%">--- </td>
+                        <td width="10%">--- </td>
+                    </tr></tbody>
+                </table>
+            </small>
+        </section>
+        <section data-markdown><textarea data-template>
+            ## Fair in the data domain
+
+            Experiments on <span class="highlight"> CelebA dataset</span>
+            - $202,599$ celebrity images with $40$ attributes.
+            - We use gender as a binary sensitive attribute.
+            - We use the subjective attribute memorability as the classification task.
+        </textarea></section>
+        <section data-markdown><textarea data-template>
+            ## Results on the CelebA dataset
+
+            - <span class="highlight">Left</span>: Examples of the spurious residual and non-spurious translation
+            - <span class="highlight">Right</span>: In the semantic attribute domain ... same conclusion (<span class="highlight">changes in the eyes and lips regions</span>)
+
+            <table style="border-collapse: collapse; border: none; max-width: 80%">
+                <tbody >
+                    <tr style="border: none;">
+                        <td width="40%" colspan="4" style="border: none;"></td>
+                        <td width="1%" style="border: none;"></td>
+                        <td width="40%" style="border: none;"></td>
+                    </tr>
+                    <tr style="border: none;">
+                        <td width="10%" style="border: none;">Non-spurious</td>
+                        <td width="20%" style="border: none;"><img src="images/celeba_res/006126.jpg" width=70% title="Im1"/></td>
+                        <td width="20%" style="border: none;"><img src="images/celeba_res/015365.jpg" width=70% title="Im1"/></td>
+                        <td width="20%" style="border: none;"><img src="images/celeba_res/015505.jpg" width=70% title="Im1"/></td>
+                        <td width="1%" rowspan="2" style="border: none;"><hr width="2" size="250"></td>
+                        <td width="30%" rowspan="2" style="border: none;"><img src="images/features.png" width=100% title="features"/></td>
+                    </tr>
+                    <tr style="border: none;">
+                        <td width="10%" style="border: none;">Spurious</td>
+                        <td width="20%" style="border: none;"><img src="images/celeba_res/006126res.jpg" width=60% title="RIm1"/></td>
+                        <td width="20%" style="border: none;"><img src="images/celeba_res/015365res.jpg" width=60% title="RIm1"/></td>
+                        <td width="20%" style="border: none;"><img src="images/celeba_res/015505res.jpg" width=60% title="RIm1"/></td>
+                    </tr>
+                </tbody>
+            </table>
+        </textarea></section>
+    </section>
+
+    <section>
+        <h2>Problems?</h2>
+        <h4>Spurious and non-spurious visualisations are not exciting!</h4>
+        <h4>Residual unfairness (transferability)</h4>
+        <img src="images/cmnist%20train.png" width="30%">
+        <img src="images/cmnist%20test.png" width="30%">
+    </section>
+
+    <section data-markdown><textarea data-template>
+        ## Fair, and transferable... Idea 1
+        We use deep generative modelling:
+
+        $\mathcal{L} = \mathbb{E}{q_{\theta_{enc}}(z|x)}[\log p_{\theta_{dec}}(x|z, s) - \log p_{\theta_{dec}}(s|z)]- \beta D_{KL}(q_{\theta_{enc}}(z |x) \| p(z))$
+        - Representing data points in a latent space
+        - Disentangling the latent space (previous work was on the reconstruction space) into two components:
+            - <span class="highlight">Spurious</span>: dependent on the sensitive attribute.
+            - <span class="highlight">Non-Spurious</span>: independent of the sensitive attribute.
+    </textarea></section>
+
+    <section data-markdown><textarea data-template>
+        ## Fair, and transferable... Idea 1
+        <img src="images/models/CVAE.png" width="60%">
+    </textarea></section>
+
+    <section data-markdown><textarea data-template>
+        ## Fair, and transferable... Idea 1
+        <img src="images/train_original_x_31500.png" width="30%">
+        <img src="images/train_reconstruction_y_31500.png" width="30%">
+        <img src="images/train_reconstruction_s_31500.png" width="30%">
+    </textarea></section>
+
+    <section data-markdown><textarea data-template>
+        ## Fair, and transferable... Idea 2
+        We use deep generative modelling:
+
+        $\min_\theta \mathbb{E}_x (- \log p_\theta (x|z)) + \lambda I(z_d, s)$
+
+        - Representing data points in a latent space
+        - Disentangling the latent space (previous work was on the reconstruction space) into two components:
+            - <span class="highlight">Spurious</span>: dependent on the sensitive attribute.
+            - <span class="highlight">Non-Spurious</span>: independent of the sensitive attribute.
+    </textarea></section>
+
+    <section data-markdown><textarea data-template>
+            ## Fair, and transferable... Idea 2
+            <img src="images/models/CFlow.png" width="30%">
+        </textarea></section>
+
+    <section data-markdown><textarea data-template>
+            ## Fair, and transferable... Idea 2
+            <img src="images/train_original_x_15000.png" width="30%">
+            <img src="images/train_reconstruction_y_15000.png" width="30%">
+            <img src="images/train_reconstruction_s_15000.png" width="30%">
+        </textarea></section>
+
+
+    <section>
+        <section data-markdown><textarea data-template>
+            ## Contrastive examples
+
+            - The <span class="highlight">ideal dataset</span> contains an imaginary data point for each person, i.e. the one inside the black box, whereby we <span class="highlight">intervene</span> and set the gender attribute to the opposite that is in real life
+            <span class="citeme">Thomas, NQ, Imagined Examples for Fairness: Sampling Bias and Proxy Labels, Sep 2019</span>
+            <span class="citeme">Sharmanska, Hendricks, Darrell, NQ, Contrastive examples for addressing the tyranny of the majority, May 2019</span>
+
+            <img src="images/balanced_Page_1.png" width=50% title="Balanced1"/>
+            <img src="images/balanced_Page_2.png" width=30% title="Balanced2"/>
+          </textarea></section>
+        <section data-markdown><textarea data-template>
+            ## Contrastive on Adult Income dataset
+
+            - Change in the <span class="highlight">relationship</span> and <span class="highlight">marital status</span>, i.e. from Husband and Married-civ-spause in real samples to Unmarried and/or Wife in contrastive samples
+
+            <img src="images/adult_real.png" width=30% title="Real"/>
+            <img src="images/adult_contrastive.png" width=30% title="Contrastive"/>
+            <img src="images/adult_diff.png" width=30.5% title="Difference"/>
+
+        </textarea></section>
+
+        <section data-markdown><textarea data-template>
+            ## Contrastive on Adult Income dataset
+            - Connections to <span class="highlight">counterfactuals</span> based on the Nabi \& Shpitser's (2018) causal graph
+             - To remove bias towards females, the direct effect of gender on income, as well as, the <span class="highlight">effect of gender on income through marital status have to be suppressed</span>
+            - Experimental results
+            <small>
+                <table>
+                    <tbody><tr>
+                        <td></td>
+                        <td width="10%">Accuracy $\uparrow$</td>
+                        <td width="10%">TPR Diff. $\downarrow$</td>
+                        <td width="10%">FPR Diff. $\downarrow$</td>
+                    </tr>
+                    <tr>
+                        <td width="10%">LR (Real)</td>
+                        <td width="10%">$85.16\pm0.14$ </td>
+                        <td width="10%">$7.98\pm1.52$ </td>
+                        <td width="10%">$7.23\pm0.41$</td>
+                    </tr>
+                    <tr>
+                        <td width="10%">Kamiran & Calders LR (Real)</td>
+                        <td width="10%">$84.37\pm0.28$ </td>
+                        <td width="10%">$14.3\pm1.16$ </td>
+                        <td width="10%">$1.17\pm0.29$ </td>
+                    </tr>
+                    <tr>
+                        <td width="20%">LR (Real and NN contrastive)</td>
+                        <td width="10%">$85.01\pm0.25$ </td>
+                        <td width="10%">$14.80\pm1.90$ </td>
+                        <td width="10%">$8.20\pm0.51$ </td>
+                    </tr>
+                    <tr>
+                        <td width="20%">LR (Real and GAN contrastive)</td>
+                        <td width="10%">$82.48\pm0.44$ </td>
+                        <td width="10%">$4.95\pm3.67$ </td>
+                        <td width="10%">$3.94\pm1.33$ </td>
+                    </tr>
+                        </tbody>
+                </table>
+            </small>
+        </textarea></section>
+
+        <section data-markdown><textarea data-template>
+            ## Interpretability with contrastive examples
+
+            - All previous work with adversarial learning try to <span class="highlight">remove</span> sensitive attributes from data
+            - Instead, we use adversarial learning to <span class="highlight">generate</span> data points with pre-specified sensitive attributes (contrastive examples)
+            - Contrastive examples can be easily interpreted because they do have the semantic meaning of the input
+        </textarea></section>
     </section>
 
 
