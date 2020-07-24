@@ -9,8 +9,12 @@
 ## DeepBayes Summer School Moscow 2019
 - [Slides](./moscow2019.html)
 
-## ML Summer School
+## Discus ML Summer School Sussex 2019
 - [Lecture](./mlss.html)
+- [Exercise](https://tinyurl.com/ethicml)
+
+## Lviv Summer School 2020
+- [Lecture](./lviv.html)
 - [Exercise](https://tinyurl.com/ethicml)
 
 ## Topics in Computing Module

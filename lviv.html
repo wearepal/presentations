@@ -1,0 +1,1023 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <title>Fairness in Machine Learning &mdash; Part 1</title>
+
+    <link rel="stylesheet" href="css/reveal.css">
+    <link rel="stylesheet" href="custom_themes/sussex.css" id="theme">
+
+    <!-- Theme used for syntax highlighting of code -->
+    <link rel="stylesheet" href="lib/css/monokai.css">
+
+    <!-- Printing and PDF exports -->
+    <script>
+        var link = document.createElement( 'link' );
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+        document.getElementsByTagName( 'head' )[0].appendChild( link );
+    </script>
+    <style>
+        .citeme {
+            float: right;
+            color: #000000;
+            font-size: 12pt;
+            font-style: italic;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+<div id="hidden" style="display:none;"><div id="static-content">
+    <footer>
+        <p>Lviv Data Science Summer School 2020</p>
+    </footer>
+</div> </div>
+<div class="reveal"><div class="slides">
+
+    <section>
+        <h1>Fairness in Machine Learning</h1>
+
+        <p>by Oliver Thomas and Thomas Kehrenberg</p>
+        <p>{ot44,t.kehrenberg}@sussex.ac.uk - Predictive Analytics Lab (PAL), University of Sussex, UK</p>
+
+        <img src="images/sussex_logo.svg" style="max-width: 10%; border: none;"/>
+    </section>
+
+    <section data-markdown><textarea data-template>
+        ## Contents
+
+        - Part 1
+            - Intro and notation
+            - What is fairness in machine learning and why should I care?
+            - Algorithmic fairness definitions
+            - Approaches to enforce algorithmic fairness
+        - Part 2
+            - Transparency in algorithmic fairness
+            - Causality and Counterfactual Fairness
+            - Toolboxes for research
+    </textarea></section>
+
+    <section data-markdown><textarea data-template>
+        ## Non-Contents
+
+        - This lecture will not "solve" the problem of fairness
+
+
+    </textarea></section>
+
+    <section data-markdown><textarea data-template>
+        ## Take home messages
+
+        - Fairness is _Domain Specific_.
+        - If you don't think about bias, it will come back to haunt you.
+        - Accuracy only tells part of the story.
+        - Fairness is an active and exciting research topic.
+    </textarea></section>
+
+    <section data-markdown><textarea data-template>
+        ## We're hiring!
+
+        If you think this topic is _awesome_
+        consider applying for one of the 6 PhD positions working with us on this topic.
+
+        Details: [tinyurl.com/sussex-phd](www.tinyurl.com/sussex-phd)
+    </textarea></section>
+
+    <section>
+        <h2>Machine Learning</h2>
+
+        <blockquote>...using statistical techniques to give computer systems the ability to "learn"
+            (e.g., progressively improve performance on a specific task)
+            from data, without being explicitly programmed.
+        </blockquote>
+    </section>
+
+    <section data-markdown><textarea data-template>
+        ## Classification
+
+        - given some input $X$, predict a class label $Y \in \\{0, 1, ..., C-1\\}$
+        - $X$ is usually a **vector**
+            - often with high number of dimensions, e.g. more than 1 million for a picture
+        - simplest case: **binary classification**, $Y \in \\{0, 1\\}$
+            - for example: is there a hot dog in this picture ($Y=1$) or not ($Y=0$)?
+    </textarea></section>
+
+    <section data-markdown><textarea data-template>
+        ## Classification
+
+        - we are looking to train a function $f$ that maps $X$ to $Y$
+        - the output is the prediction: $\hat{Y} = f(X)$
+        - we want $\hat{Y}$ to be as close as possible to the label $Y$
+        - $f$ can be implemented as
+            - a neural network
+            - an SVM
+            - a decision-tree model
+    </textarea></section>
+
+    <section data-markdown><textarea data-template>
+        ## Training data
+
+        - training data: a set of pairs $(x, y)$
+            - input data $x$ with corresponding label $y$
+        - we are looking for model that works well on _unseen data_
+        - so we try to gather training data that is _similar_ to deployment setting
+    </textarea></section>
+
+    <section data-markdown><textarea data-template>
+        ## Training data
+
+        - BUT this is not always possible
+        - if we make predictions on data that is *very different* from the training data,
+          the model will perform badly
+        - problem if the training data does not describe reality well
+    </textarea></section>
+
+    <section data-markdown><textarea data-template>
+        ## Where is machine learning used?
+
+        - hiring decisions
+        - bail decisions
+        - credit approval
+        - insurance premiums
+
+        <aside class="notes">
+            Companies are already using or planning to use machine learning for these tasks.
+        </aside>
+    </textarea></section>
+
+    <section>
+        <p>&nbsp;</p>
+        <p>&nbsp;</p>
+        <p>&nbsp;</p>
+        But there are problems:
+    </section>
+
+
+    <section data-background-color="#fff">
+        <img src="images/pp_mb.png" width=72% title="Pro-Publica - Machine Bias"/>
+    </section>
+
+    <section data-background-color="#fff">
+        <img width=72% src="images/amazon.png" title="Amazon CV Screening"/>
+    </section>
+
+    <section data-background-color="#fff">
+        <img src="images/bots-at-the-gate.png" width=40% title="Bots At The Gate"/>
+    </section>
+
+    <section data-background-color="#fff">
+        <img src="images/norman.png" width=58% title="Norman"/>
+    </section>
+
+
+    <section>
+        <h2>Algorithmic bias</h2>
+
+        <section>
+            <ul>
+                <li>machine learning systems are making decisions that affect humans</li>
+                <li>these decisions should be <b>fair</b></li>
+                <li>by default machine learning algorithms tend to be biased in some way</li>
+                <ul>
+                    <li>why?</li>
+                </ul>
+            </ul>
+        </section>
+
+        <section>
+            <p>Because the world is complicated!</p>
+            <p>The data is unlikely to be perfect.</p>
+            <p>The developer's (often arbitrary) decisions have a downstream impact</p>
+            <p>Business goals don't always align with fair behaviour</p>
+        </section>
+    </section>
+
+    <section data-markdown><textarea data-template>
+        ## Algorithmic bias
+
+        (Broadly) The problem can be divided into <ins>two categories</ins>.
+
+        Both types of bias can appear together.
+
+        - bias stemming from biased training data
+        - bias stemming from the algorithms themselves
+    </textarea></section>
+
+    <section>
+        <p>&nbsp;</p>
+        <p>&nbsp;</p>
+        <h1>Biased training data</h1>
+    </section>
+
+    <section data-markdown><textarea data-template>
+        ## Bias in, bias out
+
+        - Databases: GIGO
+        - ML: BIBO
+            - the ML algorithm just learns what is in the training data
+    </textarea></section>
+
+    <section data-markdown><textarea data-template>
+        ## Examples for bias
+
+        **Task**: generate description for images
+
+        ![](./images/women_also_snowboard/title.png)
+    </textarea></section>
+
+    <section data-markdown><textarea data-template>
+        ## Sampling bias &#10132; tyranny of the majority
+
+        - In the <span class="highlight">imSitu</span> situation recognition <span class="highlight">dataset</span>, the activity cooking is over 33\% more likely to involve females than males in a training set, and a trained algorithm further <span class="highlight">amplifies</span> the disparity to 68\%
+        <span class="citeme">Zhao et al.: Men also like shopping, EMNLP 2017</span>
+
+        <img src="images/women_also_snowboard/example3.png" title="Men also like shopping"/>
+    </textarea></section>
+
+    <section data-markdown><textarea data-template>
+        ## Sampling bias &#10132; tyranny of the majority
+
+        - <span class="highlight">The reason is</span>: the algorithm predicts the gender from the activity and not from looking at the person
+        <span class="citeme">Anne Hendricks et al.: Women also snowboard, ECCV 2018</span>
+
+        <img src="images/women_also_snowboard/example2.png" title="Women also snowboard"/>
+    </textarea></section>
+
+    <section data-markdown><textarea data-template>
+        ## Desired result
+
+        - what we would want is that the algorithm only looks at the person when predicting the gender
+        - if the gender is not recognizable from the picture, the algorithm should be "unsure"
+    </textarea></section>
+
+    <section data-markdown><textarea data-template>
+        ## Biased data
+
+        - in the previous example, certain training examples were underrepresented
+            - sampling bias
+        - other case: data is simply wrong
+            - e.g. data was gathered by humans who just lied
+    </textarea></section>
+
+    <section data-markdown><textarea data-template>
+        ## Enforcing a fair outcome
+
+        - no matter in what way the data is biased: we want to **enforce a fair outcome**
+            - idea: just tell the algorithm that it should treat all groups in the same way
+        - question: **how do we define a fair outcome?**
+            - really hard question
+            - start with the simplest definition
+    </textarea></section>
+
+    <section data-markdown><textarea data-template>
+        ## Example
+
+        - task: predict whether someone should be hired ($Y=1$) or not ($Y=0$)
+        - two races: <span style="color: blue">blue race</span> and <span style="color: green">green race</span>
+            - blue: $S=0$, green: $S=1$
+        - in the training set: **20% of blue** applicants were hired, **80% of green** applicants were hired
+    </textarea></section>
+
+    <section data-markdown><textarea data-template>
+        ## Statistical parity
+
+        $$
+        P(\hat{Y}=1 | S=0) = P(\hat{Y}=1 | S=1)
+        $$
+
+        - $\hat{Y} \in \\{0,1\\}, S \in \\{0,1\\}$
+        - $S$: sensitive attribute (for example gender, race)
+        - $\hat{Y}$: prediction
+
+        **meaning**: the probability to get a positive prediction is the same for each group
+    </textarea></section>
+
+    <section data-markdown><textarea data-template>
+        ## Statistical parity
+
+        - concrete: when evaluating the algorithm on the test set, both groups ($S=0$ and $S=1$)
+          should have the same number of positive predictions ($\hat{Y}=1$)
+        - in the hiring example from before: same percentage from both races will be hired (e.g. 50%)
+    </textarea></section>
+
+    <section data-markdown><textarea data-template>
+        ## Side effects of statistical parity
+
+        - enforcing statistical parity necessarily produces **lower accuracy**
+        - consider this: we want to enforce 50% acceptance for the blue race but the training data only has 20% accepted
+            - some individuals of the blue race have to be "misclassified"
+              ($\hat{Y} = 1$ instead of $\hat{Y} = 0$)
+              to make the numbers work
+        - not surprising because we are computing accuracy against the *biased data*
+    </textarea></section>
+
+    <section data-markdown><textarea data-template>
+        ## Trade-off: Fairness &ndash; Accuracy
+
+        - usually we don't want to have too bad accuracy with respect to the data
+        - goal: find algorithm that produces fair result at highest possible accuracy
+        - otherwise it's easy: a *random classifier* is very fair (but useless)
+            - random classifier: just predict $\hat{Y} = 1$ 50% of the time regardless of input
+    </textarea></section>
+
+    <section data-markdown><textarea data-template>
+        ## Summary of Statistical Parity
+
+        - very simple criterion
+        - introduces Fairness &ndash; Accuracy trade-off
+        - more sophisticated criteria are possible (based on causal graphs)
+    </textarea></section>
+
+    <section>
+        <p>&nbsp;</p>
+        <h1>Bias introduced by the ML algorithm</h1>
+    </section>
+
+    <section data-markdown><textarea data-template>
+        ## Why would an ML algorithm introduce bias?
+
+        Consider again the hiring example:
+        - two features: SAT score and race (blue and green) of individuals
+        - task: predict if they should be hired ($Y=1$) or not ($Y=0$)
+        - composition of the dataset: 50% blue, 50% green. 20% of blue have $Y=1$, 80% of green have $Y=1$.
+    </textarea></section>
+
+    <section data-markdown><textarea data-template>
+        ## Bias from algorithm
+
+        The dataset is heavily skewed but let's ignore that for now and just try to make accurate predictions for this dataset.
+    </textarea></section>
+
+    <section data-markdown><textarea data-template>
+        ## Bias from algorithm
+
+        (Reminder: 20% of blue have $Y=1$, 80% of green have $Y=1$.)
+
+        A simple way to make relatively accurate predictions:
+        - ignore the SAT score
+        - for green individuals always predict $Y=1$
+<!--        base the prediction on SAT-->
+        - for blue individuals always predict $Y=0$
+
+        Result: up to 80% accuracy (80% in blue subgroup and 80% in green subgroup)
+    </textarea></section>
+
+    <section data-markdown><textarea data-template>
+        ## Bias from algorithm
+
+        - the dataset was already skewed but the algorithm's prediction are even more "unfair"
+        - this is because it's easier to just base the decision on race than to figure out the effect of the SAT
+        - this is an extreme case but similar things can actually happen
+    </textarea></section>
+
+    <section data-markdown><textarea data-template>
+        ## Bias from algorithm
+
+        **What we do not want:** the algorithm "being lazy" in a subgroup
+
+        **What we want:** the algorithm should make equally good predictions for all subgroups
+
+        Criterion that enforces this: *Equality of Opportunity*
+    </textarea></section>
+
+    <section data-markdown><textarea data-template>
+        ## Equality of Opportunity
+
+        $$
+        P(\hat{Y}=1 | S=0, Y=1) = P(\hat{Y}=1 | S=1, Y=1)
+        $$
+
+        - with $Y, \hat{Y} \in \\{0,1\\}$ and $S \in \\{0,1\\}$
+
+        **meaning**: the probability of predicting 1, given that the label is 1, should be the same for all groups
+
+        **in practice**: the TPR (true positive rate) should be the same in all groups
+    </textarea></section>
+
+    <section data-markdown><textarea data-template>
+        ## Equalised Odds
+
+        $$
+        P(\hat{Y}=y | S=0, Y=y) = P(\hat{Y}=y | S=1, Y=y)
+        $$
+
+        for all possible values for $y$
+
+        - stricter version of *Equality of Opportunity*
+        - TPR and TNR (true negative rate) must be the same in all groups
+            - TPR = TP / (TP + FN), TNR = TN / (TN + FP)
+    </textarea></section>
+
+    <section data-markdown><textarea data-template>
+        ## Properties
+
+        - **EoO** (Equality of Opportunity) and **EO** (Equalised Odds) both assume that the training data is correct
+        - a perfect classifier (that always predicts the correct label) fulfills **EoO** and **EO**d
+        - however: a random classifier does as well
+            - a random classifier achieves 50% TPR (and TNR) in all groups
+    </textarea></section>
+
+    <section data-markdown><textarea data-template>
+        ## Accuracy&ndash;Fairness trade-off
+
+        - achieving EoO or EO at low accuracy is easy (see random classifier)
+        - here, even more than for Statistical Parity, it is important to find an algorithm with good fairness and good accuracy
+    </textarea></section>
+
+    <!-- Border between Thomas stuff and Oliver stuff -->
+
+    <section data-markdown><textarea data-template>
+        ## Fairness definitions
+
+        - Discrimination in the law:
+         - <span class="highlight">Direct discrimination</span> with respect to intent
+         - <span class="highlight">Indirect discrimination</span> with respect to consequences
+        <span class="citeme">Article 21, EU Charter of Fundamental Rights</span>
+        - From the legal context to algorithmic fairness, e.g.:
+         - Removing direct discrimination by <span class="highlight">not using group information at prediction</span>
+         - Removing indirect discrimination by enforcing <span class="highlight">equality on the outcomes</span> between groups
+    </textarea></section>
+
+    <section>
+        <section data-markdown><textarea data-template>
+            ## All statistics-based Fairness Criteria
+
+            - Statistical Parity
+            - Equalised Odds
+            - Equality of Opportunity
+            - Calibration by Group
+        </textarea></section>
+
+        <section data-markdown><textarea data-template>
+            ## Statistical Parity
+            #### (**independence** based notion of fairness, $S \perp \hat{Y}$)
+
+            $$
+            P(\hat{Y}=1 | S=0) = P(\hat{Y}=1 | S=1)
+            $$
+            $$
+            Y \in \\{0,1\\} \\\\
+            S \in \\{0,1\\}
+            $$
+        </textarea></section>
+
+        <section data-markdown><textarea data-template>
+            ## Equalised Odds
+            #### (**separation** based notion of fairness, $S \perp \hat{Y} | Y$)
+
+            $$
+            P(\hat{Y}=1 | S=0, Y=y) = P(\hat{Y}=1 | S=1, Y=y)
+            $$
+            $$
+            Y \in \\{0,1\\} \\\\
+            S \in \\{0,1\\}
+            $$
+        </textarea></section>
+
+        <section data-markdown><textarea data-template>
+            ## Equality of Opportunity
+
+            #### (**separation** based notion of fairness, $S \perp \hat{Y} | Y$)
+
+            $$
+            P(\hat{Y}=1 | S=0, Y=1) = P(\hat{Y}=1 | S=1, Y=1)
+            $$
+            $$
+            Y \in \\{0,1\\} \\\\
+            S \in \\{0,1\\}
+            $$
+        </textarea></section>
+
+        <section data-markdown><textarea data-template>
+            ## Calibration by Group
+            #### (**sufficiency** based notion of fairness, $S \perp Y | \hat{Y}$)
+
+            $$
+            P(Y=1 | \hat{Y}=\hat{y}, S=s) = \hat{y}
+            $$
+            $$
+            \hat{Y} \in \[0...1\] \\\\
+            S \in \\{0,1\\}
+            $$
+        </textarea></section>
+    </section>
+
+    <section>
+        <h2>Which fairness criteria to choose?</h2>
+        <p>&nbsp;</p>
+        <p><strong>Let's have all the fairness!</strong></p>
+
+        <p>If we are fair with regards to all notions of fair, then we're fair... right?</p>
+    </section>
+
+    <section>
+        <h2>Which fairness criteria to choose?</h2>
+        <p>Independence based fairness (i.e. Statistical Parity)</p>
+
+        $$
+        \hat{Y} \perp S
+        $$
+
+        <p>Separation based fairness (i.e. Equalised Odds/Opportunity)</p>
+
+        $$
+        \hat{Y} \perp S | Y
+        $$
+
+    </section>
+
+    <section>
+        <h2>Which fairness criteria to choose?</h2>
+
+        <p>For both to hold (in binary classification), then either </p>
+        <ul>
+            <li>$S \perp Y$, our data is fair, or</li>
+            <li>$\hat{Y} \perp Y$, we have a random predictor.</li>
+        </ul>
+
+        <p>Similarly, Sufficiency cannot hold with either notion of fairness.</p>
+    </section>
+
+    <section>
+        <h1>Illustrative Example</h1>
+    </section>
+
+    <section>
+        <h2>Which fairness criteria to choose?</h2>
+        <p>Consider a university, and we are in charge of administration!</p>
+        <p>We can only accept 50% of all applicants.</p>
+        <p>10,000 applicants are female and 10,000 of applicants are male.</p>
+        <p>We have been tasked with being fair with regard to <b>gender</b>.</p>
+    </section>
+
+    <section>
+        <h2>University Admission</h2>
+        <p>We have an acceptance criteria that is highly predictive of success.</p>
+        <p>80% of those who meet the acceptance criteria will successfully graduate.</p>
+        <p>Only 10% of those who don't meet the acceptance criteria will successfully graduate.</p>
+    </section>
+
+    <section>
+        <h2>University Admission</h2>
+        <p>As we're a good university we have a lot of applications from people who don't meet the acceptance criteria.</p>
+        <p>60% of female applicants meet the acceptance criteria.</p>
+        <p>40% of male applicants meet the acceptance criteria.</p>
+        <p>Remember, we can only accept 50% of all applicants</p>
+        <h3>What should we do?</h3>
+    </section>
+
+    <section>
+        <section>
+            <h3>Truth Tables</h3>
+            <h4>Female Applicants</h4>
+            <table>
+                <thead><tr>
+                    <th></th>
+                    <th>Accepted</th>
+                    <th>Not</th>
+                </tr></thead>
+                <tbody><tr>
+                    <td>Actually Graduate</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Don't Graduate</td>
+                    <td></td>
+                    <td></td>
+                </tr></tbody>
+            </table>
+            <h4>Male Applicants</h4>
+            <table>
+                <thead><tr>
+                    <th></th>
+                    <th>Accepted</th>
+                    <th>Not</th>
+                </tr></thead>
+                <tbody><tr>
+                    <td>Actually Graduate</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Don't Graduate</td>
+                    <td></td>
+                    <td></td>
+                </tr></tbody>
+            </table>
+        </section>
+
+        <section>
+            <h3>Truth Tables</h3>
+            <h4>Female Applicants</h4>
+            <table>
+                <thead><tr>
+                    <th></th>
+                    <th>Accepted</th>
+                    <th>Not</th>
+                </tr></thead>
+                <tbody><tr>
+                    <td>Actually Graduate</td>
+                    <td>$10000 \times 0.6 \times 0.8$</td>
+                    <td>$10000 \times 0.4 \times 0.1$</td>
+                </tr>
+                <tr>
+                    <td>Don't Graduate</td>
+                    <td>$10000 \times 0.6 \times 0.2$</td>
+                    <td>$10000 \times 0.4 \times 0.9$</td>
+                </tr></tbody>
+            </table>
+            <h4>Male Applicants</h4>
+            <table>
+                <thead><tr>
+                    <th></th>
+                    <th>Accepted</th>
+                    <th>Not</th>
+                </tr></thead>
+                <tbody><tr>
+                    <td>Actually Graduate</td>
+                    <td>$10000 \times 0.4 \times 0.8$</td>
+                    <td>$10000 \times 0.6 \times 0.1$</td>
+                </tr>
+                <tr>
+                    <td>Don't Graduate</td>
+                    <td>$10000 \times 0.4 \times 0.2$</td>
+                    <td>$10000 \times 0.6 \times 0.9$</td>
+                </tr></tbody>
+            </table>
+        </section>
+
+        <section>
+            <h3>Truth Tables</h3>
+            <h4>Female Applicants</h4>
+            <table>
+                <thead><tr>
+                    <th></th>
+                    <th>Accepted</th>
+                    <th>Not</th>
+                </tr></thead>
+                <tbody><tr>
+                    <td>Actually Graduate</td>
+                    <td>$4800$</td>
+                    <td>$400$</td>
+                </tr>
+                <tr>
+                    <td>Don't Graduate</td>
+                    <td>$1200$</td>
+                    <td>$3600$</td>
+                </tr></tbody>
+            </table>
+            <h4>Male Applicants</h4>
+            <table>
+                <thead><tr>
+                    <th></th>
+                    <th>Accepted</th>
+                    <th>Not</th>
+                </tr></thead>
+                <tbody><tr>
+                    <td>Actually Graduate</td>
+                    <td>$3200$</td>
+                    <td>$600$</td>
+                </tr>
+                <tr>
+                    <td>Don't Graduate</td>
+                    <td>$800$</td>
+                    <td>$5400$</td>
+                </tr></tbody>
+            </table>
+        </section>
+        <section>
+            <h2>University Admission</h2>
+            <p>Our current system satisfies calibration-by-group!</p>
+            $$Y \perp S | \hat{Y}$$
+        </section>
+    </section>
+
+    <section>
+        <p>How would we solve this problem being fair using Statistical Parity as our measure?</p>
+        <section>???</section>
+        <section>
+            <p>Select 50% of applicants of both female and male applicants</p>
+            <p>10% of qualified female applicants are being rejected whilst an additional 10% of unqualified males are being accepted.</p>
+        </section>
+        <section>
+            <h4>Female Applicants</h4>
+            <table>
+                <thead><tr>
+                    <th></th>
+                    <th>Accepted</th>
+                    <th>Not</th>
+                </tr></thead>
+                <tbody><tr>
+                    <td>Actually Graduate</td>
+                    <td>$5000 \times 0.8$</td>
+                    <td>$(1000 \times 0.8) + (4000 \times 0.1)$</td>
+                </tr>
+                <tr>
+                    <td>Don't Graduate</td>
+                    <td>$5000 \times 0.2$</td>
+                    <td>$(1000 \times 0.2) + (4000 \times 0.9)$</td>
+                </tr></tbody>
+            </table>
+            <h4>Male Applicants</h4>
+            <table>
+                <thead><tr>
+                    <th></th>
+                    <th>Accepted</th>
+                    <th>Not</th>
+                </tr></thead>
+                <tbody><tr>
+                    <td>Actually Graduate</td>
+                    <td>$(4000 \times 0.8) + (1000 \times 0.1)$</td>
+                    <td>$5000 \times 0.1$</td>
+                </tr>
+                <tr>
+                    <td>Don't Graduate</td>
+                    <td>$(4000 \times 0.2) + (1000 \times 0.9)$</td>
+                    <td>$5000 \times 0.9$</td>
+                </tr></tbody>
+            </table>
+        </section>
+        <section>
+            <h4>Female Applicants</h4>
+            <table>
+                <thead><tr>
+                    <th></th>
+                    <th>Accepted</th>
+                    <th>Not</th>
+                </tr></thead>
+                <tbody><tr>
+                    <td>Actually Graduate</td>
+                    <td>$4000$</td>
+                    <td>$1200$</td>
+                </tr>
+                <tr>
+                    <td>Don't Graduate</td>
+                    <td>$1000$</td>
+                    <td>$3800$</td>
+                </tr></tbody>
+            </table>
+            <h4>Male Applicants</h4>
+            <table>
+                <thead><tr>
+                    <th></th>
+                    <th>Accepted</th>
+                    <th>Not</th>
+                </tr></thead>
+                <tbody><tr>
+                    <td>Actually Graduate</td>
+                    <td>$3300$</td>
+                    <td>$500$</td>
+                </tr>
+                <tr>
+                    <td>Don't Graduate</td>
+                    <td>$1700$</td>
+                    <td>$4500$</td>
+                </tr></tbody>
+            </table>
+        </section>
+        <section>
+            <h4>Female Applicants</h4>
+            <table>
+                <thead><tr>
+                    <th></th>
+                    <th>Accepted</th>
+                    <th>Not</th>
+                </tr></thead>
+                <tbody><tr>
+                    <td>Actually Graduate</td>
+                    <td style="color: red">-800</td>
+                    <td style="color: green">800</td>
+                </tr>
+                <tr>
+                    <td>Don't Graduate</td>
+                    <td style="color: red">-200</td>
+                    <td style="color: green">200</td>
+                </tr></tbody>
+            </table>
+            <h4>Male Applicants</h4>
+            <table>
+                <thead><tr>
+                    <th></th>
+                    <th>Accepted</th>
+                    <th>Not</th>
+                </tr></thead>
+                <tbody><tr>
+                    <td>Actually Graduate</td>
+                    <td style="color: green">100</td>
+                    <td style="color: red">-100</td>
+                </tr>
+                <tr>
+                    <td>Don't Graduate</td>
+                    <td style="color: green">900</td>
+                    <td style="color: red">-900</td>
+                </tr></tbody>
+            </table>
+        </section>
+    </section>
+
+    <section>
+        <p>How would we solve this problem being fair using Equal Opportunity as our measure?</p>
+        <section>???</section>
+        <section>$$TPR = \frac{TP}{TP + FN}$$</section>
+        <section>
+            <table>
+                <thead><tr>
+                    <th></th>
+                    <th>Accepted</th>
+                    <th>Not</th>
+                </tr></thead>
+                <tbody><tr>
+                    <td>Actually Graduate</td>
+                    <td>$TP$</td>
+                    <td>$FN$</td>
+                </tr>
+                <tr>
+                    <td>Don't Graduate</td>
+                    <td>$FP$</td>
+                    <td>$TN$</td>
+                </tr></tbody>
+            </table>
+        </section>
+        <section>Select 55.5% of female applicants and 44.5% of male applicants, giving a TPR of 85.4% for both groups.</section>
+        <section>
+            <h4>Female Applicants</h4>
+            <table>
+                <thead><tr>
+                    <th></th>
+                    <th>Accepted</th>
+                    <th>Not</th>
+                </tr></thead>
+                <tbody><tr>
+                    <td>Actually Graduate</td>
+                    <td>$4440$</td>
+                    <td>$760$</td>
+                </tr>
+                <tr>
+                    <td>Don't Graduate</td>
+                    <td>$1110$</td>
+                    <td>$3690$</td>
+                </tr></tbody>
+            </table>
+            <h4>Male Applicants</h4>
+            <table>
+                <thead><tr>
+                    <th></th>
+                    <th>Accepted</th>
+                    <th>Not</th>
+                </tr></thead>
+                <tbody><tr>
+                    <td>Actually Graduate</td>
+                    <td>$3245$</td>
+                    <td>$555$</td>
+                </tr>
+                <tr>
+                    <td>Don't Graduate</td>
+                    <td>$1205$</td>
+                    <td>$4995$</td>
+                </tr></tbody>
+            </table>
+        </section>
+        <section>
+            <h4>Female Applicants</h4>
+            <table>
+                <thead><tr>
+                    <th></th>
+                    <th>Accepted</th>
+                    <th>Not</th>
+                </tr></thead>
+                <tbody><tr>
+                    <td>Actually Graduate</td>
+                    <td style="color: red">-360</td>
+                    <td style="color: green">360</td>
+                </tr>
+                <tr>
+                    <td>Don't Graduate</td>
+                    <td style="color: red">-90</td>
+                    <td style="color: green">90</td>
+                </tr></tbody>
+            </table>
+            <h4>Male Applicants</h4>
+            <table>
+                <thead><tr>
+                    <th></th>
+                    <th>Accepted</th>
+                    <th>Not</th>
+                </tr></thead>
+                <tbody><tr>
+                    <td>Actually Graduate</td>
+                    <td style="color: green">45</td>
+                    <td style="color: red">-45</td>
+                </tr>
+                <tr>
+                    <td>Don't Graduate</td>
+                    <td style="color: green">405</td>
+                    <td style="color: red">-405</td>
+                </tr></tbody>
+            </table>
+        </section>
+    </section>
+
+    <section data-markdown><textarea data-template>
+        ## All statistics-based Fairness Criteria
+
+        - Statistical Parity
+        - Equalised Odds
+        - Equality of Opportunity
+        - Calibration by Group
+    </textarea></section>
+
+    <section data-markdown><textarea data-template>
+        ## Individual Fairness
+
+        "Similar individual should be treated similarly"
+
+        <span class="citeme">Dwork et al. - Fairness Through Awareness</span>
+
+        <br/>
+        What is similar?
+
+        What is similarly?
+    </textarea></section>
+
+    <section>
+        <h2>Which fairness criteria should we use?</h2>
+        <p>We've seen several statistical definitions and Individual Fairness</p>
+        <p>
+            There's no right answer, all of the previous examples are "fair".
+            It's important to consult <span class="highlight">domain experts</span> to find which is the best fit for each problem.
+        </p>
+        <p>
+            There is no one-size fits all.
+        </p>
+    </section>
+
+    <section data-markdown><textarea data-template>
+        ## How to enforce fairness?
+
+        Fairness constraints can be added pre, during or post training.
+
+        Pre-training examples
+        - Zemel Fair Representations
+        - Beutel Adversarial Representation
+        - Quadrianto Fair Interpretable Representations
+        - Feldman
+    </textarea></section>
+
+    <section data-markdown><textarea data-template>
+        During Training
+        - Zafar's methods
+        - Zhang
+        - Kehrenberg Fair GP
+
+        Post Training
+        - Hardt Recalibrating
+    </textarea></section>
+
+    <section data-markdown><textarea data-template>
+        More on those next week...
+    </textarea></section>
+
+    <section data-markdown><textarea data-template>
+        Popular approach is to add produce a "fair" representation. Consider that we have 2 roles, a data vendor, who is charge of collecting the data and preparing it. Our other role is a data user, someone who will be making predictions based on our data.
+
+        The data vendor is concerned that the data user may be using their data to make unfair decisions. So the data vendor decides to learn a new, fair representation.
+    </textarea></section>
+
+    <section data-markdown><textarea data-template>
+        The state-of-the-art method a fair representation this is to use an *adversarial* network, using a "Gradient-Reversal Layer" from Ganin et al.
+
+        ![](./images/adversarial.svg)
+    </textarea></section>
+
+    <section>
+        <section>
+            <h2>Problems with doing this?</h2>
+            <h4>Any Ideas?</h4>
+        </section>
+        <section>
+            <h2>Problems with doing this?</h2>
+            <h4>What does this representation mean?</h4>
+
+            <p>The learned representation is uninterpretable by default. Recently Quadrianto et al constrained the representation to be in the same same as the input so that we could look at what changed</p>
+        </section>
+        <section>
+            <h2>Problems with doing this?</h2>
+            <h4>What if the vendor data user decides to be fair as well?</h4>
+
+            <p>Referred to as "fair pipelines". Work has only just begun exploring these. Current research shows that these don't work (at the moment!)</p>
+        </section>
+    </section>
+
+
+</div></div>
+
+<script src="lib/js/head.min.js"></script>
+<script src="js/reveal.js"></script>
+<script src="settings.js"></script>
+</body>
+</html>
