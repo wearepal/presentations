@@ -1,0 +1,787 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <title>Fairness in Machine Learning &mdash; Part 1</title>
+
+    <link rel="stylesheet" href="css/reveal.css">
+    <link rel="stylesheet" href="custom_themes/sussex.css" id="theme">
+
+    <!-- Theme used for syntax highlighting of code -->
+    <link rel="stylesheet" href="lib/css/monokai.css">
+
+    <!-- Printing and PDF exports -->
+    <script>
+        var link = document.createElement( 'link' );
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+        document.getElementsByTagName( 'head' )[0].appendChild( link );
+    </script>
+    <style>
+        .citeme {
+            float: right;
+            color: #000000;
+            font-size: 12pt;
+            font-style: italic;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+<div id="hidden" style="display:none;"><div id="static-content">
+    <footer>
+        <p>Lviv Data Science Summer School 2020</p>
+    </footer>
+</div> </div>
+<div class="reveal"><div class="slides">
+
+    <section>
+        <h1>Fairness in Machine Learning</h1>
+
+        <p>by Oliver Thomas and Thomas Kehrenberg</p>
+        <p>{ot44,t.kehrenberg}@sussex.ac.uk - Predictive Analytics Lab (PAL), University of Sussex, UK</p>
+
+        <img src="images/sussex_logo.svg" style="max-width: 10%; border: none;"/>
+    </section>
+
+    <section data-markdown><textarea data-template>
+        ## Contents
+
+        - Part 1
+            - Intro and notation
+            - What is fairness in machine learning and why should I care?
+            - Algorithmic fairness definitions
+            - Approaches to enforce algorithmic fairness
+        - Part 2
+            - Transparency in algorithmic fairness
+            - Causality and Counterfactual Fairness
+            - Toolboxes for research
+    </textarea></section>
+
+    <section data-markdown><textarea data-template>
+        ## Non-Contents
+
+        - This lecture will not "solve" the problem of fairness
+
+
+    </textarea></section>
+
+    <section data-markdown><textarea data-template>
+        ## Take home messages
+
+        - Fairness is _Domain Specific_.
+        - If you don't think about bias, it will come back to haunt you.
+        - Accuracy only tells part of the story.
+        - Fairness is an active and exciting research topic.
+    </textarea></section>
+
+    <section data-markdown><textarea data-template>
+        ## Individual Fairness
+
+        "Similar individual should be treated similarly"
+
+        <span class="citeme">Dwork et al. - Fairness Through Awareness</span>
+
+        <br/>
+        What is similar?
+
+        What is similarly?
+    </textarea></section>
+
+    <section>
+      <h2>Fairness based on similarity</h2>
+      <ul>
+      <li>First define a distance metric on your datapoints (i.e. how similar are the datapoints)
+        <ul>
+          <li>Can be just Euclidean distance but is usually something else (because of different scales)</li>
+          <li>This is the hardest step and requires domain knowledge</li>
+        </ul>
+        </li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Pre-processing based on similarity</h2>
+      <ul>
+        <li>An individual is then considered to be unfairly treated if it is treated differently than its "neighbours".</li>
+        <li>For any data point we can check how many of the $k$ nearest neighbours have the same class label as that data point</li>
+        <li>If the percentage is under a certain threshold then there was discrimination against the individual corresponding to that data point.</li>
+        <li>Then: flip the class labels of those data points where the class label is considered unfair</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Considering similarity during training</h2>
+      <p>Alternative idea:</p>
+      <ul>
+        <li>a classifier is fair if and only if the predictive distributions for any two data points are at least as similar
+          as the two points themselves
+          <ul>
+           <li>(according to a given similarity measure for distributions and a given similarity measure for data points)</li>
+          </ul>
+        </li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Considering similarity during training</h2>
+      <ul>
+        <li>Needed similarity measure for distributions</li>
+        <li>Then add fairness condition as additional loss term to optimization loss</li>
+      </ul>
+    </section>
+
+    <section>
+        <h2>Which fairness criteria should we use?</h2>
+        <p>We've seen several statistical definitions and Individual Fairness</p>
+        <p>
+            There's no right answer, all of the previous examples are "fair".
+            It's important to consult <span class="highlight">domain experts</span> to find which is the best fit for each problem.
+        </p>
+        <p>
+            There is no one-size fits all.
+        </p>
+    </section>
+
+    <section>
+        <h2>Delayed Impact of Fair Learning</h2>
+        <p>In the real world there are implications.</p>
+        <p>An individual doesn't just cease to exist after we've made our loan or bail decision.</p>
+        <p>The decision we make has <b>consequences</b>.</p>
+    </section>
+
+    <section data-markdown><textarea data-template>
+        ## Delayed Impact of Fair Learning
+
+        Consider a bank's lending decision.
+
+        The outcome is not simply reject or accept the applicant for a loan. In fact, there are multiple effects of this decision.
+
+        If the applicant receives a loan, then goes on to successfully pay it back, then not only will the bank make a profit, but then the applicant's credit score will increase.
+
+        This will make future loan decisions more favorable to the applicant.
+    </textarea></section>
+
+    <section data-markdown><textarea data-template>
+        ## Delayed Impact of Fair Learning
+
+        We could think of this in terms of loss functions.
+
+        The banks objective was to maximize profit. After deciding to give the loan, the loan was repaid (with interest). The bank made money.
+
+        To maximize the objective (minimize the negative of the loss) the bank wants to give out as many loans that are likely to be repaid as possible.
+    </textarea></section>
+
+    <section data-markdown><textarea data-template>
+        ## Delayed Impact of Fair Learning
+
+        In this scenario we have a slightly different concern. We don't want loans to be given to one subgroup (such as blue race), more often than members of another subgroup (green race).
+
+        Our concern is that if the number of people who receive loans from one group outweigh the other, then as a whole, the credit rating will become a euphemism for race.
+    </textarea></section>
+
+    <section>
+        <section>
+            <h2>The Outcome Curve</h2>
+            <img src="images/outcome_curve.png" width="65%">
+        </section>
+        <section>
+            <h2>Possible areas</h2>
+            <table>
+                <tr>
+                    <th>Area</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td>Active Harm</td>
+                    <td>Expected change in credit score of an individual is negative</td>
+                </tr>
+                <tr>
+                    <td>Stagnation</td>
+                    <td>Expected change in credit score of an individual is 0</td>
+                </tr>
+                <tr>
+                    <td>Improvement</td>
+                    <td>Expected change in credit score of an individual is positive</td>
+                </tr>
+            </table>
+        </section>
+        <section>
+            <h2>Possible areas</h2>
+            <table>
+                <tr>
+                    <th>Area</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td>Relative Harm</td>
+                    <td>Expected change in credit score of an individual is less than if the selection policy had been to maximize profit</td>
+                </tr>
+                <tr>
+                    <td>Relative Improvement</td>
+                    <td>Expected change in credit score of an individual is better than if the selection policy had been to maximize profit</td>
+                </tr>
+            </table>
+        </section>
+    </section>
+
+    <section data-markdown><textarea data-template>
+        ## How to enforce fairness?
+
+        Fairness constraints can be added <span class="highlight">pre</span>, <span class="highlight">during</span> or <span class="highlight">post</span> training.
+
+        <span class="highlight">Pre-training</span> examples
+        - Zemel Fair Representations
+        - Beutel Adversarial Representation
+        - Quadrianto Fair Interpretable Representations
+        - Kehrenberg Null-sampling
+    </textarea></section>
+
+    <section data-markdown><textarea data-template>
+        ## How to enforce fairness?
+
+        <span class="highlight">During</span> Training
+        - Zafar's methods
+        - Zhang Gradient Projection
+        - Kehrenberg Fair GP
+
+        <span class="highlight">Post</span> Training
+        - Hardt Recalibration
+    </textarea></section>
+
+    <section data-markdown><textarea data-template>
+        More on those shortly...
+    </textarea></section>
+
+    <section data-markdown><textarea data-template>
+        # Simple Approaches
+    </textarea></section>
+
+    <section>
+        <section>
+            <h2>Removing a sensitive feature</h2>
+
+            <p>"If we just remove the sensitive feature, then our model can't be unfair"</p>
+            <p></p>
+            <p>This doesn't work, why?</p>
+        </section>
+
+        <section>
+            <h2>Removing a sensitive feature</h2>
+
+            <p>Because ML methods are excellent at finding <span class="highlight">patterns in data</span></p>
+
+            <p><span class="citeme">Pedreschi et al.</span></p>
+        </section>
+    </section>
+
+    <section>
+        <section>
+            <h2>Reweighing</h2>
+
+            <p>Kamiran & Calders determined that one source of unfairness was imbalanced training data.</p>
+
+            <p>Simply count the current distribution of demographics</p>
+
+            <img src="images/reweighing_before.png"/>
+        </section>
+
+        <section>
+            <h2>Reweighing</h2>
+
+            <p>Then either up/down-sample or assign instance weights to members of each group in the training set
+                so that the results are "normalised".</p>
+
+            <img src="images/reweighing_after.png"/>
+        </section>
+    </section>
+
+    <section data-markdown><textarea data-template>
+        ## Fair Representations
+
+        Popular approach is to add produce a "fair" representation. Consider that we have 2 roles, a data vendor, who is charge of collecting the data and preparing it. Our other role is a data user, someone who will be making predictions based on our data.
+
+        The data vendor is concerned that the data user may be using their data to make unfair decisions. So the data vendor decides to learn a new, fair representation.
+    </textarea></section>
+
+    <section data-markdown><textarea data-template>
+        The state-of-the-art method a fair representation this is to use an *adversarial* network, using a "Gradient-Reversal Layer" from Ganin et al.
+
+        <span class="citeme">Ganin et al. 2016</span>
+
+        ![](./images/adversarial.svg)
+    </textarea></section>
+
+    <section>
+        <section>
+            <h2>Problems with doing this?</h2>
+            <h4>Any Ideas?</h4>
+        </section>
+        <section>
+            <h2>Problems with doing this?</h2>
+            <h4>What does this representation mean?</h4>
+
+            <p>The learned representation is uninterpretable by default. Recently Quadrianto et al constrained the representation to be in the same same as the input so that we could look at what changed</p>
+        </section>
+        <section>
+            <h2>Problems with doing this?</h2>
+            <h4>What if the vendor data user decides to be fair as well?</h4>
+
+            <p>Referred to as "fair pipelines". Work has only just begun exploring these. Current research shows that these don't work (at the moment!)</p>
+        </section>
+    </section>
+
+    <section>
+        <section>
+            <h2>Variational Fair Autoencoder</h2>
+            <p>idea: Let's "disentangle" the sensitive attribute using the variational autoencoder framework!</p>
+        </section>
+        <section>
+            <h2>Variational Fair Autoencoder</h2>
+            <img src="images/vfae_graphical_model.png">
+            <p><span class="citeme">Louizos et al. 2017</span> </p>
+        </section>
+        <section>
+            <h2>Variational Fair Autoencoder</h2>
+            <p>Where $z_1$ and $z_2$ are encouraged to confirm to a prior distribution</p>
+        </section>
+        <section>
+            <h2>Problems with doing this?</h2>
+            <p>Similar to adversarial model, but more principled.</p>
+        </section>
+    </section>
+
+    <section>
+        <h2>How to enforce fairness?</h2>
+        <h3>During Training</h3>
+        Instead of building a fair representation, we just make the fairness constraints part of the objective during training of the model.
+
+        An early example of this is by Zafar et al.
+    </section>
+
+    <section>
+        <h2>How to enforce fairness?</h2>
+        <h3>During Training</h3>
+        <p>Given we have a loss function, $\mathcal{L}(\theta)$.</p>
+
+        <p>In an unconstrained classifier, we would expect to see</p>
+
+        $$
+        \min{\mathcal{L}(\theta)}
+        $$
+    </section>
+
+    <section>
+        <h2>How to enforce fairness?</h2>
+        <h3>During Training</h3>
+        <!-- <section> -->
+
+        <p>To reduce Disparate Impact, Zafar adds a constraint to the loss function.</p>
+
+        $$
+        \begin{aligned}
+        \text{min  } & \mathcal{L}(\theta) \\
+        \text{subject to  } & P(\hat{y} \neq y|s = 0) − P(\hat{y} \neq y|s = 1) \leq \epsilon \\
+        \text{subject to  } & P(\hat{y} \neq y|s = 0) − P(\hat{y} \neq y|s = 1) \geq -\epsilon
+        \end{aligned}
+        $$
+        <!-- </section> -->
+        <!-- <section>
+          <p>Where $\{{s_i \} }_{i=1}^{N}$ denotes a user's sensitive attributes</p>
+          <p>$\{ {d_{\theta}(x_i) \} }_{i=1}^{N}$ the signed distance to the decision boundary</p>
+          <p>$c$ is the trade-off between accuracy and fairness.</p>
+          <p>If $c$ is sufficiently small, this is the equivalent of</p>
+          $$
+            P(d_{\theta}(x) \geq 0 | s = 0) = P(d_{\theta}(x) \geq 0 | s = 1)
+          $$
+        </section>
+        <section>
+            In other words, the decisions for both sensitive groups must be equally distributed across the decision boundary up to some threshold $c$.
+        </section> -->
+    </section>
+
+    <section>
+        <h1>Transparency and Fairness</h1>
+    </section>
+
+    <section data-markdown><textarea data-template>
+        ## Pre-processing
+
+        - Many <span class="highlight">adversarial-based</span> fair representation learning approaches, e.g. using a "Gradient-Reversal Layer"
+
+        <img src="images/models/adversarialfair.png" width=38% title="Adversarially Fair"/>
+
+        <span class="citeme">Ganin et al.,Domain-adversarial training of neural networks, JMLR 2016</span>
+        <div style="height:20px;font-size:1px;">&nbsp;</div>
+        <span class="citeme">Edwards and Storkey, Censoring representations with an adversary, ICLR 2016</span>
+        <div style="height:20px;font-size:1px;">&nbsp;</div>
+        <span class="citeme">Beutel et al., Data decisions and theoretical implications when adversarially learning fair representations, Jul 2017</span>
+        <span class="citeme">Madras et al., Learning adversarially fair and transferable representations, ICML 2018</span>
+
+    </textarea></section>
+
+
+    <section data-markdown><textarea data-template>
+        ## Problems?
+
+        Can we visualise/understand the latent representation $z$?
+    </textarea></section>
+
+    <section data-markdown><textarea data-template>
+        ## Fair, and transferable... Idea 1
+        We use deep generative modelling:
+
+        $\mathcal{L} = \mathbb{E}{q_{\theta_{enc}}(z|x)}[\log p_{\theta_{dec}}(x|z, s) - \log p_{\theta_{dec}}(s|z)]- \beta D_{KL}(q_{\theta_{enc}}(z |x) \| p(z))$
+        - Representing data points in a latent space
+        - Disentangling the latent space (previous work was on the reconstruction space) into two components:
+            - <span class="highlight">Spurious</span>: dependent on the sensitive attribute.
+            - <span class="highlight">Non-Spurious</span>: independent of the sensitive attribute.
+    </textarea></section>
+
+    <section data-markdown><textarea data-template>
+        ## Fair, and transferable... Idea 1
+        <img src="images/models/CVAE.png" width="60%">
+    </textarea></section>
+
+    <section data-markdown><textarea data-template>
+        ## Fair, and transferable... Idea 1
+        <img src="images/train_original_x_31500.png" width="30%">
+        <img src="images/train_reconstruction_y_31500.png" width="30%">
+        <img src="images/train_reconstruction_s_31500.png" width="30%">
+    </textarea></section>
+
+    <section data-markdown><textarea data-template>
+        ## Fair, and transferable... Idea 2
+        We use deep generative modelling:
+
+        $\min_\theta \mathbb{E}_x (- \log p_\theta (x|z)) + \lambda I(z_d, s)$
+
+        - Representing data points in a latent space
+        - Disentangling the latent space (previous work was on the reconstruction space) into two components:
+            - <span class="highlight">Spurious</span>: dependent on the sensitive attribute.
+            - <span class="highlight">Non-Spurious</span>: independent of the sensitive attribute.
+    </textarea></section>
+
+    <section data-markdown><textarea data-template>
+            ## Fair, and transferable... Idea 2
+            <img src="images/models/CFlow.png" width="30%">
+        </textarea></section>
+
+    <section data-markdown><textarea data-template>
+            ## Fair, and transferable... Idea 2
+            <img src="images/train_original_x_15000.png" width="30%">
+            <img src="images/train_reconstruction_y_15000.png" width="30%">
+            <img src="images/train_reconstruction_s_15000.png" width="30%">
+        </textarea></section>
+
+
+    <section>
+        <section data-markdown><textarea data-template>
+            ## Contrastive examples
+
+            - The <span class="highlight">ideal dataset</span> contains an imaginary data point for each person, i.e. the one inside the black box, whereby we <span class="highlight">intervene</span> and set the gender attribute to the opposite that is in real life
+            <span class="citeme">Thomas, NQ, Imagined Examples for Fairness: Sampling Bias and Proxy Labels, Sep 2019</span>
+            <span class="citeme">Sharmanska, Hendricks, Darrell, NQ, Contrastive examples for addressing the tyranny of the majority, May 2019</span>
+
+            <img src="images/balanced_Page_1.png" width=50% title="Balanced1"/>
+            <img src="images/balanced_Page_2.png" width=30% title="Balanced2"/>
+          </textarea></section>
+        <section data-markdown><textarea data-template>
+            ## Contrastive on Adult Income dataset
+
+            - Change in the <span class="highlight">relationship</span> and <span class="highlight">marital status</span>, i.e. from Husband and Married-civ-spause in real samples to Unmarried and/or Wife in contrastive samples
+
+            <img src="images/adult_real.png" width=30% title="Real"/>
+            <img src="images/adult_contrastive.png" width=30% title="Contrastive"/>
+            <img src="images/adult_diff.png" width=30.5% title="Difference"/>
+
+        </textarea></section>
+
+        <section data-markdown><textarea data-template>
+            ## Contrastive on Adult Income dataset
+            - Connections to <span class="highlight">counterfactuals</span> based on the Nabi \& Shpitser's (2018) causal graph
+             - To remove bias towards females, the direct effect of gender on income, as well as, the <span class="highlight">effect of gender on income through marital status have to be suppressed</span>
+            - Experimental results
+            <small>
+                <table>
+                    <tbody><tr>
+                        <td></td>
+                        <td width="10%">Accuracy $\uparrow$</td>
+                        <td width="10%">TPR Diff. $\downarrow$</td>
+                        <td width="10%">FPR Diff. $\downarrow$</td>
+                    </tr>
+                    <tr>
+                        <td width="10%">LR (Real)</td>
+                        <td width="10%">$85.16\pm0.14$ </td>
+                        <td width="10%">$7.98\pm1.52$ </td>
+                        <td width="10%">$7.23\pm0.41$</td>
+                    </tr>
+                    <tr>
+                        <td width="10%">Kamiran & Calders LR (Real)</td>
+                        <td width="10%">$84.37\pm0.28$ </td>
+                        <td width="10%">$14.3\pm1.16$ </td>
+                        <td width="10%">$1.17\pm0.29$ </td>
+                    </tr>
+                    <tr>
+                        <td width="20%">LR (Real and NN contrastive)</td>
+                        <td width="10%">$85.01\pm0.25$ </td>
+                        <td width="10%">$14.80\pm1.90$ </td>
+                        <td width="10%">$8.20\pm0.51$ </td>
+                    </tr>
+                    <tr>
+                        <td width="20%">LR (Real and GAN contrastive)</td>
+                        <td width="10%">$82.48\pm0.44$ </td>
+                        <td width="10%">$4.95\pm3.67$ </td>
+                        <td width="10%">$3.94\pm1.33$ </td>
+                    </tr>
+                        </tbody>
+                </table>
+            </small>
+        </textarea></section>
+
+        <section data-markdown><textarea data-template>
+            ## Interpretability with contrastive examples
+
+            - All previous work with adversarial learning try to <span class="highlight">remove</span> sensitive attributes from data
+            - Instead, we use adversarial learning to <span class="highlight">generate</span> data points with pre-specified sensitive attributes (contrastive examples)
+            - Contrastive examples can be easily interpreted because they do have the semantic meaning of the input
+        </textarea></section>
+    </section>
+
+  <section>
+    <h2>Fairness without constraints</h2>
+    <ul>
+      <li>Most fairness methods for "during training" are formulated as constraints
+      <li>This means either
+          <ul>
+              <li>Using very special models where constrained-based optimization is possible
+              <li>Using Lagrange multipliers
+          </ul>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Lagrange multipliers</h2>
+    <p>Constrained optimization problem:
+    <p>$$\min\limits_\theta\, f(\theta) \quad\text{s.th.}~ g(\theta) = 0$$
+    <p>This gets reformulated as
+    <p>$f(\theta) + \lambda g(\theta)$
+    <p>where $\lambda$ has to be determined, but is usually just set to some value
+  </section>
+
+  <section>
+      <h2>Shortcomings of this</h2>
+      <ul>
+        <li>The value of $\lambda$ has no real meaning and is usually just set to arbitrary values
+        <li>It's hard to tell whether the constraint is fulfilled
+      </ul>
+  </section>
+
+  <section>
+      <h2>Alternate approach</h2>
+      <ul>
+        <li>Introduce <em>pseudo labels</em> $\bar{y}$.
+        <li>Make sure $\bar{y}$ is fair ($\bar{y}\perp s$).
+        <li>Use $\bar{y}$ as prediction target.
+      </ul>
+      <p>$$P(y=1|x,s,\theta)=\sum\limits_{\bar{y}\in\{0,1\}} P(y=1|\bar{y},s)P(\bar{y}|x,\theta)$$
+  </section>
+
+  <section>
+      <h2>Alternate approach</h2>
+      <p>For demographic parity:
+      <p>$P(\bar{y}|s=0)=P(\bar{y}|s=1)$
+      <p>This allows us to compute $P(y=1|\bar{y},s)$. Which is all we need.
+      <p>Details: <em>Tuning Fairness by Balancing Target Labels</em> (Kehrenberg et al., 2020)
+  </section>
+
+  <section>
+    <h2>Multinomial sensitive attribute</h2>
+    <p>The usual metrics for Demographic Parity are only defined for binary attributes: it's either a <em>ratio</em> or a <em>difference</em> of two probabilities.
+    <p><b>Alternative</b>:
+    <p>Hirschfeld-Gebelein-Rényi Maximum Correlation Coefficient (HGR)
+    <ul>
+        <li>defined on the domain [0,1]
+        <li>$HGR(Y,S) = 0$ iff $Y\perp S$
+        <li>$HGR(Y,S) = 1$ iff there is a deterministic function to map between them
+    </ul>
+  </section>
+
+  <section>
+    <h2>Causality</h2>
+    <p><b>Motivation</b>:
+    <ul>
+      <li>Fairness methods so far have only looked at <em>correlations</em> between the sensitive attribute and the prediction
+      <li>But isn't a causal path more important?
+    </ul>
+  </section>
+
+  <section>
+    <h2>Causality</h2>
+    <p>Example:
+    <p>Admissions at Berkeley college.
+    <p>Men were found to be accepted with much higher probability. Was it discrimination?
+  </section>
+
+  <section>
+    <h2>Causality</h2>
+    <p>Was it discrimination?
+    <p>Not necessarily! The reason was that women were applying to more competitive departments.
+    <p>Departments like medicine and law are very competitive (hard to get in).
+    <p>Departments like computer science are much less competetive (because it's boring ;).
+  </section>
+
+  <section>
+    <h2>Causality</h2>
+    <ul>
+      <li>$R$: admission decision
+      <li>$A$: gender
+      <li>$X$: department choice
+    </ul>
+    <p>
+    <img src="images/berkeley_admission.png" style="width: 30%">
+  </section>
+
+  <section>
+    <h2>Causality</h2>
+    <!-- <p>"Correlation doesn't imply causation"</p> -->
+    <!-- <p class="fragment">But what is causation?</p> -->
+    <p>If we can understand what <b>causes</b> unfair behavior, then we can take steps to mitigate it.</p>
+    <p class="fragment">Basic idea: a sensitive attribute may only affect the prediction via legitimate causal paths.</p>
+    <p class="fragment">But how do we model causation?</p>
+  </section>
+
+  <section>
+    <h2>Causal Graphs</h2>
+    <p><b>Solution:</b> build causal graphs of your problem</p>
+    <p><b>Problem:</b> causality cannot be inferred from observational data</p>
+    <ul>
+      <li>Observational data can only show correlations
+      <li>For causal information we have to do <i>experiments</i>. (But that is often not ethical.)
+      <li>Currently: just guess the causal structure
+    </ul>
+  </section>
+
+  <section>
+    <h2>Path-specific causal fairness</h2>
+    <p>
+    $A$ is a sensitive attribute, and its direct effect on $Y$ and effect through $M$ is considered unfair.
+    But $L$ is considered admissible.
+    <p><img src="images/path-specific-fairness.png" style="width: 70%">
+  </section>
+
+  <section>
+    <h2>Path-specific causal fairness</h2>
+    <p>With a structural causal model (SCM), like this:
+    <p><img src="images/scm.png" style="width: 50%">
+    <p>You can figure out exactly how each feature should be incorporated in order to make a fair prediction.
+  </section>
+
+  <section>
+    <h2>Path-specific causal fairness</h2>
+    <ul>
+      <li><b>Advantage:</b> we can figure out <em>exactly</em> how to avoid unfairness
+      <li><b>Problem:</b> requires an SCM, which we usually don't have and which is hard to get
+      <li><b>Problem:</b> we have to decide for each feature individually whether it's admissible
+        <ul>
+          <li>This will not work for computer vision tasks where the raw features are pixels
+        </ul>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Counterfactual Fairness</h2>
+    <ul>
+      <li>slightly different idea but also based on SCMs (structural causal model)
+      <li>we're basically asking: in the counterfactual world where your gender was different, would you have been accepted?
+        <ul>
+          <li><em>counterfactual</em>: something that has not happened or is not the case
+        </ul>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Counterfactuals</h2>
+    <p>Example of a counterfactual statement:
+    <blockquote>If Oswald had not shot Kennedy, no-one else would have.</blockquote>
+    <p>This is counterfactual, because Oswald did in fact shoot Kennedy.
+    <p>It's a claim about a counterfactual world.
+  </section>
+
+  <section>
+    <h2>Counterfactual Fairness</h2>
+    <p>$U$: set of all unobserved background variables</p>
+    <p>$P(\hat{y}_{s=i}(U) = 1|x, s=i)=P(\hat{y}_{s=j}(U) = 1|x, s=i)$</p>
+    <p>$i, j \in \{0, 1\}$</p>
+    <p>$\hat{y}_{s=k}$: prediction in the counterfactual world where $s=k$</p>
+    <p><b>practical consequence:</b> $\hat{y}$ is counterfactually fair if it does not causally depend
+    (as defined by the causal model) on $s$ or any descendants of $s$.</p>
+  </section>
+
+  <section>
+    <h2>The problem of getting the SCM</h2>
+    <ul>
+      <li>Causal models cannot be learned from observational data only
+        <ul>
+          <li>You can try, but there is no <em>unique</em> solution
+        </ul>
+      <li>Different causal models can lead to very different results
+    </ul>
+  </section>
+
+  <section>
+    <h2>Example with Causal Graphs</h2>
+    <p><b>Example:</b> Law school success</p>
+    <p>Task: given GPA score and LSAT (law school entry exam), predict grades after one year in law school:
+      FYA (first year average)</p>
+    <p>Additionally two sensitive attributes: <i>race</i> and <i>gender</i></p>
+  </section>
+
+  <section>
+    <h2>Example with Causal Graphs</h2>
+    <p>Two possible graphs</p>
+    <img src="./images/lsat_causal.png"/>
+  </section>
+
+  <section>
+    <h2>Causality &mdash; Summary</h2>
+    <ul>
+      <li>Causal models are very promising and arguably the "right" way to solve the problem.
+      <li>However these models are difficult to obtain.
+    </ul>
+  </section>
+
+    <section data-markdown><textarea data-template>
+        ## Contents
+
+        - Part 1
+            - Intro and notation
+            - What is fairness in machine learning and why should I care?
+            - Algorithmic fairness definitions
+            - Approaches to enforce algorithmic fairness
+        - Part 2
+            - Transparency in algorithmic fairness
+            - Causality and Counterfactual Fairness
+            - Toolboxes for research
+    </textarea></section>
+
+    <section data-markdown><textarea data-template>
+        ## Take home messages
+
+        - Fairness is _Domain Specific_.
+        - If you don't think about bias, it will come back to haunt you.
+        - Accuracy only tells part of the story.
+        - Fairness is an active and exciting research topic.
+    </textarea></section>
+
+
+</div></div>
+
+<script src="lib/js/head.min.js"></script>
+<script src="js/reveal.js"></script>
+<script src="settings.js"></script>
+</body>
+</html>
