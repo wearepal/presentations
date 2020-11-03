@@ -430,54 +430,6 @@
         Can we visualise/understand the latent representation $z$?
     </textarea></section>
 
-    <section data-markdown><textarea data-template>
-        ## Fair, and transferable... Idea 1
-        We use deep generative modelling:
-
-        $\mathcal{L} = \mathbb{E}{q_{\theta_{enc}}(z|x)}[\log p_{\theta_{dec}}(x|z, s) - \log p_{\theta_{dec}}(s|z)]- \beta D_{KL}(q_{\theta_{enc}}(z |x) \| p(z))$
-        - Representing data points in a latent space
-        - Disentangling the latent space (previous work was on the reconstruction space) into two components:
-            - <span class="highlight">Spurious</span>: dependent on the sensitive attribute.
-            - <span class="highlight">Non-Spurious</span>: independent of the sensitive attribute.
-    </textarea></section>
-
-    <section data-markdown><textarea data-template>
-        ## Fair, and transferable... Idea 1
-        <img src="images/models/CVAE.png" width="60%">
-    </textarea></section>
-
-    <section data-markdown><textarea data-template>
-        ## Fair, and transferable... Idea 1
-        <img src="images/train_original_x_31500.png" width="30%">
-        <img src="images/train_reconstruction_y_31500.png" width="30%">
-        <img src="images/train_reconstruction_s_31500.png" width="30%">
-    </textarea></section>
-
-    <section data-markdown><textarea data-template>
-        ## Fair, and transferable... Idea 2
-        We use deep generative modelling:
-
-        $\min_\theta \mathbb{E}_x (- \log p_\theta (x|z)) + \lambda I(z_d, s)$
-
-        - Representing data points in a latent space
-        - Disentangling the latent space (previous work was on the reconstruction space) into two components:
-            - <span class="highlight">Spurious</span>: dependent on the sensitive attribute.
-            - <span class="highlight">Non-Spurious</span>: independent of the sensitive attribute.
-    </textarea></section>
-
-    <section data-markdown><textarea data-template>
-            ## Fair, and transferable... Idea 2
-            <img src="images/models/CFlow.png" width="30%">
-        </textarea></section>
-
-    <section data-markdown><textarea data-template>
-            ## Fair, and transferable... Idea 2
-            <img src="images/train_original_x_15000.png" width="30%">
-            <img src="images/train_reconstruction_y_15000.png" width="30%">
-            <img src="images/train_reconstruction_s_15000.png" width="30%">
-        </textarea></section>
-
-
     <section>
         <section data-markdown><textarea data-template>
             ## Contrastive examples
