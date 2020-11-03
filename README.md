@@ -17,7 +17,19 @@
 - [Lecture](./lviv.html)
 - [Exercise](https://tinyurl.com/ethicml)
 
-## Topics in Computing Module
+## Topics in Computing Module '20
+### [Part 1](./topics20_1.html)
+- Intro to M.L.
+- Why are we interested in fairness?
+- Definitions of Fairness
+- Adversarial Representation
+
+### [Part 2](./topics20_2.html)
+- How to enforce fairness
+- Delayed Impact of Fair Machine Learning
+- Fair Causal models
+
+## Topics in Computing Module '18
 ### [Part 1](./algo-fairness-part1.html)
 - Intro to M.L.
 - Why are we interested in fairness?
