@@ -6,20 +6,12 @@
 
     <title>Transparency in Algorithmic Fairness</title>
 
-    <link rel="stylesheet" href="css/reveal.css">
+    <link rel="stylesheet" href="dist/reset.css">
+    <link rel="stylesheet" href="dist/reveal.css">
     <link rel="stylesheet" href="custom_themes/sussex_dark.css" id="theme">
 
     <!-- Theme used for syntax highlighting of code -->
     <link rel="stylesheet" href="lib/css/monokai.css">
-
-    <!-- Printing and PDF exports -->
-    <script>
-        var link = document.createElement( 'link' );
-        link.rel = 'stylesheet';
-        link.type = 'text/css';
-        link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
-        document.getElementsByTagName( 'head' )[0].appendChild( link );
-    </script>
 </head>
 <style>
     .citeme {
@@ -523,8 +515,10 @@ $\underset{\theta}{\text{min.}}\quad \mathbb{E}_x [- \log p_\theta (x|z)] + \lam
 
 </div></div>
 
-<script src="lib/js/head.min.js"></script>
-<script src="js/reveal.js"></script>
+<script src="dist/reveal.js"></script>
+<script src="plugin/notes/notes.js"></script>
+<script src="plugin/markdown/markdown.js"></script>
+<script src="plugin/math/math.js"></script>
 <script src="settings.js"></script>
 </body>
 </html>

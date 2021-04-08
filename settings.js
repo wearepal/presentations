@@ -9,13 +9,7 @@ markdown: {
 math: {
   config: 'TeX-AMS_HTML-full'
 },
-dependencies: [
-  { src: 'plugin/markdown/marked.js' },
-  { src: 'plugin/markdown/markdown.js' },
-  { src: 'plugin/notes/notes.js', async: true },  // speaker notes
-  // { src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
-  { src: 'plugin/math/math.js', async: true }
-],
+plugins: [ RevealNotes, RevealMarkdown, RevealMath ],
 // The "normal" size of the presentation, aspect ratio will be preserved when the presentation is scaled to fit different resolutions
 width: 1120, // default 960
 height: 700,
