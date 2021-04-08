@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <meta charset="utf-8">
+
+  <title>Presentation for interview</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  <link rel="stylesheet" href="dist/reveal.css">
+  <link rel="stylesheet" href="custom_themes/sussex2.css" id="theme">
+  <script src="dist/katex-element.umd.js" type="module"></script>
+  <style>
+    /*********************************************
+     * FOOTER
+     *********************************************/
+    .slides footer {
+      position: absolute;
+      bottom: 1%;
+      /* left: 41%; */
+      /* text-align: left; */
+      text-align: center;
+      /*font-size: 3vmin; /* vmin: minimum size of view. doesn't work in IE */
+      font-size: 0.7rem;
+      width: 100%;
+      /*color: #003B49; /* Uni Sussex color */
+      height: 10%;
+      z-index: 100;
+    }
+    
+    .reveal footer p {
+      margin: 0;
+    }
+
+    .katex {
+      color: red;
+    }
+
+    .slides .header{
+      position:absolute;
+      top: -50%;
+      left: -50%;
+    }
+  </style>
+
+  <div class="reveal">
+
+    <div class="slides">
+
+      <footer id="footer">
+        <p>Tools and tenets for ML and Python
+      </footer>
+
+      <!-- Your current research (10-min) and how you could contribute to the BayesianGDPR project (10-min) -->
+      <section>
+        <p>&nbsp;
+        <h2>Tools and tenets for ML and Python</h2>
+        <p>&nbsp;
+        <p>Predictive Analytics Lab
+        <p>University of Sussex
+      </section>
+
+      <section>
+        <h2>Contents</h2>
+        <p>Approach
+        <p>Python tools
+        <p>ML tools
+        <p>Further recommendations
+      </section>
+
+      <section>
+        <h3>Contents</h3>
+        <div class="multicol">
+          <div class="col">
+            <p><b>Core tenets</b>
+            <ul>
+              <li>Libraries &gt; Snippets
+              <li>Automation &gt; Manual
+            </ul>
+            <p><b>Python Tools</b>
+            <ul>
+              <li>Poetry
+              <li>Hydra
+              <li>Ray
+            </ul>
+          </div>
+          <div class="col">
+            <p><b>ML Tools</b>
+            <ul>
+              <li>PyTorch Lightning
+              <li>Weights &amp; Biases
+            </ul>
+            <p><b>Not Covered (but recommended)</b>
+            <ul>
+              <li>BentoML (for model-serving)
+              <li>Optuna (for hyperparameter optimization) &ndash; has integration with Hydra
+            </ul>
+          </div>
+        </div>
+      </section>
+    </div>
+
+  </div>
+
+  <script src="dist/reveal.js"></script>
+  <script src="plugin/math/math.js"></script>
+  <script>
+    Reveal.initialize({
+      controls: false,
+      progress: false,
+      slideNumber: 'c/t',
+      center: false,
+      history: true,
+      transition: 'none',
+      width: 1120, // default 960
+      height: 700,
+      margin: 0.04,
+
+      math: {
+        // mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js',
+        config: 'TeX-AMS_HTML-full',
+        TeX: {
+          Macros: {
+            R: '\\mathbb{R}',
+            set: [ '\\left\\{#1 \\; ; \\; #2\\right\\}', 2 ]
+          }
+        }
+      },
+
+      plugins: [ RevealMath ]
+    });
+
+    // make footer visible in normal mode and in print mode
+    var footer = document.querySelector('#footer');
+    if (window.location.search.match( /print-pdf/gi )) {
+      Reveal.addEventListener('ready', function(event) {
+        // add footer to every slide
+        for (let slide of document.querySelectorAll('.slide-background')) {
+          if (slide.classList.contains('stack')) {
+            continue;
+          }
+          let clone = footer.cloneNode(true);
+          slide.appendChild(clone)
+        }
+      });
+    }
+  </script>
