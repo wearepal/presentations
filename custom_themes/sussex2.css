@@ -50,7 +50,7 @@ html {
   font-family: "Lato", sans-serif;
   font-size: 1rem;
   font-weight: normal;
-  color: #000;
+  color: #424242;
   background-color: #eee;
 }
 
@@ -88,7 +88,7 @@ html {
 .reveal h4,
 .reveal h5,
 .reveal h6 {
-  margin: 0 0 0.5rem 0;
+  margin: 1.5rem 0 0.5rem 0;
   color: #003b49;
   font-family: 'Maven Pro', sans-serif;
   font-weight: bold;
@@ -150,6 +150,9 @@ html {
   text-align: left;
   margin: 0 0 0 1rem; }
 
+.reveal li:not(:first-child) {
+  margin-top: 0.5rem; }
+
 .reveal ol {
   list-style-type: decimal; }
 
@@ -167,7 +170,8 @@ html {
 .reveal ol ol,
 .reveal ol ul {
   display: block;
-  margin-left: 1rem; }
+  margin: 0.25rem 0 0 1.25rem;
+}
 
 .reveal dt {
   font-weight: bold; }
@@ -318,10 +322,14 @@ html {
 .multicol {
   display: flex;
   text-align: left;
+  margin: 0 2rem;
 }
 
 .col {
   flex: 1;
+}
+.col:not(:first-child) {
+  margin-left: 1rem;
 }
 
 /*********************************************
