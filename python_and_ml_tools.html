@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+  <title>Tools and tenets for ML and Python</title>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <link rel="stylesheet" href="dist/reveal.css">
+  <link rel="stylesheet" href="custom_themes/sussex2.css" id="theme">
+  <style>
+  </style>
+
+  <div class="reveal">
+
+    <div class="slides">
+
+      <div id="background-template">
+        <footer>
+          <p>Tools and tenets for ML and Python
+        </footer>
+      </div>
+
+      <section class="dark-cyan">
+        <p>&nbsp;
+        <h2>Tools and tenets<br>for ML and Python</h2>
+        <p>&nbsp;
+        <p style="color: white">Predictive Analytics Lab<br>
+          University of Sussex
+        <p>&nbsp;
+        <p><img src="images/logos/University_of_Sussex_Logo.svg2000_white.png" style="width: 5rem;">
+      </section>
+
+      <section>
+        <h2>Contents</h2>
+        <p>Approach
+        <p>Python tools
+        <p>ML tools
+        <p>Further recommendations
+      </section>
+
+      <section>
+        <h3>Contents</h3>
+        <div class="multicol">
+          <div class="col">
+            <p><b>Core tenets</b>
+            <ul>
+              <li>Libraries &gt; Snippets
+              <li>Automation &gt; Manual
+            </ul>
+            <p><b>Python Tools</b>
+            <ul>
+              <li>Poetry
+              <li>Hydra
+              <li>Ray
+            </ul>
+          </div>
+          <div class="col">
+            <p><b>ML Tools</b>
+            <ul>
+              <li>PyTorch Lightning
+              <li>Weights &amp; Biases
+            </ul>
+            <p><b>Not Covered (but recommended)</b>
+            <ul>
+              <li>BentoML (for model-serving)
+              <li>Optuna (for hyperparameter optimization) &ndash; has integration with Hydra
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="dark-cyan">
+        <p>&nbsp;
+        <p>&nbsp;
+        <p>&nbsp;
+        <p>&nbsp;
+        <h2>Core tenets</h2>
+      </section>
+
+      <section>
+        <h3>Core tenets</h3>
+        <div class="multicol">
+          <div class="col">
+            <ul>
+              <li>Avoid boilerplate code
+                <ul>
+                  <li>The best code is code you don't have to write.
+                </ul>
+              <li>Put shared code into libraries
+                <ul>
+                  <li>EthicML
+                  <li>PALkit
+                </ul>
+              <li>Automation &gt; Manual
+                <ul>
+                  <li>Try to make your model run end-to-end
+                  <li>Keep hard-coding to a minimum
+                </ul>
+            </ul>
+          </div>
+          <div class="col">
+            <ul>
+              <li>Type-annotate everything
+                <ul>
+                  <li>readable and less error-prone code
+                  <li>use static type checkers like pyright and mypy
+                </ul>
+              <li>Make it easy for others to run your code
+                <ul>
+                  <li>Specify exact dependencies
+                  <li>Don’t use notebooks
+                  <li>Run and configure via the command line
+                </ul>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+  <script type="module" src="setup.js"></script>

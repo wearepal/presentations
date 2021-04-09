@@ -1,0 +1,378 @@
+/**
+ * A simple theme for reveal.js presentations, similar
+ * to the default theme. The accent color is darkblue.
+ *
+ * This theme is Copyright (C) 2012 Owen Versteeg, https://github.com/StereotypicalApps. It is MIT licensed.
+ * reveal.js is Copyright (C) 2011-2012 Hakim El Hattab, http://hakim.se
+ */
+@import url('https://fonts.googleapis.com/css2?family=Maven+Pro:wght@700&display=swap');
+@import url(https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic);
+section.has-dark-background, section.has-dark-background h1, section.has-dark-background h2, section.has-dark-background h3, section.has-dark-background h4, section.has-dark-background h5, section.has-dark-background h6 {
+  color: #fff; }
+
+/*********************************************
+ * GLOBAL STYLES
+ *********************************************/
+:root {
+  --background-color: #fff;
+  --main-font: Lato, sans-serif;
+  --main-font-size: 1rem;
+  --main-color: #000;
+  --block-margin: 20px;
+  --heading-margin: 0 0 20px 0;
+  --heading-font: 'Maven Pro', sans-serif;
+  --heading-color: #000;
+  --heading-line-height: 1.2;
+  --heading-letter-spacing: normal;
+  --heading-text-transform: none;
+  --heading-text-shadow: none;
+  --heading-font-weight: normal;
+  --heading1-text-shadow: none;
+  --heading1-size: 3.77rem;
+  --heading2-size: 2.11rem;
+  --heading3-size: 1.55rem;
+  --heading4-size: 1rem;
+  --code-font: monospace;
+  --link-color: #00008B;
+  --link-color-hover: #0000f1;
+  --selection-background-color: rgba(0, 0, 0, 0.99);
+  --selection-color: #fff; }
+
+html {
+  font-size: 30px
+}
+
+.reveal-viewport {
+  background: #fff;
+  background-color: #fff; }
+
+.reveal {
+  font-family: "Lato", sans-serif;
+  font-size: 1rem;
+  font-weight: normal;
+  color: #424242;
+  background-color: #eee;
+}
+
+.reveal ::selection {
+  color: #fff;
+  background: rgba(0, 0, 0, 0.99);
+  text-shadow: none; }
+
+.reveal ::-moz-selection {
+  color: #fff;
+  background: rgba(0, 0, 0, 0.99);
+  text-shadow: none; }
+
+.reveal .slides {
+  background-color: #FFF;
+  filter: drop-shadow(0 0 0.2rem #666);
+  /* padding: 1rem; */
+}
+
+.pdf-print .reveal .slides {
+  background-color: #FFF; }
+
+.reveal .slides section,
+.reveal .slides section > section {
+  line-height: 1.3;
+  font-weight: inherit;
+}
+
+.reveal .slides section.dark-cyan {
+  background-color: #003B49;
+  height: 100%;
+}
+
+.reveal .slides section.dark-cyan h2 {
+  color: #FFF;
+}
+
+/*********************************************
+ * HEADERS
+ *********************************************/
+.reveal h1,
+.reveal h2,
+.reveal h3,
+.reveal h4,
+.reveal h5,
+.reveal h6 {
+  margin: 1.5rem 0 0.5rem 0;
+  color: #003b49;
+  font-family: 'Maven Pro', sans-serif;
+  font-weight: bold;
+  line-height: 1.2;
+  letter-spacing: normal;
+  text-transform: none;
+  text-shadow: none;
+  word-wrap: break-word; }
+
+.reveal h1 {
+  font-size: 3.77rem; }
+
+.reveal h2 {
+  font-size: 2.11rem; }
+
+.reveal h3 {
+  font-size: 1.55rem; }
+
+.reveal h4 {
+  font-size: 1rem; }
+
+.reveal h1 {
+  text-shadow: none; }
+
+/*********************************************
+ * OTHER
+ *********************************************/
+.reveal p {
+  margin: 0.5rem 0;
+  line-height: 1.3; }
+
+/* Remove trailing margins after titles */
+.reveal h1:last-child,
+.reveal h2:last-child,
+.reveal h3:last-child,
+.reveal h4:last-child,
+.reveal h5:last-child,
+.reveal h6:last-child {
+  margin-bottom: 0; }
+
+/* Ensure certain elements are never larger than the slide itself */
+.reveal img,
+.reveal video,
+.reveal iframe {
+  max-width: 95%;
+  max-height: 95%; }
+
+.reveal strong,
+.reveal b {
+  font-weight: bold; }
+
+.reveal em {
+  font-style: italic; }
+
+.reveal ol,
+.reveal dl,
+.reveal ul {
+  display: inline-block;
+  text-align: left;
+  margin: 0 0 0 1rem; }
+
+.reveal li:not(:first-child) {
+  margin-top: 0.5rem; }
+
+.reveal ol {
+  list-style-type: decimal; }
+
+.reveal ul {
+  list-style-type: disc; }
+
+.reveal ul ul {
+  list-style-type: square; }
+
+.reveal ul ul ul {
+  list-style-type: circle; }
+
+.reveal ul ul,
+.reveal ul ol,
+.reveal ol ol,
+.reveal ol ul {
+  display: block;
+  margin: 0.25rem 0 0 1.25rem;
+}
+
+.reveal dt {
+  font-weight: bold; }
+
+.reveal dd {
+  margin-left: 1rem; }
+
+.reveal blockquote {
+  display: block;
+  position: relative;
+  width: 70%;
+  margin: 0.5rem auto;
+  padding: 0.1rem;
+  font-style: italic;
+  background: rgba(255, 255, 255, 0.05);
+  box-shadow: 0 0 0.05rem rgba(0, 0, 0, 0.2); }
+
+.reveal blockquote p:first-child,
+.reveal blockquote p:last-child {
+  display: inline-block; }
+
+.reveal q {
+  font-style: italic; }
+
+.reveal pre {
+  display: block;
+  position: relative;
+  width: 90%;
+  margin: 0.5rem auto;
+  text-align: left;
+  font-size: 0.55rem;
+  font-family: monospace;
+  line-height: 1.2em;
+  word-wrap: break-word;
+  box-shadow: 0 0.1rem 0.15rem rgba(0, 0, 0, 0.15); }
+
+.reveal code {
+  font-family: monospace;
+  text-transform: none; }
+
+.reveal pre code {
+  display: block;
+  padding: 0.1rem;
+  overflow: auto;
+  max-height: 10rem;
+  word-wrap: normal; }
+
+.reveal table {
+  margin: auto;
+  border-collapse: collapse;
+  border-spacing: 0; }
+
+.reveal table th {
+  font-weight: bold; }
+
+.reveal table th,
+.reveal table td {
+  text-align: left;
+  padding: 0.2rem 0.5rem 0.2rem 0.5rem;
+  border-bottom: 1px solid; }
+
+.reveal table th[align="center"],
+.reveal table td[align="center"] {
+  text-align: center; }
+
+.reveal table th[align="right"],
+.reveal table td[align="right"] {
+  text-align: right; }
+
+.reveal table tbody tr:last-child th,
+.reveal table tbody tr:last-child td {
+  border-bottom: none; }
+
+.reveal sup {
+  vertical-align: super;
+  font-size: smaller; }
+
+.reveal sub {
+  vertical-align: sub;
+  font-size: smaller; }
+
+.reveal small {
+  display: inline-block;
+  font-size: 0.6rem;
+  line-height: 1.2rem;
+  vertical-align: top; }
+
+.reveal small * {
+  vertical-align: top; }
+
+.reveal img {
+  margin: 0.5rem 0; }
+
+/*********************************************
+ * LINKS
+ *********************************************/
+.reveal a {
+  color: #00008B;
+  text-decoration: none;
+  transition: color .15s ease; }
+
+.reveal a:hover {
+  color: #0000f1;
+  text-shadow: none;
+  border: none; }
+
+.reveal .roll span:after {
+  color: #fff;
+  background: #00003f; }
+
+/*********************************************
+ * Frame helper
+ *********************************************/
+.reveal .r-frame {
+  border: 4px solid #000;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.15); }
+
+.reveal a .r-frame {
+  transition: all .15s linear; }
+
+.reveal a:hover .r-frame {
+  border-color: #00008B;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.55); }
+
+/*********************************************
+ * NAVIGATION CONTROLS
+ *********************************************/
+.reveal .controls {
+  color: #00008B; }
+
+/*********************************************
+ * PROGRESS BAR
+ *********************************************/
+.reveal .progress {
+  background: rgba(0, 0, 0, 0.2);
+  color: #00008B; }
+
+/*********************************************
+ * PRINT BACKGROUND
+ *********************************************/
+@media print {
+  .backgrounds {
+    background-color: #fff; } }
+
+/*********************************************
+ * COLUMNS
+ *********************************************/
+.multicol {
+  display: flex;
+  text-align: left;
+  margin: 0 2rem;
+}
+
+.col {
+  flex: 1;
+}
+.col:not(:first-child) {
+  margin-left: 1rem;
+}
+
+/*********************************************
+ * MATH
+ *********************************************/
+.reveal .math {
+  color:#9A2617; /* Dark Ruby */
+}
+
+/*********************************************
+ * FOOTER
+ *********************************************/
+.slides #background-template footer {
+  position: absolute;
+  bottom: 0;
+  /* left: 41%; */
+  /* text-align: left; */
+  text-align: center;
+  /*font-size: 3vmin; /* vmin: minimum size of view. doesn't work in IE */
+  font-size: 0.6rem;
+  /*padding: 0.1rem;*/
+  width: 100%;
+  color: white;
+  /*color: #003B49; /* Uni Sussex color */
+  /*height: 10%;*/
+  background-color: #003B49;
+}
+
+.reveal footer p {
+  margin: 0.1rem 0;
+}
+
+.slides #background-template header {
+  position:absolute;
+  top: -50%;
+  left: -50%;
+}
