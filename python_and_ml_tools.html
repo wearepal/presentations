@@ -1,48 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+  <title>Tools and tenets for ML and Python</title>
 
   <meta charset="utf-8">
-
-  <title>Presentation for interview</title>
-
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-
   <link rel="stylesheet" href="dist/reveal.css">
   <link rel="stylesheet" href="custom_themes/sussex2.css" id="theme">
-  <script src="dist/katex-element.umd.js" type="module"></script>
   <style>
-    /*********************************************
-     * FOOTER
-     *********************************************/
-    .slides #background-template footer {
-      position: absolute;
-      bottom: 0;
-      /* left: 41%; */
-      /* text-align: left; */
-      text-align: center;
-      /*font-size: 3vmin; /* vmin: minimum size of view. doesn't work in IE */
-      font-size: 0.6rem;
-      /*padding: 0.1rem;*/
-      width: 100%;
-      color: white;
-      /*color: #003B49; /* Uni Sussex color */
-      /*height: 10%;*/
-      background-color: #003B49;
-    }
-    
-    .reveal footer p {
-      margin: 0.1rem 0;
-    }
-
-    .katex {
-      color: red;
-    }
-
-    .slides .header{
-      position:absolute;
-      top: -50%;
-      left: -50%;
-    }
   </style>
 
   <div class="reveal">
@@ -55,14 +19,14 @@
         </footer>
       </div>
 
-      <!-- Your current research (10-min) and how you could contribute to the BayesianGDPR project (10-min) -->
-      <section>
+      <section class="dark-cyan">
         <p>&nbsp;
         <h2>Tools and tenets<br>for ML and Python</h2>
         <p>&nbsp;
-        <p>Predictive Analytics Lab
-        <p>University of Sussex
-        <p><img src="images/sussex_logo.png" style="width: 5rem;">
+        <p style="color: white">Predictive Analytics Lab<br>
+          University of Sussex
+        <p>&nbsp;
+        <p><img src="images/logos/University_of_Sussex_Logo.svg2000_white.png" style="width: 5rem;">
       </section>
 
       <section>
@@ -104,18 +68,12 @@
         </div>
       </section>
 
-      <section style="background-color: #003B49">
+      <section class="dark-cyan">
         <p>&nbsp;
         <p>&nbsp;
         <p>&nbsp;
         <p>&nbsp;
-        <h2 style="color: white">Core tenets</h2>
-        <p>&nbsp;
-        <p>&nbsp;
-        <p>&nbsp;
-        <p>&nbsp;
-        <p>&nbsp;
-        <p>&nbsp;
+        <h2>Core tenets</h2>
       </section>
 
       <section>
@@ -134,60 +92,30 @@
                 </ul>
               <li>Automation &gt; Manual
                 <ul>
-                  <li>A common theme throughout
                   <li>Try to make your model run end-to-end
                   <li>Keep hard-coding to a minimum
                 </ul>
             </ul>
           </div>
           <div class="col">
+            <ul>
+              <li>Type-annotate everything
+                <ul>
+                  <li>readable and less error-prone code
+                  <li>use static type checkers like pyright and mypy
+                </ul>
+              <li>Make it easy for others to run your code
+                <ul>
+                  <li>Specify exact dependencies
+                  <li>Don’t use notebooks
+                  <li>Run and configure via the command line
+                </ul>
+            </ul>
           </div>
         </div>
       </section>
-    </div>
 
+    </div>
   </div>
 
-  <script src="dist/reveal.js"></script>
-  <script src="plugin/math/math.js"></script>
-  <script>
-    Reveal.initialize({
-      controls: false,
-      progress: false,
-      slideNumber: 'c/t',
-      center: false,
-      history: true,
-      transition: 'none',
-      width: 1120, // default 960
-      height: 700,
-      margin: 0.04,
-
-      math: {
-        // mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js',
-        config: 'TeX-AMS_HTML-full',
-        TeX: {
-          Macros: {
-            R: '\\mathbb{R}',
-            set: [ '\\left\\{#1 \\; ; \\; #2\\right\\}', 2 ]
-          }
-        }
-      },
-
-      plugins: [ RevealMath ]
-    });
-
-    // make footer visible in normal mode and in print mode
-    var footer = document.querySelector('#background-template');
-    if (window.location.search.match( /print-pdf/gi )) {
-      Reveal.addEventListener('ready', function(event) {
-        // add footer to every slide
-        for (let slide of document.querySelectorAll('.slide-background')) {
-          if (slide.classList.contains('stack')) {
-            continue;
-          }
-          let clone = footer.cloneNode(true);
-          slide.appendChild(clone)
-        }
-      });
-    }
-  </script>
+  <script type="module" src="setup.js"></script>

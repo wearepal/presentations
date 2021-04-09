@@ -79,6 +79,15 @@ html {
   font-weight: inherit;
 }
 
+.reveal .slides section.dark-cyan {
+  background-color: #003B49;
+  height: 100%;
+}
+
+.reveal .slides section.dark-cyan h2 {
+  color: #FFF;
+}
+
 /*********************************************
  * HEADERS
  *********************************************/
@@ -337,4 +346,33 @@ html {
  *********************************************/
 .reveal .math {
   color:#9A2617; /* Dark Ruby */
+}
+
+/*********************************************
+ * FOOTER
+ *********************************************/
+.slides #background-template footer {
+  position: absolute;
+  bottom: 0;
+  /* left: 41%; */
+  /* text-align: left; */
+  text-align: center;
+  /*font-size: 3vmin; /* vmin: minimum size of view. doesn't work in IE */
+  font-size: 0.6rem;
+  /*padding: 0.1rem;*/
+  width: 100%;
+  color: white;
+  /*color: #003B49; /* Uni Sussex color */
+  /*height: 10%;*/
+  background-color: #003B49;
+}
+
+.reveal footer p {
+  margin: 0.1rem 0;
+}
+
+.slides #background-template header {
+  position:absolute;
+  top: -50%;
+  left: -50%;
 }
