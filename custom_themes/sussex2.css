@@ -15,18 +15,18 @@ section.has-dark-background, section.has-dark-background h1, section.has-dark-ba
  *********************************************/
 :root {
   --background-color: #fff;
-  --main-font: Lato, sans-serif;
+  --main-font: "Lato", sans-serif;
   --main-font-size: 1rem;
-  --main-color: #000;
+  --main-color: #424242;
   --block-margin: 20px;
   --heading-margin: 0 0 20px 0;
   --heading-font: 'Maven Pro', sans-serif;
-  --heading-color: #000;
+  --heading-color: #003B49;
   --heading-line-height: 1.2;
   --heading-letter-spacing: normal;
   --heading-text-transform: none;
   --heading-text-shadow: none;
-  --heading-font-weight: normal;
+  --heading-font-weight: bold;
   --heading1-text-shadow: none;
   --heading1-size: 3.77rem;
   --heading2-size: 2.11rem;
@@ -36,9 +36,13 @@ section.has-dark-background, section.has-dark-background h1, section.has-dark-ba
   --link-color: #00008B;
   --link-color-hover: #0000f1;
   --selection-background-color: rgba(0, 0, 0, 0.99);
-  --selection-color: #fff; }
+  --selection-color: #fff;
+  --footer-font-size: 0.6rem;
+  --dark-background: #003B49;
+}
 
 html {
+  /* base font size; everything else scales with this */
   font-size: 30px
 }
 
@@ -47,10 +51,10 @@ html {
   background-color: #fff; }
 
 .reveal {
-  font-family: "Lato", sans-serif;
+  font-family: var(--main-font);
   font-size: 1rem;
   font-weight: normal;
-  color: #424242;
+  color: var(--main-color);
   background-color: #eee;
 }
 
@@ -79,13 +83,25 @@ html {
   font-weight: inherit;
 }
 
-.reveal .slides section.dark-cyan {
-  background-color: #003B49;
-  height: 100%;
+.reveal .slides > section.dark-cyan {
+  background-color: var(--dark-background);
+  height: var(--slide-height);
+}
+
+.print-pdf .reveal .slides .pdf-page div.dark-cyan {
+  background-color: var(--dark-background);
 }
 
 .reveal .slides section.dark-cyan h2 {
   color: #FFF;
+}
+
+html.print-pdf .reveal .slide-number-pdf {
+  background: none;
+  font-family: var(--main-font);
+  right: 0;
+  bottom: 0;
+  font-size: var(--footer-font-size);
 }
 
 /*********************************************
@@ -93,31 +109,38 @@ html {
  *********************************************/
 .reveal h1,
 .reveal h2,
-.reveal h3,
-.reveal h4,
-.reveal h5,
-.reveal h6 {
+.reveal h3 {
   margin: 1.5rem 0 0.5rem 0;
-  color: #003b49;
-  font-family: 'Maven Pro', sans-serif;
-  font-weight: bold;
+  color: var(--heading-color);
+  font-family: var(--heading-font);
+  font-weight: var(--heading-font-weight);
   line-height: 1.2;
   letter-spacing: normal;
   text-transform: none;
   text-shadow: none;
-  word-wrap: break-word; }
+  word-wrap: break-word;
+}
 
 .reveal h1 {
-  font-size: 3.77rem; }
+  font-size: var(--heading1-size);
+}
 
 .reveal h2 {
-  font-size: 2.11rem; }
+  font-size: var(--heading2-size);
+}
 
 .reveal h3 {
-  font-size: 1.55rem; }
+  font-size: var(--heading3-size);
+}
 
 .reveal h4 {
-  font-size: 1rem; }
+  font-size: 1rem;
+  font-family: var(--main-font);
+  font-weight: bold;
+  color: var(--main-color);
+  margin: 0.5rem 0;
+  line-height: 1.3;
+}
 
 .reveal h1 {
   text-shadow: none; }
@@ -334,10 +357,19 @@ html {
   margin: 0 2rem;
 }
 
+multi-col {
+  text-align: left;
+  margin: 0 2rem;
+}
+
 .col {
   flex: 1;
 }
 .col:not(:first-child) {
+  margin-left: 1rem;
+}
+
+one-col:not(:first-child) {
   margin-left: 1rem;
 }
 
@@ -358,13 +390,12 @@ html {
   /* text-align: left; */
   text-align: center;
   /*font-size: 3vmin; /* vmin: minimum size of view. doesn't work in IE */
-  font-size: 0.6rem;
+  font-size: var(--footer-font-size);
   /*padding: 0.1rem;*/
   width: 100%;
   color: white;
-  /*color: #003B49; /* Uni Sussex color */
   /*height: 10%;*/
-  background-color: #003B49;
+  background-color: var(--dark-background);
 }
 
 .reveal footer p {

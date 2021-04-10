@@ -1,6 +1,8 @@
 import Reveal from './dist/reveal.esm.js';
 import Math from './plugin/math/math.esm.js';
 
+let pdfExport = window.location.search.match( /print-pdf/gi )
+
 Reveal.initialize({
   controls: false,
   progress: false,
@@ -10,7 +12,7 @@ Reveal.initialize({
   transition: 'none',
   width: 1120, // default 960
   height: 700,
-  margin: 0.04,
+  margin: pdfExport ? 0.00 : 0.04,
 
   math: {
     // mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js',
@@ -28,7 +30,7 @@ Reveal.initialize({
 
 // make footer visible in normal mode and in print mode
 var footer = document.querySelector('#background-template');
-if (window.location.search.match( /print-pdf/gi )) {
+if (pdfExport) {
   Reveal.addEventListener('ready', function(event) {
     // add footer to every slide
     for (let slide of document.querySelectorAll('.slide-background')) {
