@@ -6,20 +6,13 @@
 
     <title>Algorithmic fairness &mdash; Part 1</title>
 
-    <link rel="stylesheet" href="css/reveal.css">
+    <link rel="stylesheet" href="dist/reset.css">
+    <link rel="stylesheet" href="dist/reveal.css">
     <link rel="stylesheet" href="custom_themes/sussex.css" id="theme">
 
     <!-- Theme used for syntax highlighting of code -->
-    <link rel="stylesheet" href="lib/css/monokai.css">
+    <link rel="stylesheet" href="plugin/highlight/monokai.css">
 
-    <!-- Printing and PDF exports -->
-    <script>
-      var link = document.createElement( 'link' );
-      link.rel = 'stylesheet';
-      link.type = 'text/css';
-      link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
-      document.getElementsByTagName( 'head' )[0].appendChild( link );
-    </script>
   </head>
   <body>
     <div id="hidden" style="display:none;"><div id="static-content">
@@ -976,8 +969,6 @@ The state-of-the-art method a fair representation this is to use an *adversarial
 
     </div></div>
 
-    <script src="lib/js/head.min.js"></script>
-    <script src="js/reveal.js"></script>
-    <script src="settings.js"></script>
+    <script type="module" src="settings.js"></script>
   </body>
 </html>

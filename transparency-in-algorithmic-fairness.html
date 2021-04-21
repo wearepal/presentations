@@ -6,20 +6,12 @@
 
     <title>Transparency in Algorithmic Fairness</title>
 
-    <link rel="stylesheet" href="css/reveal.css">
+    <!-- <link rel="stylesheet" href="dist/reset.css"> -->
+    <link rel="stylesheet" href="dist/reveal.css">
     <link rel="stylesheet" href="custom_themes/sussex_dark.css" id="theme">
 
     <!-- Theme used for syntax highlighting of code -->
-    <link rel="stylesheet" href="lib/css/monokai.css">
-
-    <!-- Printing and PDF exports -->
-    <script>
-        var link = document.createElement( 'link' );
-        link.rel = 'stylesheet';
-        link.type = 'text/css';
-        link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
-        document.getElementsByTagName( 'head' )[0].appendChild( link );
-    </script>
+    <link rel="stylesheet" href="plugin/highlight/monokai.css">
 </head>
 <style>
     .citeme {
@@ -32,6 +24,9 @@
 </style>
 <body>
 
+<div id="hidden" style="display:none;"><div id="static-content">
+    <footer></footer>
+</div> </div>
 <div class="reveal"><div class="slides">
 
     <section data-background-color="#000">
@@ -44,14 +39,14 @@
         <img src="images/sussex_logo.png" style="width: 12%; border: none;"/>
     </section>
 
-    <section data-background-color="#000" data-markdown><textarea data-template>
+    <section data-background-color="#000" data-markdown><script type="text/template">
         ## Talk outline
 - Importance and challenges of algorithmic fairness
 - Algorithmic fairness <span class="highlight">with transparency at its heart</span>
     - in-processing approach 
     - pre-processing approach 
 - Future directions
-    </textarea></section>
+    </script></section>
 
     <section data-background-color="#000">
         <h2>Machine learning systems</h2>
@@ -523,8 +518,6 @@ $\underset{\theta}{\text{min.}}\quad \mathbb{E}_x [- \log p_\theta (x|z)] + \lam
 
 </div></div>
 
-<script src="lib/js/head.min.js"></script>
-<script src="js/reveal.js"></script>
-<script src="settings.js"></script>
+<script type="module" src="settings.js"></script>
 </body>
 </html>

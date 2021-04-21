@@ -1,3 +1,8 @@
+import Reveal from './dist/reveal.esm.js';
+import Markdown from './plugin/markdown/markdown.esm.js';
+import Math from './plugin/math/math.esm.js';
+import Notes from './plugin/notes/notes.esm.js';
+
 // More info about config & dependencies:
 // - https://github.com/hakimel/reveal.js#configuration
 // - https://github.com/hakimel/reveal.js#dependencies
@@ -7,15 +12,10 @@ markdown: {
   gfm: true
 },
 math: {
+  mathjax: 'https://cdn.jsdelivr.net/gh/mathjax/mathjax@2.7.8/MathJax.js',
   config: 'TeX-AMS_HTML-full'
 },
-dependencies: [
-  { src: 'plugin/markdown/marked.js' },
-  { src: 'plugin/markdown/markdown.js' },
-  { src: 'plugin/notes/notes.js', async: true },  // speaker notes
-  // { src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
-  { src: 'plugin/math/math.js', async: true }
-],
+plugins: [ Notes, Markdown, Math ],
 // The "normal" size of the presentation, aspect ratio will be preserved when the presentation is scaled to fit different resolutions
 width: 1120, // default 960
 height: 700,
