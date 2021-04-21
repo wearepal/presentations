@@ -1,0 +1,422 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <title>Transparency in Algorithmic Fairness</title>
+
+    <link rel="stylesheet" href="css/reveal.css">
+    <link rel="stylesheet" href="custom_themes/sussex_dark.css" id="theme">
+
+    <!-- Theme used for syntax highlighting of code -->
+    <link rel="stylesheet" href="lib/css/monokai.css">
+
+    <!-- Printing and PDF exports -->
+    <script>
+        var link = document.createElement( 'link' );
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+        document.getElementsByTagName( 'head' )[0].appendChild( link );
+    </script>
+</head>
+<style>
+    .citeme {
+        float: right;
+        color: #fff;
+        font-size: 12pt;
+        font-style: italic;
+        margin: 0;
+    }
+</style>
+<style>
+.container{
+    display: flex;
+}
+.col{
+    flex: 1;
+}
+</style>
+
+<body>
+
+<div class="reveal"><div class="slides">
+
+    <section data-background-color="#000">
+        <h1><span class="highlight">Transparency in Algorithmic Fairness</span></h1>
+
+        <p><font size="10">Novi Quadrianto</font></p>
+        <p>Reader in Machine Learning</p>
+        <p>Department of Informatics, University of Sussex</p>
+
+        <img src="images/sussex_logo.png" style="width: 12%; border: none;"/>
+    </section>
+
+    <section data-background-color="#000" data-markdown><textarea data-template>
+        ## Talk outline
+- Importance and challenges of algorithmic fairness
+- Algorithmic fairness <span class="highlight">with transparency at its heart</span>
+    - in-processing approach 
+    - pre-processing approach 
+- Other machine learning projects at Sussex
+    </textarea></section>
+
+    <section>
+        <h2>It's a Word Cloud time!</h2>
+
+        <p>&nbsp;</p>
+        <a href="https://wall.sli.do/event/j79hx9l1?section=3fa1b0c1-e06c-4198-96bd-0b6359ef8ed3" target="_blank"> Slido </a>
+
+        <p>&nbsp;</p>
+
+        <img src="images/slido.png" width=60% title="Slido"/>
+        
+    </section>
+
+    <section data-background-color="#000">
+        <h2>Machine learning systems</h2>
+
+ <p align="left">Machine learning systems are being implemented in all walks of life</p>
+    
+     <p>&nbsp;</p>
+    Where is machine learning used?
+    <br>
+    <ul>
+        <li> hiring decisions </li>
+        <li> bail decisions </li>
+        <li> credit approval </li>
+        <li> insurance premiums </li>
+        <li> ... </li>
+    </ul>
+        
+
+    </section>
+
+    <section>
+        <p>&nbsp;</p>
+        <p>&nbsp;</p>
+        <p>&nbsp;</p>
+        But there are problems:
+    </section>
+
+    <section data-background-color="#fff">
+        <img src="images/pp_mb.png" width=72% title="Pro-Publica - Machine Bias"/>
+    </section>
+
+    <section data-background-color="#fff">
+        <img width=72% src="images/amazon.png" title="Amazon CV Screening"/>
+    </section>
+
+    <section data-background-color="#fff">
+        <img src="images/bots-at-the-gate.png" width=40% title="Bots At The Gate"/>
+    </section>
+
+    <section data-background-color="#fff">
+        <img src="images/norman.png" width=58% title="Norman"/>
+    </section>
+
+    <section data-markdown data-background-color="#000"><textarea data-template>
+        ## Fairness in machine learning
+
+        - A fair machine learning system takes biased datasets and outputs non-discriminatory decisions to people with differing <span class="highlight">protected attributes</span> such as race, gender, and age
+        - For example, ensuring classifier to be equally accurate on male and female populations
+
+        <img width=90% src="images/fairML.png" title="Fair ML"/>
+    </textarea></section>
+
+    <section>
+        <p>&nbsp;</p>
+        <p>&nbsp;</p>
+        <h1>Algorithmic fairness definitions</h1>
+    </section>
+
+    <section data-markdown data-background-color="#000"><textarea data-template>
+        ## Fairness definitions
+
+        - Discrimination in the law:
+         - <span class="highlight">Direct discrimination</span> with respect to intent
+         - <span class="highlight">Indirect discrimination</span> with respect to consequences
+        <span class="citeme">Article 21, EU Charter of Fundamental Rights</span>
+        - From the legal context to algorithmic fairness, e.g.:
+         - Removing direct discrimination by <span class="highlight">not using group information at test time</span>
+         - Removing indirect discrimination by enforcing <span class="highlight">equality on the outcomes</span> between groups
+    </textarea></section>
+
+    <section data-markdown data-background-color="#000"><textarea data-template>
+        ## Equality on the outcomes
+When protected attribute $s$, target label $y$, predicted label $\widehat{y}$ is <span class="highlight">binary</span>: 
+    <div class="container">
+    <div class="col">
+        <p align="left">&bull; Equality of acceptance rate (<span class="highlight">AR</span>): $\text{Pr}(\widehat{y}=1|s=1)=\text{Pr}(\widehat{y}=1|s=0)$</p>
+    </div>
+    <div class="col">
+    <center>
+    <img src="images/AR.png" width=70% title="AR" />
+    </center></div>
+    </div>   
+        <p align="left">&bull; Equality of true positive rate (<span class="highlight">TPR</span>):
+            $
+            \text{Pr}(\widehat{y}=1|s=1,y=1)=\text{Pr}(\widehat{y}=1|s=0,y=1)
+            $</p>
+        <p align="left">&bull; Equality of positive predicted value (<span class="highlight">PPV</span>):
+            $
+            \text{Pr}(y=1|s=1,\widehat{y}=1)=\text{Pr}(y=1|s=0,\widehat{y}=1)
+            $</p>
+        <p align="left">&bull; If we are fair with regards to <span class="highlight">all notions of fair</span>, then we're fair... right?</p>
+    </textarea></section>
+
+    <section data-markdown data-background-color="#000"><textarea data-template>
+        ## Mutual exclusivity by Bayes' rule
+<p align="left">&bull; Suppose we have <span class="highlight">equality of TPR/FPR</span> (FPR<sub>s=1</sub> = FPR<sub>s=0</sub> and TPR<sub>s=1</sub> = TPR<sub>s=0</sub>), can we have <span class="highlight">equality of PPV</span> (PPV<sub>s=1</sub> = PPV<sub>s=0</sub>)? <b><span class="highlight">NO!</b></p> 
+<p align="left">&bull; For each protected attribute $s=0$ and $s=1$, we compute:</p>       
+        $
+        \underbrace{\text{Pr}(y=1|\widehat{y}=1)}_{\text{Positive Predicted Value (PPV)}} = \frac{\overbrace{\text{Pr}(\widehat{y}=1|y=1)}^{\text{True Positive Rate (TPR)}}\times\overbrace{\text{Pr}(y=1)}^{\text{Base Rate (BR)}}}{\text{Pr}(\widehat{y}=1|y=1)\text{Pr}(y=1) + \underbrace{\text{Pr}(\widehat{y}=1|y=-1)}_{\text{False Positive Rate (FPR)}}(1-\text{Pr}(y=1))}
+        $
+<p align="left">&bull; <span class="highlight">EXCEPTION</span>: if we have a <span class="highlight">balanced dataset</span> (i.e. BR<sub>s=1</sub> = BR<sub>s=0</sub>) or a <span class="highlight">perfect predictor</span> (i.e. FPR=0 and TPR=1 for s=1 and s=0)</p>
+<span class="citeme">Kehrenberg, Chen, NQ: Tuning fairness by balancing target labels, Frontiers in Artificial Intelligence, 2020.</span>
+
+    </textarea></section>
+
+
+    <section data-markdown data-background-color="#000"><textarea data-template>
+        ## Which fairness notion to use?
+        - There's no right answer, all the above are "fair"
+        - Fairness is fundamentally <span class="highlight">not a challenge of algorithms alone</span>, but very much a sociological challenge
+        - It's important to consult <span class="highlight">domain experts</span> to find which is the best fit for each problem
+        - Importantly, if we want to encourage <span class="highlight">public conversations</span>, <span class="highlight">transparency</span> in how fairness is met is an integral ingredient
+    </textarea></section>
+
+    <section>
+        <p>&nbsp;</p>
+        <p>&nbsp;</p>
+        <h1>Algorithmic fairness methods with <span class="highlight">transparency</span></h1>
+    </section>
+
+    <section data-markdown data-background-color="#000"><textarea data-template>
+        ## How to enforce fairness?
+
+        <span class="highlight">Three</span> different ways to enforce fairness:
+        <img src="images/fairmethods.png" width=75% title="Fair Methods"/>
+
+    </textarea></section>
+
+<section data-markdown data-background-color="#000"><textarea data-template>
+## In-processing
+- Specify fairness metrics as constraints on learning
+- Optimise for accuracy under those constraints
+- No free lunch: additional constraints lower accuracy
+
+<img src="images/pareto.png" width=33% style="margin:0px 0px"/>
+     
+<span class="citeme">NQ and Sharmanska, Recycling privileged learning and distribution matching for fairness, NeurIPS 2017</span>
+</textarea></section>
+
+        <section data-markdown data-background-color="#000"><textarea data-template>
+        ## Challenges?
+
+          - Fairness-accuracy trade off is controlled by some intermediate, unintuitive control parameters such as $\tau=5$ and $\mu=1.2$.
+          <center>
+          <img src="images/pareto_control_.png" width=33% style="margin:0px 0px"/>
+          </center>
+        </textarea></section>
+
+
+  <section data-markdown data-background-color="#000"><textarea data-template>
+  ## Intuitive control parameters
+  - Control fairness-accuracy trade off with <span class="highlight">the rate of positive predictions</span> (e.g. $PR=0.6$ for $s=0$ and $s=1$)
+  - Introduce new <span class="highlight">target labels</span> $\widehat{y}$ such that the <span class="highlight">dataset is balanced</span>
+  - Need to connect target labels $\widehat{y}$ and dataset label $y$. Let $\eta_s(x)=P(y=1|x, s)$ denote the dataset conditional probability, and accordingly for $\widehat{\eta}_s(x)$, we have the following <span class="highlight">linear relationship</span>:<br>
+  $\widehat{\eta}_s(x)=m_s\cdot \eta_s(x) + b_s$ with $m_s := P(\widehat{y}=1|y=1,s) + P(\widehat{y}=0|y=0,s) - 1$, and $
+  b_s := 1 - P(\widehat{y}=0|y=0,s) $
+  <span class="citeme">Kehrenberg, Chen, NQ, Tuning fairness by balancing target labels, Frontiers in Artificial Intelligence, 2020.</span>
+  </textarea></section>
+
+<section data-markdown data-background-color="#000"><textarea data-template>
+  ## Accuracy&ndash;Fairness trade-off
+  - Ensure balanced dataset condition by <span class="highlight">controlling the positive predictions</span> $P(\widehat{y}=1|s)$ (e.g. $PR=0.6$ for $s=0$ and $s=1$) in the transition probabilities $P(\widehat{y}|y,s)$
+  - <span class="highlight">Theorem</span>: The probability that $y$ and $\widehat{y}$ disagree ($y\neq\widehat{y}$) for any input $x$ in the dataset is given by:
+
+  $P(y\neq\widehat{y}|s)=P\left(\left|\eta_s(x) - \tfrac{1}{2}\right| < t_s\right) \leq Ct_s^\lambda$
+with $t_s = \left|\frac{m_s+2b_s-1}{2m_s}\right|$
+ - The term $t_s$ determines the accuracy penalty that we have to accept in order to gain fairness
+  <span class="citeme">Kehrenberg, Chen, NQ, Tuning fairness by balancing target labels, Frontiers in Artificial Intelligence, 2020.</span>
+  </textarea></section>
+
+  <section data-markdown data-background-color="#000"><textarea data-template>
+  ## Transparency in fairness
+
+- <span class="highlight">Left</span>: Accuracy&ndash;Fairness trade-off; <span class="highlight">Right</span>: the achieved TPR
+- By setting different target PR for our method, we can affect TPR as well, where <span class="highlight">higher $PR_t$ leads to higher $TPR$</span>
+
+<img src="images/eo_together_acc_.png" width=30% />
+<img src="images/eo_together_control_.png" width=30% />
+<img src="images/eo_together_legend_.png" width=30% />
+
+  </textarea></section>
+
+        <section data-markdown data-background-color="#000"><textarea data-template>
+        ## Challenges?
+
+        - Consider that we have 2 roles, a <span class="highlight">data vendor</span>, who is charge of collecting the data and preparing it 
+        - Our other role is a <span class="highlight">data user</span>, someone who will be making predictions based on our data
+        - The data vendor is concerned that the data user may be using their data to make unfair decisions. 
+        - So the data vendor decides to rely on <span class="highlight">pre-processing methods</span>
+        </textarea></section>
+
+        <section data-markdown data-background-color="#000"><textarea data-template>
+## Pre-processing: Contrastive examples
+
+- The <span class="highlight"> balanced dataset</span> contains an imaginary data point for each person, i.e. the one inside the black box, whereby we <span class="highlight">intervene</span> and set the gender attribute to the opposite that is in real life
+  <img src="images/balanced_Page_1.png" width=50% title="Balanced1"/>
+  <img src="images/balanced_Page_2.png" width=30% title="Balanced2"/>
+<span class="citeme">NQ, Sharmanska, Thomas, Discovering fair representations in the data domain, CVPR 2019</span>
+<span class="citeme">Sharmanska, Hendricks, Darrell, NQ, Contrastive examples for addressing the tyranny of the majority, under review</span>
+  </textarea></section>
+
+        <section data-markdown data-background-color="#000"><textarea data-template>
+## Transparency in fairness
+
+- All previous work with adversarial learning try to <span class="highlight">remove</span> protected attributes from data
+- Instead, we use adversarial learning to <span class="highlight">generate</span> data points with pre-specified protected attributes (contrastive examples)
+- Contrastive examples "can be easily interpreted" <!--because they do have the semantic meaning of the input-->
+
+<center>
+  <table style="border-collapse: collapse; border: none;">
+        <tbody ><tr style="border: none;"><td width="40%" colspan="4" style="border: none;"></td><td width="1%" style="border: none;"></td><td width="40%" style="border: none;"></td></tr>
+        <tr style="border: none;">
+            <td width="10%" style="border: none;"></td>
+            <td width="30%" style="border: none;">Real</td>
+            <td width="30%" style="border: none;">GAN contrastive</td>
+            <td width="30%" style="border: none;">NN contrastive</td>
+        </tr>
+        <tr style="border: none;">
+            <td width="10%" style="border: none;">Male</td>
+            <td width="30%" style="border: none;"><img src="images/008526_m_real.jpg" width=60% title="RIm1"/></td>
+            <td width="30%" style="border: none;"><img src="images/008526_m_fake.jpg" width=60% title="RIm1"/></td>
+            <td width="30%" style="border: none;"><img src="images/008526_m_match.jpg" width=60% title="RIm1"/></td>
+        </tr></tbody>
+    </table></center>
+</textarea></section>
+
+        <section data-background-color="#000">
+<h2>Results on the Diversity in Faces dataset</h2>
+<p align="left">&bull; We use <span class="highlight">skin colour (light/dark)</span> as the protected attribute.</p>
+<p align="left">&bull; The classification task is to predict <span class="highlight">seven age groups</span>: [0-3],[4-12],
+[13-19],[20-30],[31-45],[46-60],[61+]. </p>
+
+           <small>
+                <table>
+                    <thead><tr>
+                        <td>method</td>
+                        <td>Acc.</td>
+                        <td><span class="highlight">TPR Diff.</span></td>
+                        <td><span class="highlight">FPR Diff.</span></td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>logistic regression (original)</td>
+                        <td width="10%">69.79</td>
+                        <td width="10%">1.55</td>
+                        <td width="10%">0.76</td>
+                    </tr>
+                    <tr>
+                        <td>logistic regression (original and GAN contrastive)</td>
+                        <td width="10%">69.81</td>
+                        <td width="10%">1.3</td>
+                        <td width="10%">0.69</td>
+                    </tr>
+                    <tr>
+                        <td>logistic regression (original and NN contrastive)</td>
+                        <td width="10%">69.72</td>
+                        <td width="10%">1.43</td>
+                        <td width="10%">0.63</td>
+                    </tr>
+                    <tr>
+                        <td>$\ddagger$logistic regression (original and GAN contrastive with output consistency)</td>
+                        <td width="10%"><span class="highlight">72.14</span></td>
+                        <td width="10%"><span class="highlight">0.89</span></td>
+                        <td width="10%"><span class="highlight">0.54</span></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </small><br>
+
+            <p align="left">$\ddagger$: <span class="highlight">Rejection learning</span> -- classifier only makes a prediction if there is an agreement between original and contrastive examples (occurs in $364,766$ out of $412,556$ test examples, i.e. $88.42\%$).</p>
+</section>
+
+
+    <section>
+        <h2>It's a Word Cloud time!</h2>
+
+        <p>&nbsp;</p>
+        <a href="https://wall.sli.do/event/j79hx9l1?section=3fa1b0c1-e06c-4198-96bd-0b6359ef8ed3" target="_blank"> Slido </a>
+
+        <p>&nbsp;</p>
+
+        <img src="images/slido.png" width=60% title="Slido"/>
+        
+    </section>
+
+<section data-markdown data-background-color="#fff"><textarea data-template>
+    ## Some other projects:
+- <b>Inclusive Green Infrastructures for Urban Well-Being</b> (<span class="highlight">British Academy</span> -- 18 November 2019 - 17 November 2021) 
+<br><br>
+<center>
+<div class="text-center">
+  <iframe width="560" height="315" src="https://www.youtube.com/embed/5MnnAMaIACQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</div>
+</center>
+</textarea></section>
+
+<section data-markdown data-background-color="#fff"><textarea data-template>
+    ## Some other projects:
+- <b>INTERVENE</b>: Causal machine learning for interventional modelling (<span class="highlight">Surgo Foundation</span>)
+<p align="center">
+<center>
+  <img src="images/causal.jpg" width=100% title="INTERVENE" style="margin:0px 0px" />
+</center>
+</textarea></section>
+
+    <section data-background-color="#000" data-markdown><textarea data-template>
+        ## <span class="highlight">Thank you for your attention</span>
+        <p align="left">Also thanks to</p>
+    <div class="container">
+    <div class="col">
+        <p align="left">&bull; My team at the Univ. of Sussex</p>
+    </div>
+    <div class="col">
+    <center>
+  <img src="images/Team.png" width=70% title="ThankstoPAL" style="margin:0px 0px" />
+</center></div>
+    </div>  
+        <div class="container">
+    <div class="col">
+        <p align="left">&bull; The funders</p>
+    </div>
+    <div class="col">
+    <center>
+  <img src="images/Funders.png" width=70% title="ThankstoFunders" style="margin:0px 0px" />
+</center></div>
+    </div>   
+</textarea></section>
+    <section data-background-color="#000" data-markdown><textarea data-template>
+        ## Extra: Constrained optimization
+
+$
+\underset{w\in\Lambda}{\text{minimise}}\quad \frac{1}{N}\sum_{n=1}^{N}\Delta(y^n,f(x^n;w))+\tau||w||^2 + \mu(\text{Unfairness}(w))
+$
+
+- For example, the term $\text{Unfairness}(w)$ can be a distribution matching criterion that ensures the distributions $\text{Pr}(\text{sign}(f(x;w))==y|s=0,y=1)$ and $\text{Pr}(\text{sign}(f(x;w))==y|s=1,y=1)$ to be close, this is to satisfy the <span class="highlight">equality of true positive rate criterion</span>
+- Instead of setting exogenously parameters $\tau,\mu$ to balance the multiple chunks of the objective, we can use <span class="highlight">multi-objective optimisation approaches</span> to return a set of models 
+
+    </textarea></section>
+
+</div></div>
+
+<script src="lib/js/head.min.js"></script>
+<script src="js/reveal.js"></script>
+<script src="settings.js"></script>
+</body>
+</html>
