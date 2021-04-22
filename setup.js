@@ -4,7 +4,7 @@ import Math from './plugin/math/math.esm.js';
 let pdfExport = window.location.search.match( /print-pdf/gi )
 
 Reveal.initialize({
-  controls: false,
+  controls: true,
   progress: false,
   slideNumber: 'c/t',
   center: false,
