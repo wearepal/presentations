@@ -5,6 +5,9 @@ let pdfExport = window.location.search.match( /print-pdf/gi )
 
 Reveal.initialize({
   controls: true,
+  // bounces the down arrow when they first encounter a vertical slide
+  controlsTutorial: false,
+  // show progress bar
   progress: false,
   slideNumber: 'c/t',
   center: false,
