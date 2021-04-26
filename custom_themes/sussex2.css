@@ -148,6 +148,14 @@ html.print-pdf .reveal .slide-number-pdf {
 /*********************************************
  * OTHER
  *********************************************/
+
+.reveal section > p,
+.reveal section > ul,
+.reveal section > ol {
+  margin-left: 1rem;
+  margin-right: 1rem;
+}
+
 .reveal p {
   margin: 0.5rem 0;
   line-height: 1.3; }
