@@ -88,13 +88,13 @@
       </section>
 
       <section>
-        <h2>Algorithmic recourse under imperfect causal knowledge: a probabilistic approach</h2>
+        <h3>Algorithmic recourse under imperfect causal knowledge: a probabilistic approach</h3>
         <p>Assume we have a GCM, but no SEM</p>
         <p>Approach 1: Rely on a probabilistic regression using a Gaussian Process prior over functions $~f_r$</p>
       </section>
 
       <section>
-        <h2>Algorithmic recourse under imperfect causal knowledge: a probabilistic approach</h2>
+        <h3>Algorithmic recourse under imperfect causal knowledge: a probabilistic approach</h3>
         <p>Leads to:</p>
         <p>$$\min_{a=\textrm{do}(X=\theta)} \textrm{cost}^F(a)$$</p>
         <p>Subject to: $$ \mathbb{E}_{X^{\textrm{SCF}}(a)} [ h(X^{\textrm{SCF}}(a)) ] \geq \textrm{thresh}(a) $$</p>
@@ -102,14 +102,14 @@
       </section>
 
       <section>
-        <h2>Algorithmic recourse under imperfect causal knowledge: a probabilistic approach</h2>
+        <h3>Algorithmic recourse under imperfect causal knowledge: a probabilistic approach</h3>
         <p>Assume we have a GCM, but no SEM</p>
         <p>Approach 2: Use a series of cVAEs to model the data.</p>
         <p>"Model each conditional $p(x_r|x_{pa(r)})$ with a conditional variational autoencoder (CVAE)"</p>
       </section>
 
       <section>
-        <h2>Algorithmic recourse under imperfect causal knowledge: a probabilistic approach</h2>
+        <h3>Algorithmic recourse under imperfect causal knowledge: a probabilistic approach</h3>
         <img src="images/recourse/probabilistic_2.png">
       </section>
 
