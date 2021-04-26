@@ -74,6 +74,10 @@ html {
   /* padding: 1rem; */
 }
 
+.reveal .slides > section {
+  background-color: #FFF;
+}
+
 .pdf-print .reveal .slides {
   background-color: #FFF; }
 
