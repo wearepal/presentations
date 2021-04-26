@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+  <title>Algorithmic Recourse</title>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <script src="custom_themes/html_elements.js"></script>
+  <link rel="stylesheet" href="dist/reveal.css">
+  <link rel="stylesheet" href="custom_themes/sussex2.css" id="theme">
+
+  <div class="reveal">
+
+    <div class="slides">
+
+      <div id="background-template">
+        <footer>
+          <p>Algorithmic Recourse
+        </footer>
+      </div>
+
+      <section class="dark-cyan">
+        <p>&nbsp;
+        <h2>Algorithmic Recourse</h2>
+        <p>&nbsp;
+        <p style="color: white">Predictive Analytics Lab<br>
+          University of Sussex
+        <p>&nbsp;
+        <p><img src="images/logos/University_of_Sussex_Logo.svg2000_white.png" style="width: 5rem;">
+      </section>
+
+      <section>
+        <h2>Why explanations?</h2>
+        <ol>
+            <li>to inform and help the subject understand why a particular decision was reached</li>
+            <li>to provide grounds to contest an adverse decision</li>
+            <li>to understand what could be changed to receive a desired resulting the future (based on the current decision model)</li>
+        </ol>
+      </section>
+
+      <section>
+        <h2>What is recourse?</h2>
+        <p><em>Specific subset of explanations:</em> to understand what could be changed to receive a desired resulting the future (based on the current decision model)</p>
+        <p><em>Further Definitions/Variations:</em></p>
+        <ul>
+          <li>the ability of a person to obtain a desired outcome from a fixed model</li>
+          <li>an actionable set of changes a person can undertake in order to improve their outcome</li>
+          <li>the systematic process of reversing unfavourable decision by algorithms and bureaucracies across a range of counterfactual scenarios</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Computing Recourse</h2>
+        <ol>
+          <li>Find the cheapest modification of features</li>
+          <li>That changes the outcome</li>
+          <li>While only allowing feasible changes</li>
+        </ol>
+      </section>
+
+<!--      <section>-->
+<!--        <h2>Computing Recourse</h2>-->
+<!--        <img src="images/recourse/formulation.png">-->
+<!--      </section>-->
+
+      <section>
+        <h2>Computing Recourse</h2>
+        <ol>
+          <li>Find the cheapest modification of features</li>
+          <li>That changes the outcome</li>
+          <li>While only allowing feasible changes</li>
+        </ol>
+      </section>
+
+      <section>
+        <h2>Counterfactual vs Constrastive</h2>
+        <p>Contrastive is a subset of counterfactual</p>
+        <p>Counterfactual: Another possible world</p>
+        <p>Contrastive: Comparison between two worlds</p>
+      </section>
+
+      <section>
+        <h2>Counterfactual vs Constrastive</h2>
+        <p><b>Fact:</b> An item to be explained</p>
+        <p><b>Foil:</b> A counterfactual item to the fact</p>
+        <p><b>Surrogate:</b> A factual item that contrasts the fact</p>
+        <p><b>Contrastive Counterfactual Explanation:</b> compares a fact and a foil</p>
+        <p><b>Contrastive Bi-factual Explanation:</b> Compares a fact and a surrogate</p>
+      </section>
+
+      <section>
+        <h2>Criticisms</h2>
+        <p>Who decides what changes are feasible?</p>
+        <p>What happens if the decision process changes over time?</p>
+        <p>What's the difference between recourse and cheating the system?</p>
+        <p>Some research has shown contrastive counterfactual explanations don't improve the understanding of a system, but improve the users <em>belief</em> that they understand the system.</p>
+      </section>
+
+
+
+    </div>
+  </div>
+
+  <script type="module" src="setup.js"></script>
