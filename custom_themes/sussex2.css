@@ -92,7 +92,9 @@ html {
   background-color: var(--dark-background);
 }
 
-.reveal .slides section.dark-cyan h2 {
+.reveal .slides section.dark-cyan h1,
+.reveal .slides section.dark-cyan h2,
+.reveal .slides section.dark-cyan h3 {
   color: #FFF;
 }
 
@@ -110,7 +112,7 @@ html.print-pdf .reveal .slide-number-pdf {
 .reveal h1,
 .reveal h2,
 .reveal h3 {
-  margin: 1.5rem 0 0.5rem 0;
+  margin: 1.5rem 0 0.75rem 0;
   color: var(--heading-color);
   font-family: var(--heading-font);
   font-weight: var(--heading-font-weight);
@@ -148,6 +150,14 @@ html.print-pdf .reveal .slide-number-pdf {
 /*********************************************
  * OTHER
  *********************************************/
+
+.reveal section > p,
+.reveal section > ul,
+.reveal section > ol {
+  margin-left: 1rem;
+  margin-right: 1rem;
+}
+
 .reveal p {
   margin: 0.5rem 0;
   line-height: 1.3; }
