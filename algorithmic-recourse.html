@@ -57,29 +57,21 @@
         </ol>
       </section>
 
-<!--      <section>-->
-<!--        <h2>Computing Recourse</h2>-->
-<!--        <img src="images/recourse/formulation.png">-->
-<!--      </section>-->
-
       <section>
         <h2>Computing Recourse</h2>
-        <ol>
-          <li>Find the cheapest modification of features</li>
-          <li>That changes the outcome</li>
-          <li>While only allowing feasible changes</li>
-        </ol>
+        <img src="images/recourse/formulation.png">
       </section>
 
       <section>
-        <h2>Counterfactual vs Constrastive</h2>
+        <h2>Counterfactual vs Contrastive</h2>
+        <p>Not a generally fixed</p>
         <p>Contrastive is a subset of counterfactual</p>
         <p>Counterfactual: Another possible world</p>
         <p>Contrastive: Comparison between two worlds</p>
       </section>
 
       <section>
-        <h2>Counterfactual vs Constrastive</h2>
+        <h2>Counterfactual vs Contrastive</h2>
         <p><b>Fact:</b> An item to be explained</p>
         <p><b>Foil:</b> A counterfactual item to the fact</p>
         <p><b>Surrogate:</b> A factual item that contrasts the fact</p>
@@ -95,7 +87,31 @@
         <p>Some research has shown contrastive counterfactual explanations don't improve the understanding of a system, but improve the users <em>belief</em> that they understand the system.</p>
       </section>
 
+      <section>
+        <h2>Algorithmic recourse under imperfect causal knowledge: a probabilistic approach</h2>
+        <p>Assume we have a GCM, but no SEM</p>
+        <p>Approach 1: Rely on a probabilistic regression using a Gaussian Process prior over functions $~f_r$</p>
+      </section>
 
+      <section>
+        <h2>Algorithmic recourse under imperfect causal knowledge: a probabilistic approach</h2>
+        <p>Leads to:</p>
+        <p>$$\min_{a=\textrm{do}(X=\theta)} \textrm{cost}^F(a)$$</p>
+        <p>Subject to: $$ \mathbb{E}_{X^{\textrm{SCF}}(a)} [ h(X^{\textrm{SCF}}(a)) ] \geq \textrm{thresh}(a) $$</p>
+        <p>$X^{\textrm{SCF}}$ = Counterfactual Random Variable conditioned on $x$</p>
+      </section>
+
+      <section>
+        <h2>Algorithmic recourse under imperfect causal knowledge: a probabilistic approach</h2>
+        <p>Assume we have a GCM, but no SEM</p>
+        <p>Approach 2: Use a series of cVAEs to model the data.</p>
+        <p>"Model each conditional $p(x_r|x_{pa(r)})$ with a conditional variational autoencoder (CVAE)"</p>
+      </section>
+
+      <section>
+        <h2>Algorithmic recourse under imperfect causal knowledge: a probabilistic approach</h2>
+        <img src="images/recourse/probabilistic_2.png">
+      </section>
 
     </div>
   </div>
