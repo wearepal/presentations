@@ -92,7 +92,9 @@ html {
   background-color: var(--dark-background);
 }
 
-.reveal .slides section.dark-cyan h2 {
+.reveal .slides section.dark-cyan h1,
+.reveal .slides section.dark-cyan h2,
+.reveal .slides section.dark-cyan h3 {
   color: #FFF;
 }
 
