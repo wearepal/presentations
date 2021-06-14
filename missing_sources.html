@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+  <title>Missing sources</title>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <script src="custom_themes/html_elements.js"></script>
+  <link rel="stylesheet" href="dist/reveal.css">
+  <link rel="stylesheet" href="custom_themes/sussex2.css" id="theme">
+
+  <div class="reveal">
+
+    <div class="slides">
+
+      <div id="background-template">
+        <footer>
+          <p>Missing sources
+        </footer>
+      </div>
+
+      <section>
+        <h3>Dataset bias</h3>
+
+        <ul>
+          <li><em>Label bias</em> or <em>sampling bias</em> mediated by a special attribute \(s\)
+          <li>\(s\) is a sensitive attribute or a spurious feature
+          <ul>
+            <li>a feature not for prediction
+            <li>e.g., forbidden for ethical/legal reasons, or just irrelevant
+            <li>demographic group like race, gender
+          </ul>
+        </ul>
+      </section>
+
+      <section>
+        <h3>Censoring sampling bias</h3>
+        <ul>
+          <li>A sampling bias that removes some combinations of \(s\) and \(y\) values
+            <ul>
+              <li>low-quality prediction for those \(s\) with missing sources
+            </ul>
+        </ul>
+        <br/>
+        <br/>
+        <!-- <img src="assets/residual_unfairness.png" style="width: 65%; border: none"> -->
+        <img src="images/censoring.png" style="width: 70%; border: none">
+      </section>
+
+      <section>
+        <h3>Censoring sampling bias</h3>
+        <ul>
+          <li>We assume access to a <em>deployment set</em> with all sources present
+          <li>An invariant representation \(z_y\) is produced via <em>distribution matching</em>
+            <multi-col>
+              <one-col style="margin: 0">
+                <ul style="margin-left: 0">
+                  <li>sets of samples are compared from training and context set
+                  <li>clustering ensures balanced batches
+                  <li>adversary ensures \(z_y\) cannot be used to distinguish training set and deployment set
+                </ul>
+              </one-col>
+              <one-col>
+                <img src="images/matching_diagram.png">
+              </one-col>
+            </multi-col>
+        </ul>
+      </section>
+
+      <section>
+        <h3>Censoring sampling bias &mdash; Results</h3>
+        <br/>
+        <img src="images/cmnist_2v4_partial_acc-min.png" alt="" style="width: 75%">
+      </section>
+
+    </div>
+  </div>
+
+  <script type="module" src="setup.js"></script>
