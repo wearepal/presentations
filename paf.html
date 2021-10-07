@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+  <title>An Algorithmic Framework for </title>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <script src="custom_themes/html_elements.js"></script>
+  <link rel="stylesheet" href="dist/reveal.css">
+  <link rel="stylesheet" href="custom_themes/sussex2.css" id="theme">
+
+  <div class="reveal">
+
+    <div class="slides">
+
+      <div id="background-template">
+        <footer>
+          <p>An Algorithmic Framework for Positive Action</p>
+        </footer>
+      </div>
+
+<!--      <section class="dark-cyan">-->
+<!--        <p>&nbsp;-->
+<!--        <h2>An Algorithmic Framework<br>for Positive Action</h2>-->
+<!--        <p>&nbsp;-->
+<!--        <p style="color: white">Oliver Thomas</p>-->
+<!--        <p style="color: white">Predictive Analytics Lab<br>-->
+<!--          University of Sussex-->
+<!--        <p>&nbsp;-->
+<!--        <p><img src="images/logos/University_of_Sussex_Logo.svg2000_white.png" style="width: 5rem;" alt="">-->
+<!--      </section>-->
+
+      <section>
+        <section>
+        <p>&nbsp;
+        <h3>An Algorithmic Framework for Positive Action</h3>
+        <p>&nbsp;
+        <p>Oliver Thomas<sup>1</sup>, Miri Zilka<sup>1,2</sup></p>
+        <p>Adrian Weller<sup>2</sup>, Novi Quadrianto<sup>1</sup></p>
+        <p>&nbsp;</p>
+        <p>
+        <small>1. Predictive Analytics Lab, University of Sussex</small><br>
+        <small>2. University of Cambridge</small>
+        </p>
+        <img src="images/paf/joint_logo.png" width=30% alt="">
+        </section>
+      </section>
+
+<!--      <section>-->
+<!--        <h2>Contents</h2>-->
+<!--        <p>&nbsp;</p>-->
+<!--        <p>Positive Action</p>-->
+<!--        <p>Our Approach</p>-->
+<!--        <p>Alternative Approaches</p>-->
+<!--        <p>Experiments</p>-->
+<!--        <p>Limitations & Future Directions</p>-->
+<!--      </section>-->
+
+      <section>
+        <h3>Positive Action</h3>
+        <multi-col>
+          <one-col>
+            <h4>What</h4>
+            <p>Described in UK Law (Equality Act 2010).</p>
+            <p>Lawful measures taken to encourage and train people from under-represented groups.</p>
+<!--            to help them overcome disadvantages in competing with other applicants.</p>-->
+            <p>Must be ‘proportionate’ to the extent and longevity of the under-representation.</p>
+          </one-col>
+          <one-col>
+            <h4>Why</h4>
+            <p>Some groups are under-represented in a particular setting.</p>
+            <p>Positive Action is a method to address this legally.</p>
+            <h4>Limitation</h4>
+            <p>Some positive action steps can be applied generally, for others there is a <em>cost</em> associated. </p>
+          </one-col>
+        </multi-col>
+      </section>
+      <section>
+        <h3>Examples</h3>
+        <ul>
+          <li>Including statements in job adverts to encourage applications from under-represented groups, such as 'we welcome female applicants'.</li>
+          <li><mark>Offering training or internships to help certain groups get opportunities or progress at work.</mark></li>
+          <li>Offering shadowing or mentoring to groups with particular needs.</li>
+          <li>Hosting an open day specifically for under-represented groups to encourage them to get into a particular field.</li>
+          <li>Favouring the job candidate from an under-represented group, where two candidates are 'as qualified as' each other.</li>
+        </ul>
+      </section>
+
+      <section>
+        <h3>Why not...?</h3>
+        <h4>Top- Rejected?</h4>
+        <img src="images/paf/alternative_approach.png" width="450" height="300" alt="">
+        <p>Only works when the data is well modelled.</p>
+      </section>
+
+      <section>
+        <h3>Why Do We Need an Algorithmic Framework?</h3>
+        <img src="images/paf/problem.png" width="400">
+        <p>Let $S$ be a protected characteristic, $X$ some input feature and $Y$ the outcome. With arrows indicating a relationship pathway between variables.</p>
+        <p>We want to model the <span style="color: #20b459">green</span> pathway, remove the <span style="color: #fe211a">red</span> pathway, and try to understand the effect of the <span style="color: #24b3ef">blue</span> pathway.</p>
+      </section>
+
+      <section>
+        <h3>Why Do We Need an Algorithmic Framework?</h3>
+        <img src="images/paf/split_problem.png" width="400">
+        <p>Let $S$ be a protected characteristic, $X$ some input feature and $Y$ the outcome. With arrows indicating a relationship pathway between variables.</p>
+        <p>We want to model the <span style="color: #20b459">green</span> pathway, remove the <span style="color: #fe211a">red</span> pathway, and try to understand the effect of the <span style="color: #24b3ef">blue</span> pathway.</p>
+      </section>
+
+      <section>
+        <h3>Counterfactual</h3>
+        <flexbox style="display:flex; align-items: center; justify-content: center">
+        <img src="images/paf/split_problem.png" width=20%>
+        <img src="images/paf/cf.png" width=35%>
+        <img src="images/paf/table.png" width="40%">
+        </flexbox>
+
+      </section>
+
+
+<!--      <section>-->
+<!--        <h3>Our Approach</h3>-->
+<!--        <img src="images/paf/time.png" width="80%" alt="">-->
+<!--        <p>We describe the world of data using language from Friedler et al.<sup>1</sup></p>-->
+<!--        <p>There may be a number of sources leading to discrepancy within each space. We are particularly interested in the transition between spaces.</p>-->
+<!--        <p>&nbsp;</p>-->
+<!--        <small><sup>1</sup> Sorelle A. Friedler, Carlos Scheidegger, and Suresh Venkatasubramanian. 2021. <br> The (Im)Possibility of Fairness: Different Value Systems Require Different Mechanisms for Fair Decision Making.</small>-->
+<!--      </section>-->
+
+      <section>
+        <h3>Why not...?</h3>
+        <h4>Deferral / Rejection Modelling</h4>
+        <multicol>
+          <onecol>
+<!--            asdf-->
+            <img src="images/paf/defer_1.png" width=22.5%; alt="">
+          </onecol>
+          <onecol>
+<!--            asdf-->
+            <img src="images/paf/defer_2.png" width=22.5%; alt="">
+          </onecol>
+          <onecol>
+            <img style="border-left: 3px solid black;" src="images/paf/ours_not_defer.png" width=27.5%; alt="">
+            <p>We produce an ensemble acting on "counterfactual" samples.</p>
+            <p>Each model can be certain, but certain for reasons influenced by a sensitive attribute.</p>
+          </onecol>
+        </multicol>
+      </section>
+
+      <section class="dark-cyan">
+        <p>&nbsp;
+        <p>&nbsp;
+        <p>&nbsp;
+        <p>&nbsp;
+        <h2>Experiments</h2>
+      </section>
+      <section>
+        <h3>Synthetic Data</h3>
+        <p>Access to Ground Truth counterfactuals.</p>
+      </section>
+      <section>
+        <h3>Real Data</h3>
+        <p>No longer have access to Ground Truth counterfactual data.</p>
+      </section>
+
+      <section>
+        <h3>Limitations</h3>
+        <ul>
+          <li>We have only considered binary protected groups.</li>
+          <li>Hand-determined rules may not be generally applicable.</li>
+          <li>Hard to evaluate.</li>
+        </ul>
+        <h3>Future Directions</h3>
+        <ul>
+          <li>Characterising uncertainty over generated counterfactuals.</li>
+          <li>Considering more complex scenarios.</li>
+          <li>Incorporate budget.</li>
+        </ul>
+      </section>
+
+      <section class="dark-cyan">
+        <p>&nbsp;
+        <p>&nbsp;
+        <p>&nbsp;
+        <p>&nbsp;
+        <h2>Thank you</h2>
+      </section>
+<!--      <section>-->
+<!--        <h3>We are currently hiring</h3>-->
+<!--        <p>for PhD students in fairness, uncertainty modelling and computer vision.</p>-->
+<!--        <p>Contact us for more information.</p>-->
+<!--        <p>Twitter: @wearepal_ai</p>-->
+<!--        <p>Web: www.wearepal.ai</p>-->
+<!--      </section>-->
+
+    </div>
+  </div>
+
+  <script type="module" src="setup.js"></script>
