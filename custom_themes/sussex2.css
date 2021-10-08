@@ -98,7 +98,10 @@ html {
 
 .reveal .slides section.dark-cyan h1,
 .reveal .slides section.dark-cyan h2,
-.reveal .slides section.dark-cyan h3 {
+.reveal .slides section.dark-cyan h3,
+.reveal .slides section.dark-cyan h4,
+.reveal .slides section.dark-cyan small,
+.reveal .slides section.dark-cyan p {
   color: #FFF;
 }
 
