@@ -63,6 +63,32 @@
 <!--      </section>-->
 
       <section>
+        <h3>Equality Act 2010</h3>
+        <p>&nbsp;</p>
+        <p>UK law that protects people from discrimination in the workplace.</p>
+        <p style="text-align: left; padding-left: 9%">Protected characteristics include:</p>
+        <multi-col>
+          <one-col>
+            <ul>
+              <li>age</li>
+              <li>disability</li>
+              <li>gender reassignment</li>
+              <li>marriage and civil partnership</li>
+              <li>pregnancy and maternity</li>
+            </ul>
+          </one-col>
+          <one-col>
+            <ul>
+              <li>race</li>
+              <li>religion or belief</li>
+              <li>sex</li>
+              <li>sexual orientation</li>
+            </ul>
+          </one-col>
+        </multi-col>
+      </section>
+
+      <section>
         <h3>Positive Action</h3>
         <multi-col>
           <one-col>
@@ -94,24 +120,29 @@
       </section>
 
       <section>
-        <h3></h3>
+        <h4>Algorithmic Fairness Context</h4>
         <multi-col>
           <one-col>
             <h4>Demographic Parity</h4>
-            <img src="images/paf/DP.png" width="80%">
+            <img src="images/paf/DP.png" width="80%" style="margin-left:auto;margin-right:auto;display:block">
+            <p style="text-align: center">Balance Positive Outcome Rates</p>
             <p style="text-align: center"><span style="color: red">May violate anti-discrimination law.</span></p>
             <p style="text-align: center;padding-top: 15px"><span style="color: green">Challenges the status quo.</span></p>
           </one-col>
           <one-col>
             <h4>Equal Opportunity</h4>
-            <img src="images/paf/EqOp.png" width="80%" style="padding-top:25px">
+            <img src="images/paf/EqOp.png" width="80%" style="padding-top:25px;margin-left:auto;margin-right:auto;display:block">
+            <p style="text-align: center">Balance <em>True Positive</em> Outcome Rates</p>
             <p style="text-align: center"><span style="color: green">No violation.</span></p>
             <p>&nbsp;</p>
             <p style="text-align: center"><span style="color: red">Maintains the status-quo.</span></p>
           </one-col>
           <one-col>
             <h4>Individual Fairness</h4>
-            <img src="images/paf/IF.png" width="75%">
+            <div style="display: block;">
+              <img src="images/paf/IF.png" width="75%" style="margin-left:auto;margin-right:auto;display:block">
+            </div>
+            <p style="text-align: center">Similar individuals <em>must</em> be treated similarly.</p>
             <p style="text-align: center"><span style="color: green">No violation.</span></p>
             <p>&nbsp;</p>
             <p style="text-align: center"><span style="color: red">Maintains the status-quo.</span></p>
@@ -168,16 +199,15 @@
         <multicol>
           <onecol>
 <!--            asdf-->
-            <img src="images/paf/defer_1.png" width=22.5%; alt="">
+            <img src="images/paf/defer_1.png" width=20%; alt="">
           </onecol>
           <onecol>
 <!--            asdf-->
-            <img src="images/paf/defer_2.png" width=22.5%; alt="">
+            <img src="images/paf/defer_2.png" width=20%; alt="" style="padding-right: 10px">
           </onecol>
           <onecol>
-            <img style="border-left: 3px solid black;" src="images/paf/ours_not_defer.png" width=27.5%; alt="">
-            <p>We produce an ensemble acting on "counterfactual" samples.</p>
-            <p>Each model can be certain, but certain for reasons influenced by a sensitive attribute.</p>
+            <img style="border-left: 3px solid black;padding-left: 20px;" src="images/paf/ours_not_defer.png" width=30%; alt="">
+            <p>We produce an ensemble acting on "counterfactual" samples.<br>Each model can be certain, but certain for reasons influenced by a protected characteristic &mdash; this wouldn't be caught in a deferral model.</p>
           </onecol>
         </multicol>
       </section>
