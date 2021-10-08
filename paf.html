@@ -191,11 +191,36 @@
       </section>
       <section>
         <h3>Synthetic Data</h3>
-        <p>Access to Ground Truth counterfactuals.</p>
+        <p>Access to Ground Truth counterfactuals and outcome beyond acceptance.</p>
+        <div class="r-stack">
+          <div>
+            <p>&nbsp;</p>
+            <img src="images/paf/results_1.png" width="70%">
+          </div>
+          <div class="fragment current-visible">
+            <p>Acceptance = $P(Y=1 | S=s)$</p>
+            <img src="images/paf/results_2.png" width="70%">
+          </div>
+          <div class="fragment current-fragment">
+            <p>TCP|s = $P(Y=\{1,2\} | S=s, \textrm{Grad}=1)$</p>
+            <img src="images/paf/results_3.png" width="70%">
+          </div>
+        </div>
       </section>
+
       <section>
         <h3>Real Data</h3>
         <p>No longer have access to Ground Truth counterfactual data.</p>
+        <div class="r-stack">
+          <div>
+            <p>&nbsp;</p>
+            <img src="images/paf/adult_results_1.png" width="70%">
+          </div>
+          <div class="fragment current-visible">
+            <p>Additional candidates make the results <em>tend</em> towards more equal outcomes.</p>
+            <img src="images/paf/adult_results_2.png" width="70%">
+          </div>
+        </div>
       </section>
 
       <section>
@@ -211,6 +236,15 @@
           <li>Considering more complex scenarios.</li>
           <li>Incorporate budget.</li>
         </ul>
+      </section>
+
+      <section>
+        <h3>Conclusion</h3>
+        <p>&nbsp;</p>
+        <ol>
+          <li>Positive Action as an additional outcome is a method to increase equal representation over time.</li>
+          <li>We have presented an approach based on couterfactual modelling that tries to identify positive action candidates while mitigating directly discriminatory behaviour.</li>
+        </ol>
       </section>
 
       <section class="dark-cyan">
